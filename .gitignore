@@ -1,3 +1,5 @@
+.vs
+Debug
 # Prerequisites
 *.d
 
@@ -30,3 +32,22 @@
 *.exe
 *.out
 *.app
+
+### VSCode ###
+.vscode/
+
+### CodeBlocks ###
+# specific to CodeBlocks IDE
+*.layout
+*.layout.save
+*.depend
+# generated directories
+bin/
+obj/
+
+### main ###
+# generated files
+*.vcxproj
+x64/
+Release/
+installer
