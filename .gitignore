@@ -47,7 +47,6 @@ obj/
 
 ### main ###
 # generated files
-*.vcxproj
 x64/
 Release/
 installer
