@@ -1,4 +1,7 @@
 #include "Header.h"
+#include "flight.h"
+#include "runway.h"
+#include "mediator.h"
 using namespace std;
 
 int main()

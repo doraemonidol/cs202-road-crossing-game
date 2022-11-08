@@ -18,12 +18,33 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="function.cpp">
+    <ClCompile Include="flight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="runway.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mediator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="flight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="runway.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mediator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMediator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

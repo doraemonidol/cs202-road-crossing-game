@@ -127,11 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="function.cpp" />
+    <ClCompile Include="flight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mediator.cpp" />
+    <ClCompile Include="runway.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="flight.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="IMediator.h" />
+    <ClInclude Include="mediator.h" />
+    <ClInclude Include="runway.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
