@@ -9,45 +9,49 @@ class Runway;
 
 class IATCMediator {
 public:
-    virtual void registerRunway(Runway*& runway) = 0;
-    virtual void registerFlight(Flight*& flight) = 0;
-    virtual bool isLandingOk() = 0;
-    virtual void setLandingStatus(bool status) = 0;
+    virtual void registerRunway(Runway* runway, bool status) = 0;
+    virtual void registerFlight(Flight* flight) = 0;
+    virtual bool isLandingOk(string id) = 0;
+    virtual void setLandingStatus(bool status, string id) = 0;
 };
 
 class Command {
 public:
-    virtual void land() = 0;
+    virtual void land(string id) = 0;
 };
 
 class ATCMediator : public IATCMediator {
 private:
-    Flight* flight;
-    Runway* runway;
+    vector<Flight*> flight;
+    vector<Runway*> runway;
+    vector<bool> land;
 
 public:
-    bool land;
-    void registerRunway(Runway*& runway);
-    void registerFlight(Flight*& flight);
-    bool isLandingOk();
-    void setLandingStatus(bool status);
+    void registerRunway(Runway* runway, bool status);
+    void registerFlight(Flight* flight);
+    bool isLandingOk(string id);
+    void setLandingStatus(bool status, string id);
 };
 
 class Flight : public Command {
 private:
+    string id;
     IATCMediator* atcMediator;
 
 public:
-    Flight(IATCMediator*& atcMediator);
-    void land();
+    Flight(IATCMediator*& atcMediator, string _id);
+    void land(string id);
     void getReady();
+    string getID();
 };
 
 class Runway : public Command {
 private:
+    string id;
     IATCMediator* atcMediator;
 
 public:
-    Runway(IATCMediator*& atcMediator);
-    void land();
+    Runway(IATCMediator*& atcMediator, string _id);
+    void land(string id = "");
+    string getID();
 };
