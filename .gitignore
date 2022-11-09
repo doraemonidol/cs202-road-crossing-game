@@ -37,5 +37,9 @@ obj/
 ### main ###
 # generated files
 x64/
+cs202-road-crossing-game/x64/
 Release/
 installer
+*.lastbuildstate
+*.tlog
+*.log
