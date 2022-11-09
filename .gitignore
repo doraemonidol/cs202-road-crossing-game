@@ -43,3 +43,4 @@ installer
 *.lastbuildstate
 *.tlog
 *.log
+*.vcxproj
