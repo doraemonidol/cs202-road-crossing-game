@@ -130,7 +130,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BIG_MONSTER.cpp" />
+    <ClCompile Include="GAME.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="METEOR.cpp" />
+    <ClCompile Include="MONSTER.cpp" />
+    <ClCompile Include="OBSTACLE.cpp" />
+    <ClCompile Include="SMALL_MONSTER.cpp" />
+    <ClCompile Include="SPACESHIP.cpp" />
+    <ClCompile Include="UFO.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BIG_MONSTER.h" />
+    <ClInclude Include="GAME.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="METEOR.h" />
+    <ClInclude Include="MONSTER.h" />
+    <ClInclude Include="OBSTACLE.h" />
+    <ClInclude Include="SMALL_MONSTER.h" />
+    <ClInclude Include="SPACESHIP.h" />
+    <ClInclude Include="UFO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
