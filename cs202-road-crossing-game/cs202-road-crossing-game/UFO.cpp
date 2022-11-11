@@ -7,9 +7,3 @@
 #include "main.h"
 #include "SPACESHIP.h"
 #include "GAME.h"
-
-int main()
-{
-
-    return 0;
-}
