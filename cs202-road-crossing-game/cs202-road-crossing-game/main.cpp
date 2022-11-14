@@ -6,10 +6,21 @@
 #include "SMALL_MONSTER.h"
 #include "main.h"
 #include "SPACESHIP.h"
+#include "GUI.h"
 #include "GAME.h"
 
 int main()
 {
+    srand(static_cast<unsigned>(time(0)));
 
+    GAME game;
+    game.run();
+
+    while (true) {
+        game.update();
+        game.render();
+    }
+
+    //End of application
     return 0;
 }

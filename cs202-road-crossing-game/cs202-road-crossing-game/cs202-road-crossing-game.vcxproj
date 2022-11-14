@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="BIG_MONSTER.cpp" />
     <ClCompile Include="GAME.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="METEOR.cpp" />
     <ClCompile Include="MONSTER.cpp" />
@@ -143,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="BIG_MONSTER.h" />
     <ClInclude Include="GAME.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="METEOR.h" />
     <ClInclude Include="MONSTER.h" />
