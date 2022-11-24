@@ -1,4 +1,5 @@
 #pragma once
+#include "SPACESHIP.h"
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 
@@ -16,6 +17,8 @@ private:
 
     //Systems
     unsigned level;
+    float deltaTime = 0.0f;
+    sf::Clock clock;
 
     //Player
     SPACESHIP* player;

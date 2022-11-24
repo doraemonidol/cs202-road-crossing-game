@@ -5,7 +5,6 @@
 #include "BIG_MONSTER.h"
 #include "SMALL_MONSTER.h"
 #include "main.h"
-#include "SPACESHIP.h"
 #include "GUI.h"
 #include "GAME.h"
 
@@ -74,6 +73,7 @@ GAME::~GAME()
 void GAME::run()
 {
     while (this->window->isOpen()) {
+        deltaTime = clock.restart().asSeconds();
         this->updatePollEvents();
 
         if (this->player->getHp() > 0)
@@ -120,7 +120,7 @@ void GAME::update()
     //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
     // this->updateInput();
 
-    this->player->update(this->gui->getBGSize().y);
+    this->player->update(this->gui->getBGSize().y, deltaTime);
 
     this->gui->update(this->level);
 

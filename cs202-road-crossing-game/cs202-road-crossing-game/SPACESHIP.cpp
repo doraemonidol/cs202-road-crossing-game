@@ -5,8 +5,8 @@
 #include "BIG_MONSTER.h"
 #include "SMALL_MONSTER.h"
 #include "main.h"
-#include "SPACESHIP.h"
 #include "GAME.h"
+#include "SPACESHIP.h"
 
 void SPACESHIP::initVariables()
 {
@@ -18,6 +18,9 @@ void SPACESHIP::initVariables()
     this->hpMax = 3;
     this->hp = this->hpMax;
     this->sprite.setPosition(400, 600);
+
+    this->row = 0;
+    this->faceRight = true;
 }
 
 void SPACESHIP::initTexture()
@@ -39,6 +42,7 @@ void SPACESHIP::initSprite()
 }
 
 SPACESHIP::SPACESHIP()
+    : anim(&this->texture, this->imgCnt, this->switchTime)
 {
     this->initVariables();
     this->initTexture();
@@ -134,22 +138,39 @@ void SPACESHIP::updateCollision(int worldBGTexY)
     }
 }
 
-void SPACESHIP::updateInput()
+void SPACESHIP::updateInput(float deltaTime)
 {
+    sf::Vector2f movement(0.0f, 0.0f);
+
     //Move player
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        this->move(-1.f, 0.f);
+        movement.x -= speed * deltaTime;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        this->move(1.f, 0.f);
+        movement.x += speed * deltaTime;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        this->move(0.f, -1.f);
+        movement.y -= speed * deltaTime;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        this->move(0.f, 1.f);
+        movement.y += speed * deltaTime;
+
+    if (movement.x == 0.0f) {
+        row = 0;
+    } else {
+        row = 1;
+
+        if (movement.x > 0.0f)
+            faceRight = true;
+        else
+            faceRight = false;
+    }
+
+    this->anim.Update(row, deltaTime, faceRight);
+    this->sprite.setTextureRect(anim.uvRect);
+    this->move(movement.x, movement.y);
 }
 //Functions
-void SPACESHIP::update(int worldBGTexY)
+void SPACESHIP::update(int worldBGTexY, float deltaTime)
 {
-    this->updateInput();
+    this->updateInput(deltaTime);
     this->updateAttack();
     this->updateCollision(worldBGTexY);
 }
