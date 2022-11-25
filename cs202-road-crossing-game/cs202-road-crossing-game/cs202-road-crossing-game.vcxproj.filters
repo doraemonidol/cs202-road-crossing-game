@@ -18,13 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MONSTER.cpp">
+    <ClCompile Include="SPACESHIP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GAME.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SMALL_MONSTER.cpp">
+    <ClCompile Include="GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BIG_MONSTER.cpp">
@@ -33,48 +33,51 @@
     <ClCompile Include="METEOR.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UFO.cpp">
+    <ClCompile Include="MONSTER.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OBSTACLE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SPACESHIP.cpp">
+    <ClCompile Include="SMALL_MONSTER.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
+    <ClCompile Include="UFO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MONSTER.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GAME.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SMALL_MONSTER.h">
+    <ClInclude Include="SPACESHIP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BIG_MONSTER.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="METEOR.h">
+    <ClInclude Include="GAME.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UFO.h">
+    <ClInclude Include="METEOR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OBSTACLE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SPACESHIP.h">
+    <ClInclude Include="MONSTER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.h">
+    <ClInclude Include="SMALL_MONSTER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UFO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ANIMATION.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

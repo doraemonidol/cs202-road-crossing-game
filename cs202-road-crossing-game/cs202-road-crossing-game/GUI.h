@@ -1,4 +1,5 @@
 #pragma once
+#include "SPACESHIP.h"
 class GUI {
 private:
     sf::RenderWindow* window;

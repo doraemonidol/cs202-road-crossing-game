@@ -5,7 +5,6 @@
 #include "BIG_MONSTER.h"
 #include "SMALL_MONSTER.h"
 #include "main.h"
-#include "SPACESHIP.h"
 #include "GUI.h"
 #include "GAME.h"
 

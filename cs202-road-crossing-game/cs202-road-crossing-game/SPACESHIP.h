@@ -1,8 +1,19 @@
 #pragma once 
+#include "ANIMATION.h"
+
 class SPACESHIP {
 private:
     sf::Sprite sprite;
     sf::Texture texture;
+    
+    // Animation
+    //sf::RectangleShape body;
+    ANIMATION anim;
+    unsigned int row;
+    float speed;
+    bool faceRight;
+    sf::Vector2u imgCnt = { 1, 3 };
+    float switchTime = 5;
 
     float movementSpeed;
 
@@ -39,7 +50,7 @@ public:
 
     void updateAttack();
     void updateCollision(int worldBGTexY);
-    void updateInput();
-    void update(int worldBGTexY);
+    void updateInput(float deltaTime);
+    void update(int worldBGTexY, float deltaTime);
     void render(sf::RenderTarget& target);
 };
