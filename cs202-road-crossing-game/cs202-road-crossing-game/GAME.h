@@ -65,5 +65,5 @@ public:
     void renderGamePause();
     void saveGame();
     void loadGame();
-    friend GAME& operator=(GAME other);
+    GAME& operator=(GAME other);
 };

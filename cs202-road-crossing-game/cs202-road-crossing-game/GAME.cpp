@@ -58,7 +58,7 @@ GAME::GAME()
     this->initTextures();
     this->initSystems();
     this->initGUI();
-    this->loadGame();
+    /*this->loadGame();*/
 
 }
 
