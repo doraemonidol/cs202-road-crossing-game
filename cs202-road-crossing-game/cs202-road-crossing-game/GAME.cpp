@@ -7,7 +7,7 @@
 #include "main.h"
 #include "GUI.h"
 #include "GAME.h"
-
+#include <iostream>
 //Private functions
 void GAME::initWindow()
 {
@@ -47,6 +47,22 @@ void GAME::initGUI() {
     //Con/Des
 GAME::GAME()
 {
+   
+    this->isPause = false;
+
+    this->initPlayer();
+    this->initEnemies();
+
+    this->initView();
+    this->initWindow();
+    this->initTextures();
+    this->initSystems();
+    this->initGUI();
+    this->loadGame();
+
+}
+
+GAME::GAME(const int a) {
     this->isPause = false;
 
     this->initPlayer();
@@ -102,15 +118,17 @@ void GAME::updatePollEvents()
                         this->isPause = false;
                     }
                     break;
-                case: sf::Keyboard::M :
-                    //Back to menu
+                //case sf::Keyboard::M :
+                //    //Back to menu
+                //    break;
+                case sf::Keyboard::S :
+                    if (this->isPause)
+                    {
+                    }
                     break;
-                case: sf::Keyboard::S :
-                    //Save game
-                    break;
-                case: sf::Keyboard::R :
-                    //replay:
-                    break;
+                //case sf::Keyboard::R :
+                //    //replay:
+                //    break;
                 default:
                     break;
             }
@@ -195,5 +213,32 @@ void GAME::renderGamePause() {
 }
 
 void GAME::saveGame() {
+    std::ofstream file;
+    file.open("Game.txt", std::ios::out);
+    if (!file) {
+        std::cout << "Unable to open save game!" << std::endl;
+        return;
+    }
+    file.write((char*)this, sizeof(GAME));
+    file.close();
+}
 
+void GAME::loadGame() {
+    std::ifstream file2;
+    file2.open("Game.txt", std::ios::in);
+    if (!file2) {
+        std::cout << "Unable to open save game!" << std::endl;
+        return;
+    }
+    std::cout << "Open save game successfuly!" << std::endl;
+    GAME temp(1);
+    file2.read((char*)&temp, sizeof(GAME));
+    *this = temp;
+    file2.close();
+}
+
+GAME& GAME::operator=(GAME other) {
+    std::swap(window, other.window);
+    /*std::swap()*/
+    return *this;
 }

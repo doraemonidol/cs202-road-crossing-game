@@ -45,6 +45,7 @@ private:
 
 public:
     GAME();
+    GAME(const int a);
     virtual ~GAME();
 
     //Functions
@@ -64,4 +65,5 @@ public:
     void renderGamePause();
     void saveGame();
     void loadGame();
+    friend GAME& operator=(GAME other);
 };

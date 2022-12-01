@@ -44,6 +44,9 @@
     <ClInclude Include="SPACESHIP.h" />
     <ClInclude Include="UFO.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Game.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
