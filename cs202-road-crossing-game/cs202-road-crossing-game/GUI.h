@@ -15,7 +15,7 @@ private:
     //GUI
     sf::Font font;
     sf::Text levelText;
-
+    sf::Text pauseText;
     sf::Text gameOverText;
 
     //PlayerGUI

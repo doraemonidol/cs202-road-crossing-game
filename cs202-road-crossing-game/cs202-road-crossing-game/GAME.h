@@ -11,6 +11,9 @@ private:
     sf::RenderWindow* window;
     sf::View view;
 
+    //Game state
+    bool isPause;
+
     //Textures
     std::map<std::string, sf::Texture*> textures;
     //std::vector<Bullet*> bullets;
@@ -55,7 +58,10 @@ public:
     //void updateEnemies();
     //void updateCombat();
     void update();
-
+    void pauseGame();
     void renderWorld();
     void render();
+    void renderGamePause();
+    void saveGame();
+    void loadGame();
 };

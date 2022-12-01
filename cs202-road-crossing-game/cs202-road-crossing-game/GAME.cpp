@@ -47,6 +47,8 @@ void GAME::initGUI() {
     //Con/Des
 GAME::GAME()
 {
+    this->isPause = false;
+
     this->initPlayer();
     this->initEnemies();
 
@@ -55,7 +57,6 @@ GAME::GAME()
     this->initTextures();
     this->initSystems();
     this->initGUI();
-
 }
 
 GAME::~GAME()
@@ -75,11 +76,12 @@ void GAME::run()
     while (this->window->isOpen()) {
         deltaTime = clock.restart().asSeconds();
         this->updatePollEvents();
-
-        if (this->player->getHp() > 0)
-            this->update();
-
+        if (this->isPause == false) {
+            if (this->player->getHp() > 0)
+                this->update();
+        }
         this->render();
+
     }
 }
 
@@ -89,8 +91,29 @@ void GAME::updatePollEvents()
     while (this->window->pollEvent(e)) {
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-            this->window->close();
+        if (e.type == sf::Event::KeyPressed) {
+            switch (e.key.code)
+            {
+                case sf::Keyboard::Escape:
+                    if (this->isPause == false) {
+                        this->isPause = true;
+                    }
+                    else {
+                        this->isPause = false;
+                    }
+                    break;
+                case: sf::Keyboard::M :
+                    //Back to menu
+                    break;
+                case: sf::Keyboard::S :
+                    //Save game
+                    break;
+                case: sf::Keyboard::R :
+                    //replay:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
@@ -109,7 +132,7 @@ void GAME::updateView() {
         y = SCREEN_HEIGHT / 2;
     int tmp = (SCREEN_HEIGHT - this->gui->getBGSize().y);
     if (y < SCREEN_HEIGHT / 2 + tmp)
-        y = SCREEN_HEIGHT / 2 + tmp;
+        y = SCREEN_HEIGHT / 2.0f + tmp;
 
     view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, y));
     this->window->setView(view);
@@ -144,9 +167,33 @@ void GAME::render()
     //Draw all the stuffs
     this->player->render(*this->window);
 
+    //Game pause screen:
+    if (this->isPause) {
+        this->renderGamePause();
+    }
+    
     //Game over screen
     if (this->player->getHp() <= 0)
         this->gui->renderGameOver();
 
     this->window->display();
+}
+
+void GAME::renderGamePause() {
+    //Load font
+    sf::Font font;
+    if (!font.loadFromFile("Fonts/PixellettersFull.ttf"))
+        std::cout << "ERROR::GAME::Failed to load font"
+        << "\n";
+    sf::Text pauseText;
+    pauseText.setFont(font);
+    pauseText.setCharacterSize(30);
+    pauseText.setFillColor(sf::Color::White);
+    pauseText.setString("Press S to save game\nPress M to go back to menu\nPress Escape to continue\nPress H to view highscore\nPress R to replay");
+    pauseText.setPosition(this->window->getSize().x/2.0f - 130.0f, this->window->getSize().y/2.0f - 70.0f);
+    this->window->draw(pauseText);
+}
+
+void GAME::saveGame() {
+
 }

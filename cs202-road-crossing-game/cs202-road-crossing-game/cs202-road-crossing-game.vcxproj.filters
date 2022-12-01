@@ -45,6 +45,9 @@
     <ClCompile Include="UFO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ANIMATION.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SPACESHIP.h">

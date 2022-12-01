@@ -49,6 +49,15 @@ void GUI::initGUI()
         this->window->getSize().x / 2.f - this->gameOverText.getGlobalBounds().width / 2.f,
         this->window->getSize().y / 2.f - this->gameOverText.getGlobalBounds().height / 2.f);
 
+    //Init pause text
+    this->pauseText.setFont(this->font);
+    this->pauseText.setCharacterSize(15);
+    this->pauseText.setFillColor(sf::Color::White);
+    this->pauseText.setString("Press Escape to pause the game");
+    this->pauseText.setPosition(5.0f, this->window->getSize().y-20.0f);
+    
+
+
     //Init player GUI
     this->updateHealth(this->player->getHpMax());
 }
@@ -146,6 +155,7 @@ void GUI::render()
 {
     this->window->draw(this->worldBackground);
     this->window->draw(this->levelText);
+    this->window->draw(this->pauseText);
     for (int i = 1; i <= this->player->getHpMax(); i++) {
         this->window->draw(this->playerHp[i]);
     }
