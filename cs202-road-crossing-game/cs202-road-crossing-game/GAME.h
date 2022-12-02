@@ -1,7 +1,9 @@
 #pragma once
 #include "SPACESHIP.h"
+#include "MENU.h"
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
+enum Scene;
 
 class GUI;
 
@@ -19,13 +21,16 @@ private:
     //std::vector<Bullet*> bullets;
 
     //Systems
-    unsigned level;
+    unsigned level, scene;
     float deltaTime = 0.0f;
     sf::Clock clock;
 
     //Player
     SPACESHIP* player;
     GUI* gui;
+
+    //Scene
+    MENU menu;
 
     //Enemies
     float spawnTimer;
@@ -39,6 +44,7 @@ private:
     void initTextures();
     void initSystems();
     void initGUI();
+    void initMenu();
 
     void initPlayer();
     void initEnemies();

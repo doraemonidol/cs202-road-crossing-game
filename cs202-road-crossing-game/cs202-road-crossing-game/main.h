@@ -27,3 +27,17 @@
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
+
+enum btnState {
+    DEFAULT,
+    HOVER,
+    ACTIVE,
+    btnStateCnt
+};
+
+enum Scene {
+    MENUSCENE,
+    INGAME,
+    PAUSEGAME,
+    sceneCnt
+};

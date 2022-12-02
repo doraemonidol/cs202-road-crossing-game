@@ -1,5 +1,7 @@
 #pragma once
 #include "SPACESHIP.h"
+#include "UTILS.h"
+
 class GUI {
 private:
     sf::RenderWindow* window;
@@ -11,6 +13,7 @@ private:
     sf::Texture worldBackgroundTex;
     sf::Sprite worldBackground;
     //std::vector<Bullet*> bullets;
+    std::map<std::string, BUTTON*> buttons;
 
     //GUI
     sf::Font font;

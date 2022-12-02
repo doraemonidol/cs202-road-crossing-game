@@ -25,6 +25,7 @@ void GUI::initTextures()
     this->textures["FULL HEART"]->loadFromFile("Textures/heart-full.png");
     this->textures["EMPTY HEART"] = new sf::Texture();
     this->textures["EMPTY HEART"]->loadFromFile("Textures/heart-empty.png");
+    this->buttons["PLAY"] = new BUTTON();
 }
 
 void GUI::initGUI()

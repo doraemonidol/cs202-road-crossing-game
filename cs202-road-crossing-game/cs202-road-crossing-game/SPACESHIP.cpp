@@ -165,7 +165,7 @@ void SPACESHIP::updateInput(float deltaTime)
             faceRight = false;
     }
 
-    this->anim.Update(row, deltaTime, faceRight);
+    //this->anim.Update(row, deltaTime, faceRight);
     this->sprite.setTextureRect(anim.uvRect);
     this->move(movement.x, movement.y);
 }

@@ -28,6 +28,7 @@ void GAME::initTextures()
 void GAME::initSystems()
 {
     this->level = 1;
+    this->scene = MENUSCENE;
 }
 
 void GAME::initPlayer()
@@ -44,10 +45,15 @@ void GAME::initEnemies()
 void GAME::initGUI() {
     this->gui = new GUI(this->window, this->player);
 }
+
+void GAME::initMenu() {
+    menu = MENU(200, 200);
+    menu.init();
+}
+
     //Con/Des
 GAME::GAME()
 {
-   
     this->isPause = false;
 
     this->initPlayer();
@@ -58,6 +64,7 @@ GAME::GAME()
     this->initTextures();
     this->initSystems();
     this->initGUI();
+    this->initMenu();
     /*this->loadGame();*/
 
 }
@@ -73,6 +80,7 @@ GAME::GAME(const int a) {
     this->initTextures();
     this->initSystems();
     this->initGUI();
+    this->initMenu();
 }
 
 GAME::~GAME()
@@ -107,32 +115,37 @@ void GAME::updatePollEvents()
     while (this->window->pollEvent(e)) {
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
-        if (e.type == sf::Event::KeyPressed) {
-            switch (e.key.code)
-            {
+        switch (scene) {
+        case MENUSCENE:
+            menu.update(this->window, e);
+            break;
+        case INGAME:
+            if (e.type == sf::Event::KeyPressed) {
+                switch (e.key.code) {
                 case sf::Keyboard::Escape:
                     if (this->isPause == false) {
                         this->isPause = true;
-                    }
-                    else {
+                    } else {
                         this->isPause = false;
                     }
                     break;
-                //case sf::Keyboard::M :
-                //    //Back to menu
-                //    break;
-                case sf::Keyboard::S :
-                    if (this->isPause)
-                    {
+                // case sf::Keyboard::M :
+                //     //Back to menu
+                //     break;
+                case sf::Keyboard::S:
+                    if (this->isPause) {
                     }
                     break;
-                //case sf::Keyboard::R :
-                //    //replay:
-                //    break;
+                // case sf::Keyboard::R :
+                //     //replay:
+                //     break;
                 default:
                     break;
+                }
             }
+            break;
         }
+            
     }
 }
 
@@ -158,7 +171,7 @@ void GAME::updateView() {
 
 void GAME::update()
 {
-    //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
+    std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
     // this->updateInput();
 
     this->player->update(this->gui->getBGSize().y, deltaTime);
@@ -177,22 +190,28 @@ void GAME::renderWorld()
 void GAME::render()
 {
     this->window->clear();
+    switch (scene) {
+    case MENUSCENE:
+        this->menu.draw(this->window);
+        break;
+    case INGAME:
+        // Draw world
+        this->renderWorld();
+        this->gui->render();
 
-    //Draw world
-    this->renderWorld();
-    this->gui->render();
+        // Draw all the stuffs
+        this->player->render(*this->window);
 
-    //Draw all the stuffs
-    this->player->render(*this->window);
+        // Game pause screen:
+        if (this->isPause) {
+            this->renderGamePause();
+        }
 
-    //Game pause screen:
-    if (this->isPause) {
-        this->renderGamePause();
+        // Game over screen
+        if (this->player->getHp() <= 0)
+            this->gui->renderGameOver();
+        break;
     }
-    
-    //Game over screen
-    if (this->player->getHp() <= 0)
-        this->gui->renderGameOver();
 
     this->window->display();
 }
