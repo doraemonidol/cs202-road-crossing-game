@@ -71,5 +71,20 @@ public:
     void renderGamePause();
     void saveGame();
     void loadGame();
+
+    //set
+    void setSPACESHIP(SPACESHIP player);
+    void setGUI(GUI gui);
+    void setSpawnTimer(float spawnTimer);
+    void setSpawnTimerMax(float spawnTimerMax);
+    void setClocK(sf::Clock clock);
+    void setDeltaTime(float deltaTime);
+    void setLevel(unsigned level);
+    void setScene(unsigned scene);
+    void setTextures(std::map<std::string, sf::Texture*> other);
+    void setWindow(sf::RenderWindow window);
+    void setView(sf::View view);
+    void setIsPause(bool isPause);
+
     GAME& operator=(GAME other);
 };

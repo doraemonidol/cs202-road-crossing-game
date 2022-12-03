@@ -28,7 +28,7 @@ void GAME::initTextures()
 void GAME::initSystems()
 {
     this->level = 1;
-    this->scene = MENUSCENE;
+    this->scene = INGAME;
 }
 
 void GAME::initPlayer()
@@ -81,6 +81,7 @@ GAME::GAME(const int a) {
     this->initSystems();
     this->initGUI();
     this->initMenu();
+    this->loadGame();
 }
 
 GAME::~GAME()
@@ -105,7 +106,7 @@ void GAME::run()
                 this->update();
         }
         this->render();
-
+        this->saveGame();
     }
 }
 
@@ -231,6 +232,8 @@ void GAME::renderGamePause() {
     this->window->draw(pauseText);
 }
 
+template <class T>void swap(T* a, T* b);
+
 void GAME::saveGame() {
     std::ofstream file;
     file.open("Game.txt", std::ios::out);
@@ -238,7 +241,18 @@ void GAME::saveGame() {
         std::cout << "Unable to open save game!" << std::endl;
         return;
     }
-    file.write((char*)this, sizeof(GAME));
+    /*file.write((char*)window, sizeof(GAME));*/
+    file.write((char*)&view, sizeof(sf::View));
+    file.write((char*)&isPause, sizeof(bool));
+    file.write((char*)&level, sizeof(unsigned));
+    file.write((char*)&scene, sizeof(scene));
+    file.write((char*)&deltaTime,sizeof(float));
+    file.write((char*)&clock, sizeof(sf::Clock));
+    file.write((char*)player, sizeof(SPACESHIP));
+    file.write((char*)gui, sizeof(GUI));
+    file.write((char*)&menu, sizeof(MENU));
+    file.write((char*)&spawnTimer, sizeof(float));
+    file.write((char*)&spawnTimerMax, sizeof(float));
     file.close();
 }
 
@@ -250,9 +264,15 @@ void GAME::loadGame() {
         return;
     }
     std::cout << "Open save game successfuly!" << std::endl;
-    GAME temp(1);
-    file2.read((char*)&temp, sizeof(GAME));
-    *this = temp;
+    /*sf::RenderWindow temp;
+    file2.read((char*)&temp, sizeof(sf::RenderWindow));
+    this->setWindow(temp);*/
+    file2.read((char*)&this->view, sizeof(sf::View));
+    file2.read((char*)&this->isPause, sizeof(bool));
+    file2.read((char*)&this->level, sizeof(unsigned));
+    file2.read((char*)&this->scene, sizeof(unsigned));
+    file2.read((char*)&this->deltaTime, sizeof(float));
+    std::cout << isPause << std::endl;
     file2.close();
 }
 
@@ -260,4 +280,57 @@ GAME& GAME::operator=(GAME other) {
     std::swap(window, other.window);
     /*std::swap()*/
     return *this;
+}
+
+void GAME::setSPACESHIP(SPACESHIP player) {
+    swap(this->player, &player);
+}
+
+void GAME::setGUI(GUI gui) {
+    swap(this->gui, &gui);
+}
+
+void GAME::setSpawnTimer(float spawnTimer) {
+    this->spawnTimer = spawnTimer;
+}
+
+void GAME::setSpawnTimerMax(float spawnTimerMax) {
+    this->spawnTimerMax = spawnTimerMax;
+}
+
+void GAME::setClocK(sf::Clock clock) {
+    this->clock = clock;
+}
+
+void GAME::setDeltaTime(float deltaTime) {
+    this->deltaTime = deltaTime;
+}
+
+void GAME::setLevel(unsigned level) {
+    this->level = level;
+}
+
+void GAME::setScene(unsigned scene) {
+    this->scene = scene;
+}
+
+void setTextures(std::map<std::string, sf::Texture*> other) {
+}
+
+void GAME::setWindow(sf::RenderWindow window) {
+    swap(this->window, &window);
+}
+
+void GAME::setView(sf::View view) {
+    this->view = view;
+}
+
+void GAME::setIsPause(bool isPause) {
+    this->isPause = isPause;
+}
+
+template <class T>void swap(T* a, T*b) {
+    T* c = a;
+    a = b;
+    b = c;
 }
