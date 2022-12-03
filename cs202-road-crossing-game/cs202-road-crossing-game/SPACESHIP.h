@@ -53,4 +53,9 @@ public:
     void updateInput(float deltaTime);
     void update(int worldBGTexY, float deltaTime);
     void render(sf::RenderTarget& target);
+    void initAfterLoad();
+    //output
+    void output() {
+        std::cout << hp << " " << hpMax << " " << speed;
+    }
 };

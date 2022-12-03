@@ -65,7 +65,7 @@ GAME::GAME()
     this->initSystems();
     this->initGUI();
     this->initMenu();
-    /*this->loadGame();*/
+    this->loadGame();
 
 }
 
@@ -172,7 +172,7 @@ void GAME::updateView() {
 
 void GAME::update()
 {
-    std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
+   /* std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";*/
     // this->updateInput();
 
     this->player->update(this->gui->getBGSize().y, deltaTime);
@@ -249,7 +249,7 @@ void GAME::saveGame() {
     file.write((char*)&deltaTime,sizeof(float));
     file.write((char*)&clock, sizeof(sf::Clock));
     file.write((char*)player, sizeof(SPACESHIP));
-    file.write((char*)gui, sizeof(GUI));
+    /*file.write((char*)gui, sizeof(GUI));*/
     file.write((char*)&menu, sizeof(MENU));
     file.write((char*)&spawnTimer, sizeof(float));
     file.write((char*)&spawnTimerMax, sizeof(float));
@@ -264,15 +264,26 @@ void GAME::loadGame() {
         return;
     }
     std::cout << "Open save game successfuly!" << std::endl;
-    /*sf::RenderWindow temp;
-    file2.read((char*)&temp, sizeof(sf::RenderWindow));
-    this->setWindow(temp);*/
+    if (file2.peek() == std::ifstream::traits_type::eof()) {
+        std::cout << "Game file is empty, let's play new game!!" << std::endl;
+        return;
+    }
     file2.read((char*)&this->view, sizeof(sf::View));
     file2.read((char*)&this->isPause, sizeof(bool));
     file2.read((char*)&this->level, sizeof(unsigned));
     file2.read((char*)&this->scene, sizeof(unsigned));
     file2.read((char*)&this->deltaTime, sizeof(float));
-    std::cout << isPause << std::endl;
+    file2.read((char*)&this->clock, sizeof(sf::Clock));
+    SPACESHIP player;
+    file2.read((char*)&player, sizeof(SPACESHIP));
+    this->setSPACESHIP(player);
+    this->player->initAfterLoad();
+    /*GUI gui;
+    file2.read((char*)&gui, sizeof(GUI));
+    this->setGUI(gui);*/
+    file2.read((char*)&this->menu, sizeof(MENU));
+    file2.read((char*)&this->spawnTimer, sizeof(float));
+    file2.read((char*)&this->spawnTimerMax, sizeof(float));
     file2.close();
 }
 

@@ -182,3 +182,10 @@ void SPACESHIP::render(sf::RenderTarget& target)
 {
     target.draw(this->sprite);
 }
+
+void SPACESHIP::initAfterLoad() {
+    this->initVariables();
+    this->initTexture();
+    this->initSprite();
+    this->anim.initAnim(&this->texture, this->imgCnt, this->switchTime);
+}
