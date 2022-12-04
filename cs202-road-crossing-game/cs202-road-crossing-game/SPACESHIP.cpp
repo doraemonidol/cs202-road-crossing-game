@@ -29,7 +29,7 @@ void SPACESHIP::initTexture()
     //Load a texture from file
     if (!this->texture.loadFromFile("Textures/player-anim.png")) {
         std::cout << "ERROR::SPACESHIP::INITTEXTURE::Could not load texture file."
-                  << "\n";
+            << "\n";
     }
 }
 
@@ -37,7 +37,6 @@ void SPACESHIP::initSprite()
 {
     //Set the texture to the sprite
     this->sprite.setTexture(this->texture);
-
     //Resize the sprite
     this->sprite.scale(2.0f, 2.0f);
 }
@@ -184,8 +183,6 @@ void SPACESHIP::render(sf::RenderTarget& target)
 }
 
 void SPACESHIP::initAfterLoad() {
-    this->initVariables();
     this->initTexture();
     this->initSprite();
-    this->anim.initAnim(&this->texture, this->imgCnt, this->switchTime);
 }

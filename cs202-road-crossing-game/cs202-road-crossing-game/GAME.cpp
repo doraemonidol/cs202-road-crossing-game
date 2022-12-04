@@ -246,12 +246,12 @@ void GAME::saveGame() {
     file.write((char*)&isPause, sizeof(bool));
     file.write((char*)&level, sizeof(unsigned));
     file.write((char*)&scene, sizeof(scene));
-    file.write((char*)&deltaTime,sizeof(float));
     file.write((char*)&clock, sizeof(sf::Clock));
-    file.write((char*)player, sizeof(SPACESHIP));
+    sf::Vector2f pos = this->player->getPos();
+    file.write((char*)&pos, sizeof(sf::Vector2f));
     /*file.write((char*)gui, sizeof(GUI));*/
-    file.write((char*)&menu, sizeof(MENU));
     file.write((char*)&spawnTimer, sizeof(float));
+
     file.write((char*)&spawnTimerMax, sizeof(float));
     file.close();
 }
@@ -272,16 +272,10 @@ void GAME::loadGame() {
     file2.read((char*)&this->isPause, sizeof(bool));
     file2.read((char*)&this->level, sizeof(unsigned));
     file2.read((char*)&this->scene, sizeof(unsigned));
-    file2.read((char*)&this->deltaTime, sizeof(float));
     file2.read((char*)&this->clock, sizeof(sf::Clock));
-    SPACESHIP player;
-    file2.read((char*)&player, sizeof(SPACESHIP));
-    this->setSPACESHIP(player);
-    this->player->initAfterLoad();
-    /*GUI gui;
-    file2.read((char*)&gui, sizeof(GUI));
-    this->setGUI(gui);*/
-    file2.read((char*)&this->menu, sizeof(MENU));
+    sf::Vector2f pos;
+    file2.read((char*)&pos, sizeof(sf::Vector2f));
+    this->player->setPosition(pos);
     file2.read((char*)&this->spawnTimer, sizeof(float));
     file2.read((char*)&this->spawnTimerMax, sizeof(float));
     file2.close();
