@@ -25,7 +25,7 @@ public:
 		target.draw(this->sprite);
 	}
 	void update() {
-		this->sprite.move(1.0f * dir, 0);
+		this->sprite.move(4.0f * dir, 0);
 	}
 	const sf::Vector2f& getPos() const
 	{
