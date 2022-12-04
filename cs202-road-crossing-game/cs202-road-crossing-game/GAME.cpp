@@ -36,10 +36,43 @@ void GAME::initPlayer()
     this->player = new SPACESHIP();
 }
 
+template <class T>void swap(T* a, T* b) {
+    T* c = a;
+    a = b;
+    b = c;
+}
+
 void GAME::initEnemies()
 {
     this->spawnTimerMax = 50.f;
     this->spawnTimer = this->spawnTimerMax;
+    monsters.resize(0);
+    int size = 0;
+    int height = SCREEN_HEIGHT - 150;
+    int minHeight = -1*(this->gui->getBGSize().y - SCREEN_HEIGHT);
+    std::cout << SCREEN_HEIGHT;
+    while(height>=minHeight) {
+        int type = rand() % 4 + 1;
+        std::cout << type << std::endl;
+        int dir = rand() % 2;
+        dir = dir == 1 ? 1 : -1;
+        int pos = dir == 1 ? -100 : this->window->getSize().x + 160;
+        for (int i = 0; i < 100; i++) {
+            if (type == 1) {
+                monsters.push_back(new BIG_MONSTER(dir, pos, height));
+            }
+            else if (type == 2) {
+                monsters.push_back(new SMALL_MONSTER(dir, pos, height));
+            }
+            else if (type == 2) {
+                obstacles.push_back(new UFO(dir, pos, height));
+            }
+            else{
+                obstacles.push_back(new METEOR(dir, pos, height));
+            }
+        }
+        height -= 100;
+    }
 }
 
 void GAME::initGUI() {
@@ -55,25 +88,25 @@ void GAME::initMenu() {
 GAME::GAME()
 {
     this->isPause = false;
-
+    this->initWindow();
+    
     this->initPlayer();
-    this->initEnemies();
+    
 
     this->initView();
-    this->initWindow();
     this->initTextures();
     this->initSystems();
     this->initGUI();
     this->initMenu();
-    this->loadGame();
-
+    /*this->loadGame();*/
+    this->initEnemies();
 }
 
 GAME::GAME(const int a) {
     this->isPause = false;
 
     this->initPlayer();
-    this->initEnemies();
+    
 
     this->initView();
     this->initWindow();
@@ -81,7 +114,7 @@ GAME::GAME(const int a) {
     this->initSystems();
     this->initGUI();
     this->initMenu();
-    this->loadGame();
+    /*this->loadGame();*/
 }
 
 GAME::~GAME()
@@ -93,6 +126,11 @@ GAME::~GAME()
     for (auto& i : this->textures) {
         delete i.second;
     }
+
+    for (MONSTER* monster : this->monsters) {
+        delete monster;
+    }
+    monsters.clear();
 }
 
 //Functions
@@ -106,7 +144,7 @@ void GAME::run()
                 this->update();
         }
         this->render();
-        this->saveGame();
+        /*this->saveGame();*/
     }
 }
 
@@ -202,7 +240,30 @@ void GAME::render()
 
         // Draw all the stuffs
         this->player->render(*this->window);
-
+        for (int i = 0; i < monsters.size(); i++) {
+            if (i==0 || i%100 ==0) {
+                monsters[i]->update();
+                monsters[i]->render(*this->window);
+            }
+            else {
+                if (monsters[i]->getPos().x - monsters[i - 1]->getPos().x < -150 or monsters[i]->getPos().x - monsters[i - 1]->getPos().x > 150) {
+                    monsters[i]->update();
+                }
+                monsters[i]->render(*this->window);
+            }
+        }
+        for (int i = 0; i < obstacles.size(); i++) {
+            if (i == 0 || i % 100 == 0) {
+                obstacles[i]->update();
+                obstacles[i]->render(*this->window);
+            }
+            else {
+                if (obstacles[i]->getPos().x - obstacles[i - 1]->getPos().x < -150 or obstacles[i]->getPos().x - obstacles[i - 1]->getPos().x > 150) {
+                    obstacles[i]->update();
+                }
+                obstacles[i]->render(*this->window);
+            }
+        }
         // Game pause screen:
         if (this->isPause) {
             this->renderGamePause();
@@ -232,7 +293,7 @@ void GAME::renderGamePause() {
     this->window->draw(pauseText);
 }
 
-template <class T>void swap(T* a, T* b);
+
 
 void GAME::saveGame() {
     std::ofstream file;
@@ -332,10 +393,4 @@ void GAME::setView(sf::View view) {
 
 void GAME::setIsPause(bool isPause) {
     this->isPause = isPause;
-}
-
-template <class T>void swap(T* a, T*b) {
-    T* c = a;
-    a = b;
-    b = c;
 }

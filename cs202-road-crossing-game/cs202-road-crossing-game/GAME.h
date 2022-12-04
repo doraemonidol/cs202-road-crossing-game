@@ -35,8 +35,8 @@ private:
     //Enemies
     float spawnTimer;
     float spawnTimerMax;
-    std::vector<SPACESHIP*> spaceship;
-    std::vector<OBSTACLE*> obstacle;
+    std::vector<MONSTER*> monsters;
+    std::vector<OBSTACLE*> obstacles;
 
     //Private functions
     void initWindow();
