@@ -44,8 +44,9 @@ BUTTON::BUTTON(std::string t, std::string fon, int charSize, sf::Vector2f size, 
     state = DEFAULT;
 }
 
-BUTTON::BUTTON(std::string t, std::string fon, int charSize, sf::Vector2f size, std::string activeTexture, sf::Color textColor[btnStateCnt])
+BUTTON::BUTTON(std::string t, std::string fon, int charSize, std::string activeTexture, sf::Color textColor[btnStateCnt], int index)
 {
+    this->index = index;
     for (int i = 0; i < btnStateCnt; i++)
         bgColor[i] = sf::Color::Transparent;
     for (int i = 0; i < btnStateCnt; i++) {
@@ -55,16 +56,21 @@ BUTTON::BUTTON(std::string t, std::string fon, int charSize, sf::Vector2f size, 
     text.setString(t);
     text.setColor(textColor[DEFAULT]);
     text.setCharacterSize(charSize);
-    button.setSize(size);
     this->setFont(fon);
 
+    sf::Vector2f size = sf::Vector2f(text.getGlobalBounds().width + 80.f, text.getGlobalBounds().height + 20.f);
+    button.setSize(size);
     button.setFillColor(bgColor[DEFAULT]);
+    
     //button.setOutlineColor(sf::Color::White);
     //button.setOutlineThickness(2);
     if (!this->texture[ACTIVE].loadFromFile("Textures/" + activeTexture)) {
         std::cout << "ERROR::BUTTON::BUTTON5::ACTIVE::Could not load texture file.\n";
     }
     activeSprite.setTexture(texture[ACTIVE]);
+    button.setOrigin(button.getGlobalBounds().width / 2, button.getGlobalBounds().height / 2);
+    text.setOrigin(button.getGlobalBounds().width / 2, button.getGlobalBounds().height / 2);
+    //activeSprite.setOrigin(button.getGlobalBounds().width / 2, button.getGlobalBounds().height / 2);
     type = 5;
     state = DEFAULT;
 }
@@ -94,8 +100,17 @@ void BUTTON::setPosition(sf::Vector2f pos)
     float xPos = (pos.x + button.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2);
     float yPos = (pos.y + button.getGlobalBounds().height / 2) - (text.getGlobalBounds().height / 2);
     text.setPosition(xPos, yPos);
+    //activeSprite.setPosition(xPos, yPos);
 }
 
+void BUTTON::movePosition(sf::Vector2f pos)
+{
+    button.setPosition(button.getPosition().x + pos.x, button.getPosition().y + pos.y);
+
+    float xPos = (button.getPosition().x + button.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2);
+    float yPos = (button.getPosition().y + button.getGlobalBounds().height / 2) - (text.getGlobalBounds().height / 2);
+    text.setPosition(xPos, yPos);
+}
 void BUTTON::setTexture(std::string hoverT, std::string activeT, std::string defaultT)
 {
     //Load a texture from file
@@ -130,7 +145,6 @@ void BUTTON::drawTo(sf::RenderWindow* window)
                 break;
             }
             break;
-        
     }
 }
 
@@ -139,13 +153,8 @@ bool BUTTON::isMouseOver(sf::RenderWindow* window)
     float mouseX = sf::Mouse::getPosition(*window).x;
     float mouseY = sf::Mouse::getPosition(*window).y;
 
-    float btnPosX = button.getPosition().x;
-    float btnPosY = button.getPosition().y;
-
-    float btnPosWidth = button.getPosition().x + button.getGlobalBounds().width;
-    float btnPosHeight = button.getPosition().y + button.getGlobalBounds().height;
-
-    if (mouseX < btnPosWidth && mouseX > btnPosX && mouseY < btnPosHeight && mouseY > btnPosY) {
+    if (mouseX < button.getPosition().x + button.getGlobalBounds().width / 2 && mouseX > button.getPosition().x - button.getGlobalBounds().width / 2 && 
+        mouseY < button.getPosition().y + button.getGlobalBounds().height / 2 && mouseY > button.getPosition().y - button.getGlobalBounds().height / 2) {
         return true;
     }
     return false;
@@ -171,7 +180,7 @@ void BUTTON::onClick() {
     case 5: {
         text.setColor(textColor[ACTIVE]);
 
-        this->activeSprite.setPosition(sf::Vector2f(button.getPosition().x, button.getPosition().y + (button.getGlobalBounds().height - activeSprite.getGlobalBounds().height) / 2));
+        this->activeSprite.setPosition(sf::Vector2f(button.getPosition().x - button.getGlobalBounds().width / 2, button.getPosition().y - activeSprite.getGlobalBounds().height / 2));
       //  this->playerHp[i].setScale(2.f, 2.f);
         break;
     }
@@ -184,7 +193,7 @@ void BUTTON::onHover() {
     case 5: {
         text.setColor(textColor[ACTIVE]);
 
-        this->activeSprite.setPosition(sf::Vector2f(button.getPosition().x, button.getPosition().y + (button.getGlobalBounds().height - activeSprite.getGlobalBounds().height) / 2));
+        this->activeSprite.setPosition(sf::Vector2f(button.getPosition().x - button.getGlobalBounds().width / 2, button.getPosition().y - activeSprite.getGlobalBounds().height / 2));
         //  this->playerHp[i].setScale(2.f, 2.f);
         break;
     }
@@ -206,4 +215,10 @@ int BUTTON::update(sf::RenderWindow* window, sf::Event e)
         return HOVER;
     }
     return DEFAULT;
+}
+sf::FloatRect BUTTON::getSize() {
+    return button.getGlobalBounds();
+}
+int BUTTON::getIndex() {
+    return index;
 }

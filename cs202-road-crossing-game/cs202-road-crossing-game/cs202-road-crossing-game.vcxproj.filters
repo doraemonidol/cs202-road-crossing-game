@@ -54,6 +54,9 @@
     <ClCompile Include="UTILS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OPTIONS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SPACESHIP.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UTILS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OPTIONS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,3 +1,4 @@
+#include "OPTIONS.h"
 #include "MENU.h"
 #include "UTILS.h"
 #include "main.h"
@@ -9,16 +10,6 @@ MENU::MENU(float width, float height)
     if (!font.loadFromFile("Fonts/upheavtt.ttf")) {
         // handle error
     }
-
-    sf::Color color[] = { sf::Color::White, sf::Color(248, 208, 146), sf::Color(248, 208, 146) };
-    menu[0] = new BUTTON("Play", "PressStart2P-Regular.ttf", 21, sf::Vector2f(155.f, 40.f), "pointer.png", color);
-    menu[0]->setPosition(sf::Vector2f(323, 286));
-    menu[1] = new BUTTON("Options", "PressStart2P-Regular.ttf", 21, sf::Vector2f(205.f, 40.f), "pointer.png", color);
-    menu[1]->setPosition(sf::Vector2f(333-40, 332));
-    menu[2] = new BUTTON("Exit", "PressStart2P-Regular.ttf", 21, sf::Vector2f(155.f, 40.f), "pointer.png", color);
-    menu[2]->setPosition(sf::Vector2f(323, 378));
-
-    selectedItemIndex = 0;
     if (!this->worldBackgroundTex.loadFromFile("Textures/Menu-BG.png")) {
     //if (!this->worldBackgroundTex.loadFromFile("Textures/menu-bg-sample.png")) {
         std::cout << "ERROR::MENU::COULD NOT LOAD BACKGROUND TEXTURE"
@@ -28,6 +19,9 @@ MENU::MENU(float width, float height)
         std::cout << "ERROR::MENU::COULD NOT LOAD TITLE TEXTURE"
                   << "\n";
     }
+    playBtn = new OPTIONS;
+    settingBtn = new OPTIONS;
+    mainMenu = new OPTIONS;
 }
 
 MENU::~MENU()
@@ -39,64 +33,60 @@ void MENU::init()
     this->worldBackground.setTexture(this->worldBackgroundTex);
     this->title.setTexture(this->titleTex);
     this->title.setPosition(170, 85);
-    menu[selectedItemIndex]->onHover();
+    sf::Color color[] = { sf::Color::White, sf::Color(248, 208, 146), sf::Color(248, 208, 146) };
+    mainMenu->addButton("Play", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 1);
+    playBtn->addButton("New Game", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 2);
+    playBtn->addButton("Load Game", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 3);
+    playBtn->addButton("Back", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 4);
 
+    mainMenu->addButton("Setting", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 5);
+    settingBtn->addButton("Sound: ON", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 6);
+    settingBtn->addButton("Theme", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 7);
+    settingBtn->addButton("Back", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 8);
+
+    mainMenu->addButton("Exit", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 9);
+    this->mainMenu->tidyButtons(10);
+    this->mainMenu->setPos(sf::Vector2f(0, 80));
+    this->playBtn->tidyButtons(10);
+    this->playBtn->setPos(sf::Vector2f(0, 80));
+    this->settingBtn->tidyButtons(10);
+    this->settingBtn->setPos(sf::Vector2f(0, 80));
+    curState = mainMenu;
 }
 
 void MENU::draw(sf::RenderWindow* window)
 {
     window->draw(this->worldBackground);
     window->draw(this->title);
-    for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) {
-            this->menu[i]->drawTo(window);
-    }
-}
-
-void MENU::MoveUp()
-{
-    if (selectedItemIndex - 1 >= 0) {
-        menu[selectedItemIndex]->onDefault();
-        selectedItemIndex--;
-        menu[selectedItemIndex]->onHover();
-    }
-}
-
-void MENU::MoveDown()
-{
-    if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS) {
-        menu[selectedItemIndex]->onDefault();
-        selectedItemIndex++;
-        menu[selectedItemIndex]->onHover();
-    }
+    curState->draw(window);
 }
 
 int MENU::update(sf::RenderWindow* window, sf::Event e) {
-    int ret;
-    if (e.type == sf::Event::KeyPressed) {
-        switch (e.key.code) {
-        case sf::Keyboard::Up:
-            MoveUp();
-            break;
-        case sf::Keyboard::Down:
-            MoveDown();
-            break;
-        default:
-            break;
-        }
+    int pressed = curState->update(window, e);
+    switch (pressed) {
+    case 1:
+        curState = playBtn;
+        break;
+    case 2:
+        return INGAME;
+    case 3:
+        break;
+    case 4:
+        std::cout << "back ";
+        curState = mainMenu;
+        break;
+    case 5:
+        curState = settingBtn;
+        break;
+    case 6:
+        break;
+    case 7:
+        break;
+    case 8:
+        curState = mainMenu;
+        break;
+    case 9:
+        return 3;
     }
-    for (int i = 0; i < MAX_NUMBER_OF_ITEMS; i++) {
-        int state = this->menu[i]->update(window, e);
-        switch (state) {
-        case ACTIVE:
-            return i;
-        case HOVER:
-            if (i != selectedItemIndex) {
-                menu[selectedItemIndex]->onDefault();
-                selectedItemIndex = i;
-            }
-            break;
-        default:
-            break;
-        }
-    }
+    return -1;
 }

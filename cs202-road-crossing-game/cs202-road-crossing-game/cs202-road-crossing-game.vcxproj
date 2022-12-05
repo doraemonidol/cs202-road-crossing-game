@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="OPTIONS.cpp" />
     <ClCompile Include="UTILS.cpp" />
     <ClCompile Include="ANIMATION.cpp" />
     <ClCompile Include="BIG_MONSTER.cpp" />
@@ -34,6 +35,7 @@
     <ClCompile Include="UFO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OPTIONS.h" />
     <ClInclude Include="UTILS.h" />
     <ClInclude Include="ANIMATION.h" />
     <ClInclude Include="BIG_MONSTER.h" />
@@ -138,6 +140,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\External\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

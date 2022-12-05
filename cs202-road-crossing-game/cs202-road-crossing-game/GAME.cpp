@@ -155,9 +155,19 @@ void GAME::updatePollEvents()
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
         switch (scene) {
-        case MENUSCENE:
-            menu.update(this->window, e);
+        case MENUSCENE: {
+            int option = menu.update(this->window, e);
+            std::cout << option << " ";
+            switch (option) {
+            case INGAME:
+                scene = INGAME;
+                break;
+            case 3:
+                exit(0);
+                break;
+            }
             break;
+        }
         case INGAME:
             if (e.type == sf::Event::KeyPressed) {
                 switch (e.key.code) {
@@ -210,7 +220,7 @@ void GAME::updateView() {
 
 void GAME::update()
 {
-   /* std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";*/
+    //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
     // this->updateInput();
 
     this->player->update(this->gui->getBGSize().y, deltaTime);

@@ -41,3 +41,9 @@ enum Scene {
     PAUSEGAME,
     sceneCnt
 };
+
+enum Alignment {
+    ALIGN_CENTER,
+    ALIGN_LEFT,
+    ALIGN_RIGHT
+};
