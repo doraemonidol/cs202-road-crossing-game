@@ -18,4 +18,10 @@ public:
 	virtual void render(sf::RenderTarget& target) = 0;
 	virtual void update() = 0;
 	virtual const sf::Vector2f& getPos() const = 0;
+	int getDir() {
+		return dir;
+	}
+	float getPosition() {
+		return this->sprite.getPosition().x;
+	}
 };

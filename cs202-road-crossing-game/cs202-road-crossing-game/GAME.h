@@ -35,6 +35,7 @@ private:
     //Enemies
     float spawnTimer;
     float spawnTimerMax;
+    sf::Time spawnTimeCheck;
     std::vector<MONSTER*> monsters;
     std::vector<OBSTACLE*> obstacles;
 
@@ -71,7 +72,7 @@ public:
     void renderGamePause();
     void saveGame();
     void loadGame();
-
+    void removeOutOfBoundEnemies();
     //set
     void setSPACESHIP(SPACESHIP player);
     void setGUI(GUI gui);

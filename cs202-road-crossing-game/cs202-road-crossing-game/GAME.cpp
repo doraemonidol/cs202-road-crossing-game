@@ -46,33 +46,42 @@ void GAME::initEnemies()
 {
     this->spawnTimerMax = 50.f;
     this->spawnTimer = this->spawnTimerMax;
+    spawnTimeCheck += clock.getElapsedTime();
+    if (spawnTimeCheck.asSeconds() < 1.0f) {
+        return;
+    }
+    spawnTimeCheck = sf::seconds(0);
     monsters.resize(0);
     int size = 0;
     int height = SCREEN_HEIGHT - 150;
     int minHeight = -1*(this->gui->getBGSize().y - SCREEN_HEIGHT);
     std::cout << SCREEN_HEIGHT;
     while(height>=minHeight) {
+        int isSpawn = rand() % 2;
+        if (isSpawn == 0) {
+            height -= 100;
+            continue;
+        }
         int type = rand() % 4 + 1;
         std::cout << type << std::endl;
         int dir = rand() % 2;
         dir = dir == 1 ? 1 : -1;
         int pos = dir == 1 ? -100 : this->window->getSize().x + 160;
-        for (int i = 0; i < 100; i++) {
-            if (type == 1) {
-                monsters.push_back(new BIG_MONSTER(dir, pos, height));
-            }
-            else if (type == 2) {
-                monsters.push_back(new SMALL_MONSTER(dir, pos, height));
-            }
-            else if (type == 2) {
-                obstacles.push_back(new UFO(dir, pos, height));
-            }
-            else{
-                obstacles.push_back(new METEOR(dir, pos, height));
-            }
+        if (type == 1) {
+            monsters.push_back(new BIG_MONSTER(dir, pos, height));
+        }
+        else if (type == 2) {
+            monsters.push_back(new SMALL_MONSTER(dir, pos, height));
+        }
+        else if (type == 2) {
+            obstacles.push_back(new UFO(dir, pos, height));
+        }
+        else{
+            obstacles.push_back(new METEOR(dir, pos, height));
         }
         height -= 100;
     }
+    removeOutOfBoundEnemies();
 }
 
 void GAME::initGUI() {
@@ -99,7 +108,9 @@ GAME::GAME()
     this->initGUI();
     this->initMenu();
     /*this->loadGame();*/
+    this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
+   
 }
 
 GAME::GAME(const int a) {
@@ -144,6 +155,7 @@ void GAME::run()
                 this->update();
         }
         this->render();
+        this->initEnemies();
         /*this->saveGame();*/
     }
 }
@@ -251,28 +263,12 @@ void GAME::render()
         // Draw all the stuffs
         this->player->render(*this->window);
         for (int i = 0; i < monsters.size(); i++) {
-            if (i==0 || i%100 ==0) {
                 monsters[i]->update();
                 monsters[i]->render(*this->window);
-            }
-            else {
-                if (monsters[i]->getPos().x - monsters[i - 1]->getPos().x < -150 or monsters[i]->getPos().x - monsters[i - 1]->getPos().x > 150) {
-                    monsters[i]->update();
-                }
-                monsters[i]->render(*this->window);
-            }
         }
         for (int i = 0; i < obstacles.size(); i++) {
-            if (i == 0 || i % 100 == 0) {
                 obstacles[i]->update();
                 obstacles[i]->render(*this->window);
-            }
-            else {
-                if (obstacles[i]->getPos().x - obstacles[i - 1]->getPos().x < -150 or obstacles[i]->getPos().x - obstacles[i - 1]->getPos().x > 150) {
-                    obstacles[i]->update();
-                }
-                obstacles[i]->render(*this->window);
-            }
         }
         // Game pause screen:
         if (this->isPause) {
@@ -403,4 +399,14 @@ void GAME::setView(sf::View view) {
 
 void GAME::setIsPause(bool isPause) {
     this->isPause = isPause;
+}
+
+void GAME::removeOutOfBoundEnemies() {
+    /*for (int i = 0; i < monsters.size(); i++) {
+        if (monsters[i]->getDir() == 1 and monsters[i]->getPosition() > this->window->getSize().x + 100) {
+            delete monsters[i];
+            monsters.remove(monsters[i]);
+            i--;
+        }
+    }*/
 }
