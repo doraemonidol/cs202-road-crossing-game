@@ -47,10 +47,13 @@ void MENU::init()
     mainMenu->addButton("Exit", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 9);
     this->mainMenu->tidyButtons(10);
     this->mainMenu->setPos(sf::Vector2f(0, 80));
+    this->mainMenu->init();
     this->playBtn->tidyButtons(10);
     this->playBtn->setPos(sf::Vector2f(0, 80));
+    this->playBtn->init();
     this->settingBtn->tidyButtons(10);
     this->settingBtn->setPos(sf::Vector2f(0, 80));
+    this->settingBtn->init();
     curState = mainMenu;
 }
 

@@ -63,6 +63,9 @@ int OPTIONS::update(sf::RenderWindow* window, sf::Event e)
         case sf::Keyboard::Down:
             MoveDown();
             break;
+        case sf::Keyboard::Enter:
+            return this->button[selectedItemIndex]->getIndex();
+            break;
         default:
             break;
         }

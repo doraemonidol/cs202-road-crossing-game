@@ -28,7 +28,7 @@ void GAME::initTextures()
 void GAME::initSystems()
 {
     this->level = 1;
-    this->scene = INGAME;
+    this->scene = MENUSCENE;
 }
 
 void GAME::initPlayer()
