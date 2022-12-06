@@ -37,6 +37,7 @@ public:
     const sf::FloatRect getBounds() const;
     const int& getHp() const;
     const int& getHpMax() const;
+    const sf::Sprite getSprite();
 
     //Modifiers
     void setPosition(const sf::Vector2f pos);

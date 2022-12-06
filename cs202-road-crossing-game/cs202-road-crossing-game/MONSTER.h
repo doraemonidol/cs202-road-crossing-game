@@ -24,4 +24,7 @@ public:
 	float getPosition() {
 		return this->sprite.getPosition().x;
 	}
+	sf::Sprite getSprite() {
+		return sprite;
+	}
 };

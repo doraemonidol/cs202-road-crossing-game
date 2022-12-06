@@ -51,7 +51,6 @@ void GAME::initEnemies()
         return;
     }
     spawnTimeCheck = sf::seconds(0);
-    monsters.resize(0);
     int size = 0;
     int height = SCREEN_HEIGHT - 150;
     int minHeight = -1*(this->gui->getBGSize().y - SCREEN_HEIGHT);
@@ -81,7 +80,7 @@ void GAME::initEnemies()
         }
         height -= 100;
     }
-    removeOutOfBoundEnemies();
+   /* removeOutOfBoundEnemies();*/
 }
 
 void GAME::initGUI() {
@@ -155,7 +154,10 @@ void GAME::run()
                 this->update();
         }
         this->render();
-        this->initEnemies();
+        this->checkCollision();
+        if (scene == INGAME) {
+            this->initEnemies();
+        }
         /*this->saveGame();*/
     }
 }
@@ -190,16 +192,17 @@ void GAME::updatePollEvents()
                         this->isPause = false;
                     }
                     break;
-                // case sf::Keyboard::M :
-                //     //Back to menu
-                //     break;
+                 case sf::Keyboard::M :
+                     scene = MENUSCENE;
+                     break;
                 case sf::Keyboard::S:
                     if (this->isPause) {
                     }
                     break;
-                // case sf::Keyboard::R :
-                //     //replay:
-                //     break;
+                 case sf::Keyboard::R :
+                     /*this->resetGame();
+                     scene = MENUSCENE;*/
+                     break;
                 default:
                     break;
                 }
@@ -409,4 +412,29 @@ void GAME::removeOutOfBoundEnemies() {
             i--;
         }
     }*/
+}
+
+
+void GAME::checkCollision() {
+    for (MONSTER* monster : this->monsters) {
+        if (monster->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
+            this->resetGame();
+        }
+    }
+    for (OBSTACLE* obstacle : this->obstacles) {
+        if (obstacle->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
+            this->resetGame();
+        }
+    }
+}
+
+//reset game
+void GAME::resetGame() {
+    level = 1;
+    scene = MENUSCENE;
+    delete this->player;
+    this->initPlayer();
+    this->spawnTimeCheck = clock.getElapsedTime();
+    this->initEnemies();
+
 }

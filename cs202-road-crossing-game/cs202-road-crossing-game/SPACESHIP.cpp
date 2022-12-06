@@ -186,3 +186,7 @@ void SPACESHIP::initAfterLoad() {
     this->initTexture();
     this->initSprite();
 }
+
+const sf::Sprite SPACESHIP::getSprite() {
+    return sprite;
+}

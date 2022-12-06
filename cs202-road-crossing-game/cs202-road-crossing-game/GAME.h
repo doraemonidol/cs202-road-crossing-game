@@ -73,6 +73,8 @@ public:
     void saveGame();
     void loadGame();
     void removeOutOfBoundEnemies();
+    void resetGame();
+    void checkCollision();
     //set
     void setSPACESHIP(SPACESHIP player);
     void setGUI(GUI gui);
