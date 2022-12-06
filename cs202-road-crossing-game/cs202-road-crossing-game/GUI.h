@@ -36,6 +36,7 @@ public:
 
     float getDisplacement();
     sf::Vector2u getBGSize();
+    sf::Sprite getSprite();
 
     //Functions
     void updateHealth(int health);

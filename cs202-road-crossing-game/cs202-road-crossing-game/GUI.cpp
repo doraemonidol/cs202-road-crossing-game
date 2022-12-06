@@ -161,3 +161,7 @@ void GUI::render()
         this->window->draw(this->playerHp[i]);
     }
 }
+
+sf::Sprite GUI::getSprite() {
+    return this->worldBackground;
+}

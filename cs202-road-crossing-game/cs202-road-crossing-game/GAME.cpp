@@ -418,13 +418,20 @@ void GAME::removeOutOfBoundEnemies() {
 void GAME::checkCollision() {
     for (MONSTER* monster : this->monsters) {
         if (monster->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
+            std::cout << "Lost case!" << std::endl;
             this->resetGame();
         }
     }
     for (OBSTACLE* obstacle : this->obstacles) {
         if (obstacle->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
+            std::cout << "Lost case!" << std::endl;
             this->resetGame();
         }
+    }
+    int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
+    if (this->player->getPos().y == minHeight) {
+        std::cout << "Win case!" << std::endl;
+        this->resetGame();
     }
 }
 
