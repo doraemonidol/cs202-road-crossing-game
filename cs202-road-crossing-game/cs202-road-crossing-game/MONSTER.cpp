@@ -7,3 +7,11 @@
 #include "main.h"
 #include "SPACESHIP.h"
 #include "GAME.h"
+
+int MONSTER::getHP(){
+	return HP;
+}
+
+void MONSTER::recievedDmg(int dmg){
+	HP = std::max(0, HP - dmg);
+}

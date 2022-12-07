@@ -8,6 +8,7 @@ protected:
 	sf::Texture texture;
 	int speedX = 100;
 	int dir;
+	int HP;
 public:
 	OBSTACLE() {
 
@@ -21,4 +22,6 @@ public:
 	sf::Sprite getSprite() {
 		return sprite;
 	}
+	int getHP();
+	void recievedDmg(int dmg);
 };

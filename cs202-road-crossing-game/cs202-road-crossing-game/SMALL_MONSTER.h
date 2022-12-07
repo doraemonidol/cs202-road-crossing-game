@@ -9,6 +9,7 @@ public:
 		this->sprite.scale(1.3f, 1.3f);
 		this->sprite.setPosition(-100, 100);
 		dir = 0;
+		HP = 25;
 	}
 	SMALL_MONSTER(int dir, int pos, int height) {
 		if (!this->texture.loadFromFile("Textures/obstacle-3.png")) {
@@ -18,6 +19,7 @@ public:
 		this->sprite.scale(1.3f, 1.3f);
 		this->sprite.setPosition(pos, height);
 		this->dir = dir;
+		HP = 25;
 	}
 	void render(sf::RenderTarget& target) {
 
