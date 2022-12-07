@@ -47,3 +47,11 @@ enum Alignment {
     ALIGN_LEFT,
     ALIGN_RIGHT
 };
+
+enum pauseMenuBtn {
+    BACKTOGAME,
+    RESTART,
+    SAVEGAME,
+    LEADERBOARD,
+    BACKTOMENU
+};

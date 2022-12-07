@@ -58,7 +58,7 @@ void GAME::initEnemies()
     while(height>=minHeight) {
         int isSpawn = rand() % 2;
         if (isSpawn == 0) {
-            height -= 100;
+            height -= 150;
             continue;
         }
         int type = rand() % 4 + 1;
@@ -72,13 +72,13 @@ void GAME::initEnemies()
         else if (type == 2) {
             monsters.push_back(new SMALL_MONSTER(dir, pos, height));
         }
-        else if (type == 2) {
+        else if (type == 3) {
             obstacles.push_back(new UFO(dir, pos, height));
         }
         else{
             obstacles.push_back(new METEOR(dir, pos, height));
         }
-        height -= 100;
+        height -= 150;
     }
    /* removeOutOfBoundEnemies();*/
 }
@@ -99,7 +99,6 @@ GAME::GAME()
     this->initWindow();
     
     this->initPlayer();
-    
 
     this->initView();
     this->initTextures();
@@ -116,7 +115,6 @@ GAME::GAME(const int a) {
     this->isPause = false;
 
     this->initPlayer();
-    
 
     this->initView();
     this->initWindow();
@@ -155,7 +153,7 @@ void GAME::run()
         }
         this->render();
         this->checkCollision();
-        if (scene == INGAME) {
+        if (scene == INGAME && isPause==false) {
             this->initEnemies();
         }
         /*this->saveGame();*/
@@ -168,10 +166,38 @@ void GAME::updatePollEvents()
     while (this->window->pollEvent(e)) {
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
+        if (this->isPause) {
+            int option = this->gui->updatePauseMenu(e);
+            if (option != -1)
+                this->gui->closePauseMenu();
+            switch (option) {
+            case BACKTOGAME:
+                this->isPause = false;
+                scene = INGAME;
+                break;
+            case BACKTOMENU:
+                this->isPause = false;
+                view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+                this->window->setView(view);
+                scene = MENUSCENE;
+                break;
+            case RESTART:
+                this->resetGame();
+                this->isPause = false;
+                scene = INGAME;
+                break;
+            case LEADERBOARD:
+                break;
+            case SAVEGAME:
+                saveGame();
+                break;
+            }
+            continue;
+        }
         switch (scene) {
         case MENUSCENE: {
             int option = menu.update(this->window, e);
-            std::cout << option << " ";
+            //std::cout << option << " ";
             switch (option) {
             case INGAME:
                 scene = INGAME;
@@ -187,6 +213,7 @@ void GAME::updatePollEvents()
                 switch (e.key.code) {
                 case sf::Keyboard::Escape:
                     if (this->isPause == false) {
+                        this->gui->initPauseMenu();
                         this->isPause = true;
                     } else {
                         this->isPause = false;
@@ -235,16 +262,21 @@ void GAME::updateView() {
 
 void GAME::update()
 {
-    //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
-    // this->updateInput();
+    switch (scene) {
+    case INGAME:
+        std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
+        // this->updateInput();
+        if (this->isPause)
+            return;
+        this->player->update(this->gui->getBGSize().y, deltaTime);
 
-    this->player->update(this->gui->getBGSize().y, deltaTime);
+        this->gui->update(this->level);
 
-    this->gui->update(this->level);
+        this->updateWorld();
 
-    this->updateWorld();
-
-    this->updateView();
+        this->updateView();
+        break;
+    }
 }
 
 void GAME::renderWorld()
@@ -266,16 +298,18 @@ void GAME::render()
         // Draw all the stuffs
         this->player->render(*this->window);
         for (int i = 0; i < monsters.size(); i++) {
+            if (!this->isPause)
                 monsters[i]->update();
                 monsters[i]->render(*this->window);
         }
         for (int i = 0; i < obstacles.size(); i++) {
+            if (!this->isPause)
                 obstacles[i]->update();
                 obstacles[i]->render(*this->window);
         }
         // Game pause screen:
         if (this->isPause) {
-            this->renderGamePause();
+            this->gui->renderPauseMenu();
         }
 
         // Game over screen
@@ -286,22 +320,6 @@ void GAME::render()
 
     this->window->display();
 }
-
-void GAME::renderGamePause() {
-    //Load font
-    sf::Font font;
-    if (!font.loadFromFile("Fonts/PixellettersFull.ttf"))
-        std::cout << "ERROR::GAME::Failed to load font"
-        << "\n";
-    sf::Text pauseText;
-    pauseText.setFont(font);
-    pauseText.setCharacterSize(30);
-    pauseText.setFillColor(sf::Color::White);
-    pauseText.setString("Press S to save game\nPress M to go back to menu\nPress Escape to continue\nPress H to view highscore\nPress R to replay");
-    pauseText.setPosition(this->window->getSize().x/2.0f - 130.0f, this->window->getSize().y/2.0f - 70.0f);
-    this->window->draw(pauseText);
-}
-
 
 
 void GAME::saveGame() {
@@ -416,6 +434,7 @@ void GAME::removeOutOfBoundEnemies() {
 
 
 void GAME::checkCollision() {
+    //return;
     for (MONSTER* monster : this->monsters) {
         if (monster->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
             std::cout << "Lost case!" << std::endl;
@@ -439,9 +458,12 @@ void GAME::checkCollision() {
 void GAME::resetGame() {
     level = 1;
     scene = MENUSCENE;
+    view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+    this->window->setView(view);
     delete this->player;
     this->initPlayer();
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
+    this->gui->initPauseMenu();
 
 }

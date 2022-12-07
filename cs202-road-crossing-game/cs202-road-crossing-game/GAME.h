@@ -4,6 +4,7 @@
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 enum Scene;
+enum pauseMenuBtn;
 
 class GUI;
 
@@ -69,7 +70,6 @@ public:
     void pauseGame();
     void renderWorld();
     void render();
-    void renderGamePause();
     void saveGame();
     void loadGame();
     void removeOutOfBoundEnemies();

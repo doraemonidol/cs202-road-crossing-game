@@ -15,6 +15,7 @@ public:
     void setTextColor(sf::Color color);
     void setPosition(sf::Vector2f pos);
     void movePosition(sf::Vector2f pos);
+    void updateDisplacement(sf::Vector2f pos);
     void setTexture(std::string hoverT, std::string activeT, std::string defaultT);
     void drawTo(sf::RenderWindow* window);
     bool isMouseOver(sf::RenderWindow* window);
@@ -34,6 +35,7 @@ private:
     sf::Font font;
     unsigned state;
     sf::Text text;
+    sf::Vector2f pos;
 };
 
 class UTILS {

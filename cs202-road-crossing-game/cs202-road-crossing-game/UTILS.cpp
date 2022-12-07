@@ -73,6 +73,7 @@ BUTTON::BUTTON(std::string t, std::string fon, int charSize, std::string activeT
     //activeSprite.setOrigin(button.getGlobalBounds().width / 2, button.getGlobalBounds().height / 2);
     type = 5;
     state = DEFAULT;
+    pos = sf::Vector2f(0, 0);
 }
 
 void BUTTON::setFont(std::string fon)
@@ -110,6 +111,10 @@ void BUTTON::movePosition(sf::Vector2f pos)
     float xPos = (button.getPosition().x + button.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2);
     float yPos = (button.getPosition().y + button.getGlobalBounds().height / 2) - (text.getGlobalBounds().height / 2);
     text.setPosition(xPos, yPos);
+}
+void BUTTON::updateDisplacement(sf::Vector2f pos)
+{
+    this->pos = pos;
 }
 void BUTTON::setTexture(std::string hoverT, std::string activeT, std::string defaultT)
 {
@@ -150,8 +155,9 @@ void BUTTON::drawTo(sf::RenderWindow* window)
 
 bool BUTTON::isMouseOver(sf::RenderWindow* window)
 {
-    float mouseX = sf::Mouse::getPosition(*window).x;
-    float mouseY = sf::Mouse::getPosition(*window).y;
+    float mouseX = sf::Mouse::getPosition(*window).x + pos.x;
+    float mouseY = sf::Mouse::getPosition(*window).y + pos.y;
+    std::cout << mouseX << " " << mouseY << "\n";
 
     if (mouseX < button.getPosition().x + button.getGlobalBounds().width / 2 && mouseX > button.getPosition().x - button.getGlobalBounds().width / 2 && 
         mouseY < button.getPosition().y + button.getGlobalBounds().height / 2 && mouseY > button.getPosition().y - button.getGlobalBounds().height / 2) {

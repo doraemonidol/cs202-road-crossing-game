@@ -19,7 +19,8 @@ public:
     void MoveDown();
     int GetPressedItem() { return selectedItemIndex; }
     int update(sf::RenderWindow* window, sf::Event e);
-    void setPos(sf::Vector2f pos);
+    void unpdateButtonDisplacement(sf::Vector2f pos);
+    void movePos(sf::Vector2f pos);
     void alignButtons(int type);
     void tidyButtons(float padding);
 

@@ -1,6 +1,8 @@
 #pragma once
 #include "SPACESHIP.h"
 #include "UTILS.h"
+#include "OPTIONS.h"
+enum pauseMenuBtn;
 
 class GUI {
 private:
@@ -20,9 +22,11 @@ private:
     sf::Text levelText;
     sf::Text pauseText;
     sf::Text gameOverText;
+    OPTIONS* pauseMenu;
 
     //PlayerGUI
     sf::Sprite playerHp[4];
+    float pauseMenuDisplacement;
 
     //Private functions
     void initTextures();
@@ -41,7 +45,13 @@ public:
     //Functions
     void updateHealth(int health);
     void updateLevel(int level);
+    void updateGamePause();
+    int updatePauseMenu(sf::Event e);
     void update(int level);
     void renderGameOver();
+    void renderGamePause();
+    void renderPauseMenu();
+    void initPauseMenu();
     void render();
+    void closePauseMenu();
 };

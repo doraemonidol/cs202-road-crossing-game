@@ -55,6 +55,7 @@ void OPTIONS::MoveDown()
 int OPTIONS::update(sf::RenderWindow* window, sf::Event e)
 {
     int ret;
+    std::cout << "in";
     if (e.type == sf::Event::KeyPressed) {
         switch (e.key.code) {
         case sf::Keyboard::Up:
@@ -88,7 +89,14 @@ int OPTIONS::update(sf::RenderWindow* window, sf::Event e)
     return -1;
 }
 
-void OPTIONS::setPos(sf::Vector2f pos) {
+void OPTIONS::unpdateButtonDisplacement(sf::Vector2f pos)
+{
+    for (int i = 0; i < button.size(); i++) {
+        this->button[i]->updateDisplacement(pos);
+    }
+}
+
+void OPTIONS::movePos(sf::Vector2f pos) {
     this->pos = pos;
     for (int i = 0; i < button.size(); i++) {
         this->button[i]->movePosition(pos);

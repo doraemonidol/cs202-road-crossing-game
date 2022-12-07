@@ -56,8 +56,18 @@ void GUI::initGUI()
     this->pauseText.setFillColor(sf::Color::White);
     this->pauseText.setString("Press Escape to pause the game");
     this->pauseText.setPosition(5.0f, this->window->getSize().y-20.0f);
-    
 
+    this->pauseMenu = new OPTIONS;
+    sf::Color color[] = { sf::Color::White, sf::Color(248, 208, 146), sf::Color(248, 208, 146) };
+    this->pauseMenu->addButton("Continue", "PressStart2P-Regular.ttf", 21, "pointer.png", color, BACKTOGAME);
+    this->pauseMenu->addButton("Restart", "PressStart2P-Regular.ttf", 21, "pointer.png", color, RESTART);
+    this->pauseMenu->addButton("Save game", "PressStart2P-Regular.ttf", 21, "pointer.png", color, SAVEGAME);
+    this->pauseMenu->addButton("Leaderboard", "PressStart2P-Regular.ttf", 21, "pointer.png", color, LEADERBOARD);
+    this->pauseMenu->addButton("Back to menu", "PressStart2P-Regular.ttf", 21, "pointer.png", color, BACKTOMENU);
+
+    this->pauseMenu->tidyButtons(10);
+   // this->pauseMenu->setPos(sf::Vector2f(0, 0));
+    this->pauseMenu->init();
 
     //Init player GUI
     this->updateHealth(this->player->getHpMax());
@@ -146,6 +156,7 @@ void GUI::update(int level)
 {
     this->updateLevel(level);
     this->updateHealth(this->player->getHp());
+    this->updateGamePause();
 }
 
 void GUI::renderGameOver() {
@@ -156,7 +167,7 @@ void GUI::render()
 {
     this->window->draw(this->worldBackground);
     this->window->draw(this->levelText);
-    this->window->draw(this->pauseText);
+    this->renderGamePause();
     for (int i = 1; i <= this->player->getHpMax(); i++) {
         this->window->draw(this->playerHp[i]);
     }
@@ -164,4 +175,38 @@ void GUI::render()
 
 sf::Sprite GUI::getSprite() {
     return this->worldBackground;
+}
+
+void GUI::renderGamePause()
+{
+    this->window->draw(pauseText);
+}
+void GUI::initPauseMenu()
+{
+    pauseMenuDisplacement = this->getDisplacement();
+    this->pauseMenu->movePos(sf::Vector2f(0, pauseMenuDisplacement));
+    this->pauseMenu->unpdateButtonDisplacement(sf::Vector2f(0, pauseMenuDisplacement));
+    pauseMenu->draw(window);
+}
+
+void GUI::closePauseMenu() 
+{
+    this->pauseMenu->movePos(sf::Vector2f(0, -pauseMenuDisplacement));
+    this->pauseMenu->unpdateButtonDisplacement(sf::Vector2f(0, 0));
+}
+
+void GUI::renderPauseMenu()
+{
+    pauseMenu->draw(window);
+}
+
+void GUI::updateGamePause()
+{
+    float y = this->getDisplacement();
+    pauseText.setPosition(10, SCREEN_HEIGHT - pauseText.getGlobalBounds().height - 10 - y);
+}
+
+int GUI::updatePauseMenu(sf::Event e)
+{
+    return pauseMenu->update(window, e);
 }
