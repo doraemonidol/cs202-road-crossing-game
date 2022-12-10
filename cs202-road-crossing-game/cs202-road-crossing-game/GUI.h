@@ -15,18 +15,19 @@ private:
     sf::Texture worldBackgroundTex;
     sf::Sprite worldBackground;
     //std::vector<Bullet*> bullets;
-    std::map<std::string, BUTTON*> buttons;
 
     //GUI
     sf::Font font;
     sf::Text levelText;
     sf::Text pauseText;
-    sf::Text gameOverText;
-    OPTIONS* pauseMenu;
+    sf::Text loseText;
+    sf::Text winText;
+    OPTIONS* pauseMenu, *loseMenu, *winMenu;
 
     //PlayerGUI
     sf::Sprite playerHp[4];
-    float pauseMenuDisplacement;
+    sf::Sprite loseTitle, winTitle;
+    float pauseMenuDisplacement, winLoseDisplacement;
 
     //Private functions
     void initTextures();
@@ -45,13 +46,27 @@ public:
     //Functions
     void updateHealth(int health);
     void updateLevel(int level);
-    void updateGamePause();
-    int updatePauseMenu(sf::Event e);
     void update(int level);
-    void renderGameOver();
-    void renderGamePause();
-    void renderPauseMenu();
-    void initPauseMenu();
     void render();
+
+    // Game pause
+    void renderGamePause();
+    void updateGamePause();
+
+    void initPauseMenu();
+    int updatePauseMenu(sf::Event e);
+    void renderPauseMenu();
     void closePauseMenu();
+
+    // Lose menu
+    void initLose();
+    int updateLoseMenu(sf::Event e);
+    void renderLose();
+    void closeLose();
+
+    // Win menu
+    void initWin();
+    int updateWinMenu(sf::Event e);
+    void renderWin();
+    void closeWin();
 };

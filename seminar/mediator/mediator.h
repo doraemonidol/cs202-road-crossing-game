@@ -9,7 +9,7 @@ class Runway;
 class Command;
 class IATCMediator;
 
-class ATCMediator : public IATCMediator {
+class AirportMediator : public IATCMediator {
 private:
     std::vector<Flight*> flight;
     std::vector<Runway*> runway;

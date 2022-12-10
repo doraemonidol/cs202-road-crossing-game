@@ -11,7 +11,7 @@
 void SPACESHIP::initVariables()
 {
     this->movementSpeed = 1.f;
-    this->speed = 100;
+    this->speed = 150;
 
     this->attackCooldownMax = 10.f;
     this->attackCooldown = this->attackCooldownMax;

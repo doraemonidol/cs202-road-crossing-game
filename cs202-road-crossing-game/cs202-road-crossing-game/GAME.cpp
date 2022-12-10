@@ -104,10 +104,13 @@ GAME::GAME()
     this->initTextures();
     this->initSystems();
     this->initGUI();
+    std::cout << "1";
     this->initMenu();
+    std::cout << "1";
     /*this->loadGame();*/
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
+    std::cout << "1";
    
 }
 
@@ -147,15 +150,10 @@ void GAME::run()
     while (this->window->isOpen()) {
         deltaTime = clock.restart().asSeconds();
         this->updatePollEvents();
-        if (this->isPause == false) {
-            if (this->player->getHp() > 0)
-                this->update();
-        }
+        if (this->player->getHp() > 0)
+            this->update();
         this->render();
-        this->checkCollision();
-        if (scene == INGAME && isPause==false) {
-            this->initEnemies();
-        }
+        std::cout << scene << " ";
         /*this->saveGame();*/
     }
 }
@@ -166,7 +164,59 @@ void GAME::updatePollEvents()
     while (this->window->pollEvent(e)) {
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
-        if (this->isPause) {
+        switch (scene) {
+        case MENUSCENE: {
+            int option = menu.update(this->window, e);
+            std::cout << option << " ";
+            switch (option) {
+            case NEWGAME:
+                scene = INGAME;
+                this->resetGame();
+                break;
+            case EXIT:
+                exit(0);
+                break;
+            case LOADGAME:
+                loadGame();
+                scene = INGAME;
+                break;
+            case TOGGLESOUND:
+                break;
+            case TOGGLETHEME:
+                break;
+            }
+            break;
+        }
+        case INGAME:
+            if (e.type == sf::Event::KeyPressed) {
+                switch (e.key.code) {
+                case sf::Keyboard::Escape:
+                    if (this->isPause == false) {
+                        this->gui->initPauseMenu();
+                        this->isPause = true;
+                        scene = PAUSEGAME;
+                    } else {
+                        this->isPause = false;
+                        scene = INGAME;
+                    }
+                    break;
+                case sf::Keyboard::M:
+                    scene = MENUSCENE;
+                    break;
+                case sf::Keyboard::S:
+                    if (this->isPause) {
+                    }
+                    break;
+                case sf::Keyboard::R:
+                    /*this->resetGame();
+                    scene = MENUSCENE;*/
+                    break;
+                default:
+                    break;
+                }
+            }
+            break;
+        case PAUSEGAME: {
             int option = this->gui->updatePauseMenu(e);
             if (option != -1)
                 this->gui->closePauseMenu();
@@ -192,51 +242,43 @@ void GAME::updatePollEvents()
                 saveGame();
                 break;
             }
-            continue;
+            break;
         }
-        switch (scene) {
-        case MENUSCENE: {
-            int option = menu.update(this->window, e);
-            //std::cout << option << " ";
+        case WINSCENE: {
+            int option = this->gui->updateWinMenu(e);
+            if (option != -1)
+                this->gui->closeWin();
             switch (option) {
-            case INGAME:
+            case 0:
                 scene = INGAME;
+                this->resetGame();
                 break;
-            case 3:
-                exit(0);
+            case 1:
+                view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+                this->window->setView(view);
+                scene = MENUSCENE;
                 break;
             }
             break;
         }
-        case INGAME:
-            if (e.type == sf::Event::KeyPressed) {
-                switch (e.key.code) {
-                case sf::Keyboard::Escape:
-                    if (this->isPause == false) {
-                        this->gui->initPauseMenu();
-                        this->isPause = true;
-                    } else {
-                        this->isPause = false;
-                    }
-                    break;
-                 case sf::Keyboard::M :
-                     scene = MENUSCENE;
-                     break;
-                case sf::Keyboard::S:
-                    if (this->isPause) {
-                    }
-                    break;
-                 case sf::Keyboard::R :
-                     /*this->resetGame();
-                     scene = MENUSCENE;*/
-                     break;
-                default:
-                    break;
-                }
+        case LOSESCENE: {
+            int option = this->gui->updateLoseMenu(e);
+            if (option != -1)
+                this->gui->closeLose();
+            switch (option) {
+            case 0:
+                scene = INGAME;
+                this->resetGame();
+                break;
+            case 1:
+                view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+                this->window->setView(view);
+                scene = MENUSCENE;
+                break;
             }
             break;
         }
-            
+        }
     }
 }
 
@@ -264,10 +306,10 @@ void GAME::update()
 {
     switch (scene) {
     case INGAME:
+        this->checkCollision();
         std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
-        if (this->isPause)
-            return;
+        this->initEnemies();
         this->player->update(this->gui->getBGSize().y, deltaTime);
 
         this->gui->update(this->level);
@@ -298,24 +340,64 @@ void GAME::render()
         // Draw all the stuffs
         this->player->render(*this->window);
         for (int i = 0; i < monsters.size(); i++) {
-            if (!this->isPause)
-                monsters[i]->update();
-                monsters[i]->render(*this->window);
+            monsters[i]->update();
+            monsters[i]->render(*this->window);
         }
         for (int i = 0; i < obstacles.size(); i++) {
-            if (!this->isPause)
-                obstacles[i]->update();
-                obstacles[i]->render(*this->window);
-        }
-        // Game pause screen:
-        if (this->isPause) {
-            this->gui->renderPauseMenu();
+            obstacles[i]->update();
+            obstacles[i]->render(*this->window);
         }
 
         // Game over screen
         if (this->player->getHp() <= 0)
-            this->gui->renderGameOver();
+            this->gui->renderWin();
         break;
+
+    case PAUSEGAME:
+        this->renderWorld();
+        this->gui->render();
+
+        // Draw all the stuffs
+        this->player->render(*this->window);
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters[i]->render(*this->window);
+        }
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles[i]->render(*this->window);
+        }
+        this->gui->renderPauseMenu();
+        break;
+
+    case WINSCENE:
+        this->renderWorld();
+        this->gui->render();
+
+        // Draw all the stuffs
+        this->player->render(*this->window);
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters[i]->render(*this->window);
+        }
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles[i]->render(*this->window);
+        }
+        this->gui->renderWin();
+        break;
+
+    case LOSESCENE:
+        this->renderWorld();
+        this->gui->render();
+
+        // Draw all the stuffs
+        this->player->render(*this->window);
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters[i]->render(*this->window);
+        }
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles[i]->render(*this->window);
+        }
+        this->gui->renderLose();
+        break;
+    
     }
 
     this->window->display();
@@ -437,33 +519,42 @@ void GAME::checkCollision() {
     //return;
     for (MONSTER* monster : this->monsters) {
         if (monster->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
+            scene = LOSESCENE;
+            this->gui->initLose();
+            
             std::cout << "Lost case!" << std::endl;
-            this->resetGame();
         }
     }
     for (OBSTACLE* obstacle : this->obstacles) {
         if (obstacle->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
+            scene = LOSESCENE;
+            this->gui->initLose();
+
             std::cout << "Lost case!" << std::endl;
-            this->resetGame();
         }
     }
     int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
     if (this->player->getPos().y == minHeight) {
+        scene = WINSCENE;
+        this->gui->initWin();
+
         std::cout << "Win case!" << std::endl;
-        this->resetGame();
     }
 }
 
 //reset game
 void GAME::resetGame() {
-    level = 1;
-    scene = MENUSCENE;
+    // scene = MENUSCENE;
     view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
     this->window->setView(view);
     delete this->player;
     this->initPlayer();
+    monsters.clear();
+    obstacles.clear();
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
     this->gui->initPauseMenu();
+    this->gui->initWin();
+    this->gui->initLose();
 
 }

@@ -70,20 +70,22 @@ int OPTIONS::update(sf::RenderWindow* window, sf::Event e)
         default:
             break;
         }
-    }
-    for (int i = 0; i < button.size(); i++) {
-        int state = this->button[i]->update(window, e);
-        switch (state) {
-        case ACTIVE:
-            return this->button[i]->getIndex();
-        case HOVER:
-            if (i != selectedItemIndex) {
-                button[selectedItemIndex]->onDefault();
-                selectedItemIndex = i;
+    } 
+    if (e.type == sf::Event::MouseMoved || e.type == sf::Event::MouseButtonPressed) {
+        for (int i = 0; i < button.size(); i++) {
+            int state = this->button[i]->update(window, e);
+            switch (state) {
+            case ACTIVE:
+                return this->button[i]->getIndex();
+            case HOVER:
+                if (i != selectedItemIndex) {
+                    button[selectedItemIndex]->onDefault();
+                    selectedItemIndex = i;
+                }
+                break;
+            default:
+                break;
             }
-            break;
-        default:
-            break;
         }
     }
     return -1;

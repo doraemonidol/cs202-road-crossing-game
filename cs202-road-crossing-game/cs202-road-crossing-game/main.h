@@ -39,6 +39,8 @@ enum Scene {
     MENUSCENE,
     INGAME,
     PAUSEGAME,
+    WINSCENE,
+    LOSESCENE,
     sceneCnt
 };
 
@@ -46,6 +48,14 @@ enum Alignment {
     ALIGN_CENTER,
     ALIGN_LEFT,
     ALIGN_RIGHT
+};
+
+enum btnFunc {
+    NEWGAME,
+    LOADGAME,
+    TOGGLESOUND,
+    TOGGLETHEME,
+    EXIT
 };
 
 enum pauseMenuBtn {

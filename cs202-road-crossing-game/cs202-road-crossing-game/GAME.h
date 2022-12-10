@@ -4,6 +4,7 @@
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 enum Scene;
+enum btnFunc;
 enum pauseMenuBtn;
 
 class GUI;

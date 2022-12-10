@@ -1,4 +1,5 @@
 #pragma once
+enum btnFunc;
 class METEOR : public OBSTACLE {
 public:
 	METEOR() {

@@ -25,11 +25,16 @@ void GUI::initTextures()
     this->textures["FULL HEART"]->loadFromFile("Textures/heart-full.png");
     this->textures["EMPTY HEART"] = new sf::Texture();
     this->textures["EMPTY HEART"]->loadFromFile("Textures/heart-empty.png");
-    this->buttons["PLAY"] = new BUTTON();
+    this->textures["LOSE TITLE"] = new sf::Texture();
+    this->textures["LOSE TITLE"]->loadFromFile("Textures/lose-text.png");
+    this->textures["WIN TITLE"] = new sf::Texture();
+    this->textures["WIN TITLE"]->loadFromFile("Textures/win-text.png");
+    std::cout << "done texture\n";
 }
 
 void GUI::initGUI()
 {
+    sf::Color color[] = { sf::Color::White, sf::Color(248, 208, 146), sf::Color(248, 208, 146) };
     //Load font
     if (!this->font.loadFromFile("Fonts/PixellettersFull.ttf"))
         std::cout << "ERROR::GAME::Failed to load font"
@@ -42,13 +47,50 @@ void GUI::initGUI()
     this->levelText.setFillColor(sf::Color::White);
     this->levelText.setString("test");
 
-    this->gameOverText.setFont(this->font);
-    this->gameOverText.setCharacterSize(60);
-    this->gameOverText.setFillColor(sf::Color::Red);
-    this->gameOverText.setString("Game Over!");
-    this->gameOverText.setPosition(
-        this->window->getSize().x / 2.f - this->gameOverText.getGlobalBounds().width / 2.f,
-        this->window->getSize().y / 2.f - this->gameOverText.getGlobalBounds().height / 2.f);
+    loseTitle.setTexture(*this->textures["LOSE TITLE"]);
+    loseTitle.setPosition(this->window->getSize().x / 2.f - this->loseTitle.getGlobalBounds().width / 2.f,
+                          this->window->getSize().y / 2.f - this->loseTitle.getGlobalBounds().height / 2.f);
+
+    this->loseText.setFont(this->font);
+    this->loseText.setCharacterSize(25);
+    this->loseText.setFillColor(sf::Color::White);
+    this->loseText.setString("  Sometimes by losing a battle\nyou find a new way to win the war.");
+                            //you find a new way to win the war.
+
+    std::cout << "1";
+    this->loseText.setPosition(
+        this->window->getSize().x / 2.f - this->loseText.getGlobalBounds().width / 2.f,
+        this->window->getSize().y / 2.f - this->loseText.getGlobalBounds().height / 2.f - loseTitle.getGlobalBounds().height);
+    std::cout << "1";
+    loseMenu = new OPTIONS;
+    std::cout << "1";
+    loseMenu->addButton("Retry", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 0);
+    loseMenu->addButton("Back to menu", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 1);
+    this->loseMenu->tidyButtons(10);
+    std::cout << "1";
+    // this->loseMenu->setPos(sf::Vector2f(0, 0));
+    this->loseMenu->init();
+    std::cout << "1";
+
+
+    winTitle.setTexture(*this->textures["WIN TITLE"]);
+    winTitle.setPosition(this->window->getSize().x / 2.f - this->winTitle.getGlobalBounds().width / 2.f,
+                         this->window->getSize().y / 2.f - this->winTitle.getGlobalBounds().height / 2.f);
+
+    this->winText.setFont(this->font);
+    this->winText.setCharacterSize(25);
+    this->winText.setFillColor(sf::Color::White);
+    this->winText.setString("        Winning isn't everything,\nbut it beats anythingthat comes in second!");
+                        //   but it beats anythingthat comes in second.
+    this->winText.setPosition(
+        this->window->getSize().x / 2.f - this->winText.getGlobalBounds().width / 2.f,
+        this->window->getSize().y / 2.f - this->winText.getGlobalBounds().height / 2.f - winTitle.getGlobalBounds().height);
+    winMenu = new OPTIONS;
+    winMenu->addButton("Continue", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 0);
+    winMenu->addButton("Back to menu", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 1);
+    this->winMenu->tidyButtons(10);
+    // this->winMenu->setPos(sf::Vector2f(0, 0));
+    this->winMenu->init();
 
     //Init pause text
     this->pauseText.setFont(this->font);
@@ -58,7 +100,6 @@ void GUI::initGUI()
     this->pauseText.setPosition(5.0f, this->window->getSize().y-20.0f);
 
     this->pauseMenu = new OPTIONS;
-    sf::Color color[] = { sf::Color::White, sf::Color(248, 208, 146), sf::Color(248, 208, 146) };
     this->pauseMenu->addButton("Continue", "PressStart2P-Regular.ttf", 21, "pointer.png", color, BACKTOGAME);
     this->pauseMenu->addButton("Restart", "PressStart2P-Regular.ttf", 21, "pointer.png", color, RESTART);
     this->pauseMenu->addButton("Save game", "PressStart2P-Regular.ttf", 21, "pointer.png", color, SAVEGAME);
@@ -66,7 +107,7 @@ void GUI::initGUI()
     this->pauseMenu->addButton("Back to menu", "PressStart2P-Regular.ttf", 21, "pointer.png", color, BACKTOMENU);
 
     this->pauseMenu->tidyButtons(10);
-   // this->pauseMenu->setPos(sf::Vector2f(0, 0));
+    //this->pauseMenu->setPos(sf::Vector2f(0, 0));
     this->pauseMenu->init();
 
     //Init player GUI
@@ -79,8 +120,11 @@ GUI::GUI(sf::RenderWindow* window, SPACESHIP * player)
     this->window = window;
     this->player = player;
     this->initTextures();
+    std::cout << "gui1 ";
     this->initBG();
+    std::cout << "gui2 ";
     this->initGUI();
+    std::cout << "gui3 ";
 }
 GUI::GUI()
 {
@@ -159,9 +203,6 @@ void GUI::update(int level)
     this->updateGamePause();
 }
 
-void GUI::renderGameOver() {
-    this->window->draw(this->gameOverText);
-}
 
 void GUI::render()
 {
@@ -177,6 +218,12 @@ sf::Sprite GUI::getSprite() {
     return this->worldBackground;
 }
 
+void GUI::updateGamePause()
+{
+    float y = this->getDisplacement();
+    pauseText.setPosition(10, SCREEN_HEIGHT - pauseText.getGlobalBounds().height - 10 - y);
+}
+
 void GUI::renderGamePause()
 {
     this->window->draw(pauseText);
@@ -186,6 +233,17 @@ void GUI::initPauseMenu()
     pauseMenuDisplacement = this->getDisplacement();
     this->pauseMenu->movePos(sf::Vector2f(0, pauseMenuDisplacement));
     this->pauseMenu->unpdateButtonDisplacement(sf::Vector2f(0, pauseMenuDisplacement));
+    this->pauseMenu->init();
+    pauseMenu->draw(window);
+}
+
+int GUI::updatePauseMenu(sf::Event e)
+{
+    return pauseMenu->update(window, e);
+}
+
+void GUI::renderPauseMenu()
+{
     pauseMenu->draw(window);
 }
 
@@ -195,18 +253,68 @@ void GUI::closePauseMenu()
     this->pauseMenu->unpdateButtonDisplacement(sf::Vector2f(0, 0));
 }
 
-void GUI::renderPauseMenu()
+void GUI::initLose()
 {
-    pauseMenu->draw(window);
+    winLoseDisplacement = this->getDisplacement() + 90;
+    this->loseMenu->movePos(sf::Vector2f(0, winLoseDisplacement));
+    this->loseMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 90));
+    this->loseMenu->init();
+    loseMenu->draw(window);
 }
 
-void GUI::updateGamePause()
+int GUI::updateLoseMenu(sf::Event e)
+{
+    return loseMenu->update(window, e);
+}
+
+void GUI::renderLose()
 {
     float y = this->getDisplacement();
-    pauseText.setPosition(10, SCREEN_HEIGHT - pauseText.getGlobalBounds().height - 10 - y);
+
+    loseTitle.setPosition(loseTitle.getPosition().x, SCREEN_HEIGHT / 2 - loseTitle.getGlobalBounds().height + y - 30);
+    this->window->draw(loseTitle);
+
+    loseText.setPosition(loseText.getPosition().x, loseTitle.getPosition().y + loseTitle.getGlobalBounds().height - 25);
+    this->window->draw(this->loseText);
+
+    loseMenu->draw(window);
 }
 
-int GUI::updatePauseMenu(sf::Event e)
+void GUI::closeLose()
 {
-    return pauseMenu->update(window, e);
+    this->loseMenu->movePos(sf::Vector2f(0, -winLoseDisplacement));
+    this->loseMenu->unpdateButtonDisplacement(sf::Vector2f(0, 0));
+}
+
+void GUI::initWin()
+{
+    winLoseDisplacement = this->getDisplacement() + 60;
+    this->winMenu->movePos(sf::Vector2f(0, winLoseDisplacement));
+    this->winMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 60));
+    this->winMenu->init();
+    winMenu->draw(window);
+}
+
+int GUI::updateWinMenu(sf::Event e)
+{
+    return winMenu->update(window, e);
+}
+
+void GUI::renderWin()
+{
+    float y = this->getDisplacement();
+
+    winTitle.setPosition(winTitle.getPosition().x, y / 2 + 50);
+    this->window->draw(winTitle);
+
+    winText.setPosition(winText.getPosition().x, winTitle.getPosition().y + winTitle.getGlobalBounds().height - 25);
+    this->window->draw(this->winText);
+
+    winMenu->draw(window);
+}
+
+void GUI::closeWin()
+{
+    this->winMenu->movePos(sf::Vector2f(0, -winLoseDisplacement));
+    this->winMenu->unpdateButtonDisplacement(sf::Vector2f(0, 0));
 }

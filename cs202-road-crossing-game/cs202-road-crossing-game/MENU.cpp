@@ -71,9 +71,9 @@ int MENU::update(sf::RenderWindow* window, sf::Event e) {
         curState = playBtn;
         break;
     case 2:
-        return INGAME;
+        return NEWGAME;
     case 3:
-        break;
+        return LOADGAME;
     case 4:
         std::cout << "back ";
         curState = mainMenu;
@@ -82,14 +82,14 @@ int MENU::update(sf::RenderWindow* window, sf::Event e) {
         curState = settingBtn;
         break;
     case 6:
-        break;
+        return TOGGLESOUND;
     case 7:
-        break;
+        return TOGGLETHEME;
     case 8:
         curState = mainMenu;
         break;
     case 9:
-        return 3;
+        return EXIT;
     }
     return -1;
 }
