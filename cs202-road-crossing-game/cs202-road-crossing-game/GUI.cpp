@@ -29,7 +29,6 @@ void GUI::initTextures()
     this->textures["LOSE TITLE"]->loadFromFile("Textures/lose-text.png");
     this->textures["WIN TITLE"] = new sf::Texture();
     this->textures["WIN TITLE"]->loadFromFile("Textures/win-text.png");
-    std::cout << "done texture\n";
 }
 
 void GUI::initGUI()
@@ -57,20 +56,15 @@ void GUI::initGUI()
     this->loseText.setString("  Sometimes by losing a battle\nyou find a new way to win the war.");
                             //you find a new way to win the war.
 
-    std::cout << "1";
     this->loseText.setPosition(
         this->window->getSize().x / 2.f - this->loseText.getGlobalBounds().width / 2.f,
         this->window->getSize().y / 2.f - this->loseText.getGlobalBounds().height / 2.f - loseTitle.getGlobalBounds().height);
-    std::cout << "1";
     loseMenu = new OPTIONS;
-    std::cout << "1";
     loseMenu->addButton("Retry", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 0);
     loseMenu->addButton("Back to menu", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 1);
     this->loseMenu->tidyButtons(10);
-    std::cout << "1";
     // this->loseMenu->setPos(sf::Vector2f(0, 0));
     this->loseMenu->init();
-    std::cout << "1";
 
 
     winTitle.setTexture(*this->textures["WIN TITLE"]);
@@ -120,11 +114,8 @@ GUI::GUI(sf::RenderWindow* window, SPACESHIP * player)
     this->window = window;
     this->player = player;
     this->initTextures();
-    std::cout << "gui1 ";
     this->initBG();
-    std::cout << "gui2 ";
-    this->initGUI();
-    std::cout << "gui3 ";
+    this->initGUI();;
 }
 GUI::GUI()
 {
@@ -255,9 +246,9 @@ void GUI::closePauseMenu()
 
 void GUI::initLose()
 {
-    winLoseDisplacement = this->getDisplacement() + 90;
+    winLoseDisplacement = this->getDisplacement() + 60;
     this->loseMenu->movePos(sf::Vector2f(0, winLoseDisplacement));
-    this->loseMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 90));
+    this->loseMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 60));
     this->loseMenu->init();
     loseMenu->draw(window);
 }

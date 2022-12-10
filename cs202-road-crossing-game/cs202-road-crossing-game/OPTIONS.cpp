@@ -55,7 +55,6 @@ void OPTIONS::MoveDown()
 int OPTIONS::update(sf::RenderWindow* window, sf::Event e)
 {
     int ret;
-    std::cout << "in";
     if (e.type == sf::Event::KeyPressed) {
         switch (e.key.code) {
         case sf::Keyboard::Up:

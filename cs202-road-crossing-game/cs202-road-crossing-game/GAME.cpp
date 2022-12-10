@@ -54,7 +54,6 @@ void GAME::initEnemies()
     int size = 0;
     int height = SCREEN_HEIGHT - 150;
     int minHeight = -1*(this->gui->getBGSize().y - SCREEN_HEIGHT);
-    std::cout << SCREEN_HEIGHT;
     while(height>=minHeight) {
         int isSpawn = rand() % 2;
         if (isSpawn == 0) {
@@ -104,13 +103,10 @@ GAME::GAME()
     this->initTextures();
     this->initSystems();
     this->initGUI();
-    std::cout << "1";
     this->initMenu();
-    std::cout << "1";
     /*this->loadGame();*/
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
-    std::cout << "1";
    
 }
 
@@ -153,7 +149,6 @@ void GAME::run()
         if (this->player->getHp() > 0)
             this->update();
         this->render();
-        std::cout << scene << " ";
         /*this->saveGame();*/
     }
 }
@@ -167,7 +162,6 @@ void GAME::updatePollEvents()
         switch (scene) {
         case MENUSCENE: {
             int option = menu.update(this->window, e);
-            std::cout << option << " ";
             switch (option) {
             case NEWGAME:
                 scene = INGAME;
