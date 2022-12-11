@@ -95,6 +95,7 @@ void GAME::initMenu() {
 GAME::GAME()
 {
     this->isPause = false;
+    this->isDead = false;
     this->initWindow();
     
     this->initPlayer();
@@ -112,6 +113,7 @@ GAME::GAME()
 
 GAME::GAME(const int a) {
     this->isPause = false;
+    this->isDead = false;
 
     this->initPlayer();
 
@@ -378,18 +380,23 @@ void GAME::render()
         break;
 
     case LOSESCENE:
+        if (isDead) {
+            isDead = !(this->player->upDead(deltaTime));
+        }
         this->renderWorld();
         this->gui->render();
 
         // Draw all the stuffs
         this->player->render(*this->window);
+        this->player->renderDead(*this->window);
         for (int i = 0; i < monsters.size(); i++) {
             monsters[i]->render(*this->window);
         }
         for (int i = 0; i < obstacles.size(); i++) {
             obstacles[i]->render(*this->window);
         }
-        this->gui->renderLose();
+        if (!isDead)
+            this->gui->renderLose();
         break;
     
     }
@@ -514,6 +521,7 @@ void GAME::checkCollision() {
     for (MONSTER* monster : this->monsters) {
         if (monster->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
             scene = LOSESCENE;
+            isDead = true;
             this->gui->initLose();
             
             std::cout << "Lost case!" << std::endl;
@@ -522,6 +530,7 @@ void GAME::checkCollision() {
     for (OBSTACLE* obstacle : this->obstacles) {
         if (obstacle->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
             scene = LOSESCENE;
+            isDead = true;
             this->gui->initLose();
 
             std::cout << "Lost case!" << std::endl;

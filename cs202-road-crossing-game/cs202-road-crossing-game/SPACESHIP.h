@@ -3,12 +3,12 @@
 
 class SPACESHIP {
 private:
-    sf::Sprite sprite;
-    sf::Texture texture;
+    sf::Sprite sprite, blowupSprite;
+    std::map<std::string, sf::Texture> textures;
     
     // Animation
     //sf::RectangleShape body;
-    ANIMATION anim;
+    ANIMATION anim, blowup;
     unsigned int row;
     float speed;
     bool faceRight;
@@ -55,4 +55,6 @@ public:
     void update(int worldBGTexY, float deltaTime);
     void render(sf::RenderTarget& target);
     void initAfterLoad();
+    bool upDead(float deltaTime);
+    void renderDead(sf::RenderTarget& target);
 };

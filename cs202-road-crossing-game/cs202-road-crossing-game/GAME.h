@@ -16,7 +16,7 @@ private:
     sf::View view;
 
     //Game state
-    bool isPause;
+    bool isPause, isDead;
 
     //Textures
     std::map<std::string, sf::Texture*> textures;

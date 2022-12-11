@@ -6,7 +6,7 @@ public:
     ANIMATION(sf::Texture* texture, sf::Vector2u imgCnt, float switchTime);
     ~ANIMATION();
 
-    void Update(int row, float deltaTime, bool faceRight);
+    bool Update(int row, float deltaTime, bool faceRight);
     void initAnim(sf::Texture* texture, sf::Vector2u imgCnt, float switchTime);
     sf::IntRect uvRect;
 

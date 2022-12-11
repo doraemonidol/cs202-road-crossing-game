@@ -20,13 +20,16 @@ ANIMATION::~ANIMATION()
 {
 }
 
-void ANIMATION::Update(int row, float deltaTime, bool faceRight)
+bool ANIMATION::Update(int row, float deltaTime, bool faceRight)
 {
+    bool res = false;
     curImg.y = row;
     totalTime += deltaTime;
 
     if (totalTime >= switchTime) {
         totalTime -= switchTime;
+        if (curImg.x + 1 == imgCnt.x)
+            res = true;
         curImg.x = (curImg.x + 1) % imgCnt.x;
     }
 
@@ -38,6 +41,7 @@ void ANIMATION::Update(int row, float deltaTime, bool faceRight)
         uvRect.left = (curImg.x + 1) * abs(uvRect.width);
         uvRect.width = -abs(uvRect.width);
     }
+    return res;
 }
 
 void ANIMATION::initAnim(sf::Texture* texture, sf::Vector2u imgCnt, float switchTime)

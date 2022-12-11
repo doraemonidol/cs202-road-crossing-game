@@ -27,18 +27,24 @@ void SPACESHIP::initVariables()
 void SPACESHIP::initTexture()
 {
     //Load a texture from file
-    if (!this->texture.loadFromFile("Textures/player-anim.png")) {
+    if (!this->textures["SPACESHIP"].loadFromFile("Textures/player-anim.png")) {
         std::cout << "ERROR::SPACESHIP::INITTEXTURE::Could not load texture file."
             << "\n";
+    }
+    if (!this->textures["BLOWUPEFFECT"].loadFromFile("Textures/blow-up-anim.png")) {
+        std::cout << "ERROR::SPACESHIP::INITTEXTURE::Could not load texture file."
+                  << "\n";
     }
 }
 
 void SPACESHIP::initSprite()
 {
     //Set the texture to the sprite
-    this->sprite.setTexture(this->texture);
+    this->sprite.setTexture(this->textures["SPACESHIP"]);
+    this->blowupSprite.setTexture(this->textures["BLOWUPEFFECT"]);
     //Resize the sprite
     this->sprite.scale(2.0f, 2.0f);
+    this->blowupSprite.scale(2.0f, 2.0f);
 }
 
 SPACESHIP::SPACESHIP()
@@ -47,7 +53,8 @@ SPACESHIP::SPACESHIP()
     this->initVariables();
     this->initTexture();
     this->initSprite();
-    this->anim.initAnim(&this->texture, this->imgCnt, this->switchTime);
+    this->anim.initAnim(&this->textures["SPACESHIP"], this->imgCnt, this->switchTime);
+    this->blowup.initAnim(&this->textures["BLOWUPEFFECT"], {5, 1}, 0.2);
 }
 
 SPACESHIP::~SPACESHIP()
@@ -185,6 +192,21 @@ void SPACESHIP::render(sf::RenderTarget& target)
 void SPACESHIP::initAfterLoad() {
     this->initTexture();
     this->initSprite();
+}
+
+bool SPACESHIP::upDead(float deltaTime)
+{
+    if (this->blowup.Update(row, deltaTime, faceRight))
+        return true;
+    this->blowupSprite.setTextureRect(blowup.uvRect);
+    sf::Vector2f spaceshipPos = this->sprite.getPosition();
+    this->blowupSprite.setPosition({ spaceshipPos.x - 5, spaceshipPos.y - 5 });
+    return false;
+}
+
+void SPACESHIP::renderDead(sf::RenderTarget& target)
+{
+    target.draw(this->blowupSprite);
 }
 
 const sf::Sprite SPACESHIP::getSprite() {
