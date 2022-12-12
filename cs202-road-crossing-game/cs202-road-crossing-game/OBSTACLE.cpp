@@ -8,6 +8,10 @@
 #include "SPACESHIP.h"
 #include "GAME.h"
 
+sf::Sprite OBSTACLE::getSprite() {
+	return sprite;
+}
+
 int OBSTACLE::getHP(){
 	return HP;
 }

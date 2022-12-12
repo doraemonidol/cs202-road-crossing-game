@@ -8,6 +8,18 @@
 #include "SPACESHIP.h"
 #include "GAME.h"
 
+int MONSTER::getDir(){
+	return dir;
+}
+
+float MONSTER::getPosition(){
+	return this->sprite.getPosition().x;
+}
+
+sf::Sprite MONSTER::getSprite(){
+	return sprite;
+}
+
 int MONSTER::getHP(){
 	return HP;
 }
