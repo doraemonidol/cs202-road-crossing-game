@@ -11,8 +11,9 @@
 #include <stdlib.h>
 #include <string>
 #include <string.h>
-#include<map>
-#include<sstream>
+#include <map>
+#include <sstream>
+#include <unordered_map>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

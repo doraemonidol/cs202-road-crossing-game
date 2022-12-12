@@ -246,9 +246,9 @@ void GUI::closePauseMenu()
 
 void GUI::initLose()
 {
-    winLoseDisplacement = this->getDisplacement() + 60;
+    winLoseDisplacement = this->getDisplacement() + 100;
     this->loseMenu->movePos(sf::Vector2f(0, winLoseDisplacement));
-    this->loseMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 60));
+    this->loseMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 100));
     this->loseMenu->init();
     loseMenu->draw(window);
 }
@@ -279,11 +279,11 @@ void GUI::closeLose()
 
 void GUI::initWin()
 {
-    winLoseDisplacement = this->getDisplacement() + 60;
+    winLoseDisplacement = this->getDisplacement() + 100;
+    std::cout << winLoseDisplacement << "<< here\n";
     this->winMenu->movePos(sf::Vector2f(0, winLoseDisplacement));
-    this->winMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 60));
+    this->winMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 100));
     this->winMenu->init();
-    winMenu->draw(window);
 }
 
 int GUI::updateWinMenu(sf::Event e)
@@ -306,6 +306,7 @@ void GUI::renderWin()
 
 void GUI::closeWin()
 {
+    std::cout << winLoseDisplacement << "\n";
     this->winMenu->movePos(sf::Vector2f(0, -winLoseDisplacement));
     this->winMenu->unpdateButtonDisplacement(sf::Vector2f(0, 0));
 }

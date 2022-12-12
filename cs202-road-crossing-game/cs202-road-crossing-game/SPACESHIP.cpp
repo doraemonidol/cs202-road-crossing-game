@@ -196,7 +196,7 @@ void SPACESHIP::initAfterLoad() {
 
 bool SPACESHIP::upDead(float deltaTime)
 {
-    if (this->blowup.Update(row, deltaTime, faceRight))
+    if (this->blowup.Update(0, deltaTime, true))
         return true;
     this->blowupSprite.setTextureRect(blowup.uvRect);
     sf::Vector2f spaceshipPos = this->sprite.getPosition();

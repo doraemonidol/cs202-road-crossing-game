@@ -47,14 +47,17 @@ void GAME::initEnemies()
     this->spawnTimerMax = 50.f;
     this->spawnTimer = this->spawnTimerMax;
     spawnTimeCheck += clock.getElapsedTime();
-    if (spawnTimeCheck.asSeconds() < 1.0f) {
+    std::cout << spawnTimeCheck.asSeconds() << "\n";
+    if (spawnTimeCheck.asSeconds() < 0.05f) {
         return;
     }
     spawnTimeCheck = sf::seconds(0);
     int size = 0;
     int height = SCREEN_HEIGHT - 150;
     int minHeight = -1*(this->gui->getBGSize().y - SCREEN_HEIGHT);
-    while(height>=minHeight) {
+    std::cout << height << " " << minHeight << "\n";
+    while (height >= minHeight) {
+        std::cout << "doing here\n";
         int isSpawn = rand() % 2;
         if (isSpawn == 0) {
             height -= 150;
@@ -109,6 +112,7 @@ GAME::GAME()
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
    
+    soundController = new SoundManager(music["TITLE"]);
 }
 
 GAME::GAME(const int a) {
@@ -166,6 +170,7 @@ void GAME::updatePollEvents()
             int option = menu.update(this->window, e);
             switch (option) {
             case NEWGAME:
+                soundController->playSound(music["INGAME"]);
                 scene = INGAME;
                 this->resetGame();
                 break;
@@ -173,6 +178,7 @@ void GAME::updatePollEvents()
                 exit(0);
                 break;
             case LOADGAME:
+                soundController->playSound(music["INGAME"]);
                 loadGame();
                 scene = INGAME;
                 break;
@@ -198,6 +204,7 @@ void GAME::updatePollEvents()
                     break;
                 case sf::Keyboard::M:
                     scene = MENUSCENE;
+                    soundController->playSound(music["TITLE"]);
                     break;
                 case sf::Keyboard::S:
                     if (this->isPause) {
@@ -225,6 +232,7 @@ void GAME::updatePollEvents()
                 this->isPause = false;
                 view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
                 this->window->setView(view);
+                soundController->playSound(music["TITLE"]);
                 scene = MENUSCENE;
                 break;
             case RESTART:
@@ -252,6 +260,7 @@ void GAME::updatePollEvents()
             case 1:
                 view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
                 this->window->setView(view);
+                soundController->playSound(music["TITLE"]);
                 scene = MENUSCENE;
                 break;
             }
@@ -269,6 +278,7 @@ void GAME::updatePollEvents()
             case 1:
                 view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
                 this->window->setView(view);
+                soundController->playSound(music["TITLE"]);
                 scene = MENUSCENE;
                 break;
             }
@@ -303,7 +313,7 @@ void GAME::update()
     switch (scene) {
     case INGAME:
         this->checkCollision();
-        std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
+        //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
         this->initEnemies();
         this->player->update(this->gui->getBGSize().y, deltaTime);
@@ -522,6 +532,7 @@ void GAME::checkCollision() {
         if (monster->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
             scene = LOSESCENE;
             isDead = true;
+            soundController->playSound(music["LOSE"]);
             this->gui->initLose();
             
             std::cout << "Lost case!" << std::endl;
@@ -531,6 +542,7 @@ void GAME::checkCollision() {
         if (obstacle->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
             scene = LOSESCENE;
             isDead = true;
+            soundController->playSound(music["LOSE"]);
             this->gui->initLose();
 
             std::cout << "Lost case!" << std::endl;
@@ -539,6 +551,7 @@ void GAME::checkCollision() {
     int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
     if (this->player->getPos().y == minHeight) {
         scene = WINSCENE;
+        soundController->playSound(music["WIN"]);
         this->gui->initWin();
 
         std::cout << "Win case!" << std::endl;
@@ -546,7 +559,9 @@ void GAME::checkCollision() {
 }
 
 //reset game
-void GAME::resetGame() {
+void GAME::resetGame()
+{
+    soundController->playSound(music["INGAME"]);
     // scene = MENUSCENE;
     view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
     this->window->setView(view);
@@ -556,8 +571,6 @@ void GAME::resetGame() {
     obstacles.clear();
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
-    this->gui->initPauseMenu();
-    this->gui->initWin();
-    this->gui->initLose();
+    //this->gui->initPauseMenu();
 
 }

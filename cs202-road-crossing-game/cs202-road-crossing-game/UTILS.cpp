@@ -157,7 +157,7 @@ bool BUTTON::isMouseOver(sf::RenderWindow* window)
 {
     float mouseX = sf::Mouse::getPosition(*window).x + pos.x;
     float mouseY = sf::Mouse::getPosition(*window).y + pos.y;
-    std::cout << mouseX << " " << mouseY << "\n";
+    //std::cout << mouseX << " " << mouseY << "\n";
 
     if (mouseX < button.getPosition().x + button.getGlobalBounds().width / 2 && mouseX > button.getPosition().x - button.getGlobalBounds().width / 2 && 
         mouseY < button.getPosition().y + button.getGlobalBounds().height / 2 && mouseY > button.getPosition().y - button.getGlobalBounds().height / 2) {

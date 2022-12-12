@@ -1,6 +1,8 @@
 #pragma once
 #include "SPACESHIP.h"
 #include "MENU.h"
+#include "SoundEffect.hpp"
+#include "SoundManager.hpp"
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 enum Scene;
@@ -40,6 +42,13 @@ private:
     sf::Time spawnTimeCheck;
     std::vector<MONSTER*> monsters;
     std::vector<OBSTACLE*> obstacles;
+
+    //Sound
+    SoundManager* soundController;
+    std::map<std::string, std::string> music = { { "TITLE", "Sound/Title Theme.wav" },
+                                                 { "LOSE", "Sound/lose.wav" },
+                                                 { "WIN", "Sound/win.wav" },
+                                                 { "INGAME", "Sound/background-music-3.wav" } };
 
     //Private functions
     void initWindow();
