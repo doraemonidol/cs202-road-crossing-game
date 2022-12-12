@@ -97,6 +97,7 @@ void GAME::initMenu() {
     //Con/Des
 GAME::GAME()
 {
+    soundController = new SoundManager(music["TITLE"]);
     this->isPause = false;
     this->isDead = false;
     this->initWindow();
@@ -111,8 +112,7 @@ GAME::GAME()
     /*this->loadGame();*/
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
-   
-    soundController = new SoundManager(music["TITLE"]);
+
 }
 
 GAME::GAME(const int a) {
@@ -150,6 +150,7 @@ GAME::~GAME()
 void GAME::run()
 {
     while (this->window->isOpen()) {
+        soundController->update();
         deltaTime = clock.restart().asSeconds();
         this->updatePollEvents();
         if (this->player->getHp() > 0)
@@ -167,10 +168,10 @@ void GAME::updatePollEvents()
             this->window->close();
         switch (scene) {
         case MENUSCENE: {
-            int option = menu.update(this->window, e);
+            int option = menu.update(this->window, e, this);
             switch (option) {
             case NEWGAME:
-                soundController->playSound(music["INGAME"]);
+                playMusic(music["INGAME"]);
                 scene = INGAME;
                 this->resetGame();
                 break;
@@ -178,7 +179,7 @@ void GAME::updatePollEvents()
                 exit(0);
                 break;
             case LOADGAME:
-                soundController->playSound(music["INGAME"]);
+                playMusic(music["INGAME"]);
                 loadGame();
                 scene = INGAME;
                 break;
@@ -204,7 +205,7 @@ void GAME::updatePollEvents()
                     break;
                 case sf::Keyboard::M:
                     scene = MENUSCENE;
-                    soundController->playSound(music["TITLE"]);
+                    playMusic(music["TITLE"]);
                     break;
                 case sf::Keyboard::S:
                     if (this->isPause) {
@@ -220,7 +221,7 @@ void GAME::updatePollEvents()
             }
             break;
         case PAUSEGAME: {
-            int option = this->gui->updatePauseMenu(e);
+            int option = this->gui->updatePauseMenu(e, this);
             if (option != -1)
                 this->gui->closePauseMenu();
             switch (option) {
@@ -232,7 +233,7 @@ void GAME::updatePollEvents()
                 this->isPause = false;
                 view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
                 this->window->setView(view);
-                soundController->playSound(music["TITLE"]);
+                playMusic(music["TITLE"]);
                 scene = MENUSCENE;
                 break;
             case RESTART:
@@ -249,7 +250,7 @@ void GAME::updatePollEvents()
             break;
         }
         case WINSCENE: {
-            int option = this->gui->updateWinMenu(e);
+            int option = this->gui->updateWinMenu(e, this);
             if (option != -1)
                 this->gui->closeWin();
             switch (option) {
@@ -260,14 +261,14 @@ void GAME::updatePollEvents()
             case 1:
                 view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
                 this->window->setView(view);
-                soundController->playSound(music["TITLE"]);
+                playMusic(music["TITLE"]);
                 scene = MENUSCENE;
                 break;
             }
             break;
         }
         case LOSESCENE: {
-            int option = this->gui->updateLoseMenu(e);
+            int option = this->gui->updateLoseMenu(e, this);
             if (option != -1)
                 this->gui->closeLose();
             switch (option) {
@@ -278,7 +279,7 @@ void GAME::updatePollEvents()
             case 1:
                 view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
                 this->window->setView(view);
-                soundController->playSound(music["TITLE"]);
+                playMusic(music["TITLE"]);
                 scene = MENUSCENE;
                 break;
             }
@@ -468,6 +469,18 @@ GAME& GAME::operator=(GAME other) {
     return *this;
 }
 
+void GAME::playMusic(std::string file)
+{
+    std::cout << "music1\n";
+    soundController->playSound(file);
+}
+
+void GAME::playSound(std::string file)
+{
+    std::cout << "music4\n";
+    soundController->playEffect(file);
+}
+
 void GAME::setSPACESHIP(SPACESHIP player) {
     swap(this->player, &player);
 }
@@ -532,7 +545,7 @@ void GAME::checkCollision() {
         if (monster->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
             scene = LOSESCENE;
             isDead = true;
-            soundController->playSound(music["LOSE"]);
+            playMusic(music["LOSE"]);
             this->gui->initLose();
             
             std::cout << "Lost case!" << std::endl;
@@ -542,7 +555,7 @@ void GAME::checkCollision() {
         if (obstacle->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
             scene = LOSESCENE;
             isDead = true;
-            soundController->playSound(music["LOSE"]);
+            playMusic(music["LOSE"]);
             this->gui->initLose();
 
             std::cout << "Lost case!" << std::endl;
@@ -551,7 +564,7 @@ void GAME::checkCollision() {
     int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
     if (this->player->getPos().y == minHeight) {
         scene = WINSCENE;
-        soundController->playSound(music["WIN"]);
+        playMusic(music["WIN"]);
         this->gui->initWin();
 
         std::cout << "Win case!" << std::endl;
@@ -561,7 +574,7 @@ void GAME::checkCollision() {
 //reset game
 void GAME::resetGame()
 {
-    soundController->playSound(music["INGAME"]);
+    playMusic(music["INGAME"]);
     // scene = MENUSCENE;
     view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
     this->window->setView(view);

@@ -59,7 +59,7 @@ void GUI::initGUI()
     this->loseText.setPosition(
         this->window->getSize().x / 2.f - this->loseText.getGlobalBounds().width / 2.f,
         this->window->getSize().y / 2.f - this->loseText.getGlobalBounds().height / 2.f - loseTitle.getGlobalBounds().height);
-    loseMenu = new OPTIONS;
+    loseMenu = new OPTIONS();
     loseMenu->addButton("Retry", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 0);
     loseMenu->addButton("Back to menu", "PressStart2P-Regular.ttf", 21, "pointer.png", color, 1);
     this->loseMenu->tidyButtons(10);
@@ -228,9 +228,9 @@ void GUI::initPauseMenu()
     pauseMenu->draw(window);
 }
 
-int GUI::updatePauseMenu(sf::Event e)
+int GUI::updatePauseMenu(sf::Event e, GAME* gm)
 {
-    return pauseMenu->update(window, e);
+    return pauseMenu->update(window, e, gm);
 }
 
 void GUI::renderPauseMenu()
@@ -253,9 +253,9 @@ void GUI::initLose()
     loseMenu->draw(window);
 }
 
-int GUI::updateLoseMenu(sf::Event e)
+int GUI::updateLoseMenu(sf::Event e, GAME* gm)
 {
-    return loseMenu->update(window, e);
+    return loseMenu->update(window, e, gm);
 }
 
 void GUI::renderLose()
@@ -286,9 +286,9 @@ void GUI::initWin()
     this->winMenu->init();
 }
 
-int GUI::updateWinMenu(sf::Event e)
+int GUI::updateWinMenu(sf::Event e, GAME* gm)
 {
-    return winMenu->update(window, e);
+    return winMenu->update(window, e, gm);
 }
 
 void GUI::renderWin()

@@ -2,6 +2,7 @@
 #include "MENU.h"
 #include "UTILS.h"
 #include "main.h"
+#include "GAME.h"
 
 MENU::MENU() { }
 
@@ -64,8 +65,9 @@ void MENU::draw(sf::RenderWindow* window)
     curState->draw(window);
 }
 
-int MENU::update(sf::RenderWindow* window, sf::Event e) {
-    int pressed = curState->update(window, e);
+int MENU::update(sf::RenderWindow* window, sf::Event e, GAME* gm)
+{
+    int pressed = curState->update(window, e, gm);
     switch (pressed) {
     case 1:
         curState = playBtn;

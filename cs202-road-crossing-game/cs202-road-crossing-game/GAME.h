@@ -10,6 +10,8 @@ enum btnFunc;
 enum pauseMenuBtn;
 
 class GUI;
+class MONSTER;
+class OBSTACLE;
 
 class GAME {
 private:
@@ -46,9 +48,11 @@ private:
     //Sound
     SoundManager* soundController;
     std::map<std::string, std::string> music = { { "TITLE", "Sound/Title Theme.wav" },
-                                                 { "LOSE", "Sound/lose.wav" },
-                                                 { "WIN", "Sound/win.wav" },
-                                                 { "INGAME", "Sound/background-music-3.wav" } };
+        { "LOSE", "Sound/lose.wav" },
+        { "WIN", "Sound/win.wav" },
+        { "INGAME", "Sound/background-music-3.wav" },
+        { "PRESS_SFX", "Sound/btn-confirm.wav " }, 
+        { "SWITCH_SFX", "Sound/btn-switch.wav " } };
 
     //Private functions
     void initWindow();
@@ -98,6 +102,9 @@ public:
     void setWindow(sf::RenderWindow window);
     void setView(sf::View view);
     void setIsPause(bool isPause);
+
+    void playMusic(std::string file);
+    void playSound(std::string file);
 
     GAME& operator=(GAME other);
 };

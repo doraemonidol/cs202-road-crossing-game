@@ -54,19 +54,19 @@ public:
     void updateGamePause();
 
     void initPauseMenu();
-    int updatePauseMenu(sf::Event e);
+    int updatePauseMenu(sf::Event e, GAME* gm);
     void renderPauseMenu();
     void closePauseMenu();
 
     // Lose menu
     void initLose();
-    int updateLoseMenu(sf::Event e);
+    int updateLoseMenu(sf::Event e, GAME* gm);
     void renderLose();
     void closeLose();
 
     // Win menu
     void initWin();
-    int updateWinMenu(sf::Event e);
+    int updateWinMenu(sf::Event e, GAME* gm);
     void renderWin();
     void closeWin();
 };

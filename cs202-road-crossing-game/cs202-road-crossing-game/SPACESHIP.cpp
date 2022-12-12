@@ -54,7 +54,7 @@ SPACESHIP::SPACESHIP()
     this->initTexture();
     this->initSprite();
     this->anim.initAnim(&this->textures["SPACESHIP"], this->imgCnt, this->switchTime);
-    this->blowup.initAnim(&this->textures["BLOWUPEFFECT"], {5, 1}, 0.2);
+    this->blowup.initAnim(&this->textures["BLOWUPEFFECT"], {5, 1}, 0.3);
 }
 
 SPACESHIP::~SPACESHIP()

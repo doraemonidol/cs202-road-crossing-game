@@ -1,10 +1,16 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "SoundEffect.hpp"
+#include "SoundManager.hpp"
+
+const std::string PRESS_SFX = "Sound/btn-confirm.wav";
+const std::string SWITCH_SFX = "Sound/btn-switch.wav";
 
 enum Scene;
 enum Alignment;
 
 class BUTTON;
+class GAME;
 
 class OPTIONS {
 public:
@@ -18,11 +24,17 @@ public:
     void MoveUp();
     void MoveDown();
     int GetPressedItem() { return selectedItemIndex; }
-    int update(sf::RenderWindow* window, sf::Event e);
+    int update(sf::RenderWindow* window, sf::Event e, GAME* gm);
     void unpdateButtonDisplacement(sf::Vector2f pos);
     void movePos(sf::Vector2f pos);
     void alignButtons(int type);
     void tidyButtons(float padding);
+
+    // Sound
+    SoundManager* soundController = nullptr;
+    void pressSFX(GAME* gm);
+    void switchSFX(GAME* gm);
+    void attachSoundController(SoundManager* sm);
 
 private:
     int selectedItemIndex = 0;

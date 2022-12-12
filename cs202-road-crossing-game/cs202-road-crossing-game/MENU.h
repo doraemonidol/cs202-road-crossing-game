@@ -24,7 +24,7 @@ public:
 
     void init();
     void draw(sf::RenderWindow* window);
-    int update(sf::RenderWindow* window, sf::Event e);
+    int update(sf::RenderWindow* window, sf::Event e, GAME* gm);
 
 private:
     sf::Font font;
