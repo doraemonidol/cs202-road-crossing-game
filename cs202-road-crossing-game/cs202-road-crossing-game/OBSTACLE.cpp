@@ -8,6 +8,18 @@
 #include "SPACESHIP.h"
 #include "GAME.h"
 
+float OBSTACLE::getSpeed(){
+	return speed;
+}
+
+void OBSTACLE::addSpeed(float speedAdd){
+	speed += speedAdd;
+}
+
+void OBSTACLE::setSpeed(float speed){
+	this->speed = speed;
+}
+
 sf::Sprite OBSTACLE::getSprite() {
 	return sprite;
 }

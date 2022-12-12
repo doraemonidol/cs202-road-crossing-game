@@ -15,6 +15,7 @@ METEOR::METEOR() {
 	this->sprite.setTexture(this->texture);
 	this->sprite.scale(1.3f, 1.3f);
 	this->sprite.setPosition(-100, 100);
+	speed = 3.0;
 	dir = 0;
 	HP = 75;
 }
@@ -26,6 +27,7 @@ METEOR::METEOR(int dir, int pos, int height){
 	this->sprite.setTexture(this->texture);
 	this->sprite.scale(1.3f, 1.3f);
 	this->sprite.setPosition(pos, height);
+	speed = 3.0;
 	this->dir = dir;
 	HP = 75;
 }
@@ -35,7 +37,7 @@ void METEOR::render(sf::RenderTarget &target){
 }
 
 void METEOR::update() {
-	this->sprite.move(3.0f * dir, 0);
+	this->sprite.move(speed * dir, 0);
 }
 
 const sf::Vector2f &METEOR::getPos() const{

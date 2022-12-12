@@ -15,6 +15,7 @@ SMALL_MONSTER::SMALL_MONSTER(){
 	this->sprite.setTexture(this->texture);
 	this->sprite.scale(1.3f, 1.3f);
 	this->sprite.setPosition(-100, 100);
+	speed = 2.0;
 	dir = 0;
 	HP = 25;
 }
@@ -26,6 +27,7 @@ SMALL_MONSTER::SMALL_MONSTER(int dir, int pos, int height){
 	this->sprite.setTexture(this->texture);
 	this->sprite.scale(1.3f, 1.3f);
 	this->sprite.setPosition(pos, height);
+	speed = 2.0;
 	this->dir = dir;
 	HP = 25;
 }
@@ -35,7 +37,7 @@ void SMALL_MONSTER::render(sf::RenderTarget &target){
 }
 
 void SMALL_MONSTER::update(){
-	this->sprite.move(2.0f * dir, 0);
+	this->sprite.move(speed * dir, 0);
 }
 
 const sf::Vector2f &SMALL_MONSTER::getPos() const{

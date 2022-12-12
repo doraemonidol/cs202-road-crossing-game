@@ -7,7 +7,7 @@ class MONSTER{
 protected:
 	sf::Sprite sprite;
 	sf::Texture texture;
-	int speed;
+	float speed;
 	int dir;
 	int HP;
 public:
@@ -15,7 +15,10 @@ public:
 	MONSTER(int dir, int pos, int height){}
 	virtual void render(sf::RenderTarget& target) = 0;
 	virtual void update() = 0;
-	virtual const sf::Vector2f& getPos() const = 0;
+	virtual const sf::Vector2f &getPos() const = 0;
+	float getSpeed();
+	void addSpeed(float speedAdd); //speed += speedAdd
+	void setSpeed(float speed); //set speed to
 	int getDir();
 	float getPosition();
 	sf::Sprite getSprite();

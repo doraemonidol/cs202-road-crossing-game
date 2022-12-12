@@ -16,6 +16,18 @@ float MONSTER::getPosition(){
 	return this->sprite.getPosition().x;
 }
 
+float MONSTER::getSpeed(){
+	return speed;
+}
+
+void MONSTER::addSpeed(float speedAdd){
+	speed += speedAdd;
+}
+
+void MONSTER::setSpeed(float speed){
+	this->speed = speed;
+}
+
 sf::Sprite MONSTER::getSprite(){
 	return sprite;
 }
