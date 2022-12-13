@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BULLET.cpp" />
     <ClCompile Include="OPTIONS.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="UFO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BULLET.h" />
     <ClInclude Include="OPTIONS.h" />
     <ClInclude Include="SoundEffect.hpp" />
     <ClInclude Include="SoundManager.hpp" />

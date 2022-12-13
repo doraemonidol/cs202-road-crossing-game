@@ -31,3 +31,6 @@ int OBSTACLE::getHP(){
 void OBSTACLE::recievedDmg(int dmg){
 	HP = std::max(0, HP - dmg);
 }
+int OBSTACLE::getDir() {
+	return dir;
+}

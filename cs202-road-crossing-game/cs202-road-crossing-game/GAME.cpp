@@ -47,7 +47,7 @@ void GAME::initEnemies()
     this->spawnTimerMax = 50.f;
     this->spawnTimer = this->spawnTimerMax;
     spawnTimeCheck += clock.getElapsedTime();
-    std::cout << spawnTimeCheck.asSeconds() << "\n";
+    /*std::cout << spawnTimeCheck.asSeconds() << "\n";*/
     if (spawnTimeCheck.asSeconds() < 0.05f) {
         return;
     }
@@ -55,9 +55,9 @@ void GAME::initEnemies()
     int size = 0;
     int height = SCREEN_HEIGHT - 150;
     int minHeight = -1*(this->gui->getBGSize().y - SCREEN_HEIGHT);
-    std::cout << height << " " << minHeight << "\n";
+    //std::cout << height << " " << minHeight << "\n";
     while (height >= minHeight) {
-        std::cout << "doing here\n";
+        //std::cout << "doing here\n";
         int isSpawn = rand() % 2;
         if (isSpawn == 0) {
             height -= 150;
@@ -85,6 +85,7 @@ void GAME::initEnemies()
    /* removeOutOfBoundEnemies();*/
 }
 
+
 void GAME::initGUI() {
     this->gui = new GUI(this->window, this->player);
 }
@@ -103,7 +104,6 @@ GAME::GAME()
     this->initWindow();
     
     this->initPlayer();
-
     this->initView();
     this->initTextures();
     this->initSystems();
@@ -112,7 +112,6 @@ GAME::GAME()
     /*this->loadGame();*/
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
-
 }
 
 GAME::GAME(const int a) {
@@ -211,6 +210,11 @@ void GAME::updatePollEvents()
                     if (this->isPause) {
                     }
                     break;
+                case sf::Keyboard::Space:
+                    if (!this->isPause) {
+                        this->playerShoot();
+                    }
+                    break;
                 case sf::Keyboard::R:
                     /*this->resetGame();
                     scene = MENUSCENE;*/
@@ -295,6 +299,7 @@ void GAME::updateInput()
 
 void GAME::updateWorld()
 {
+    //remove 
 }
 
 void GAME::updateView() {
@@ -317,6 +322,9 @@ void GAME::update()
         //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
         this->initEnemies();
+
+        this->removeBullet();
+
         this->player->update(this->gui->getBGSize().y, deltaTime);
 
         this->gui->update(this->level);
@@ -346,6 +354,14 @@ void GAME::render()
 
         // Draw all the stuffs
         this->player->render(*this->window);
+
+        // Update and render bullet
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets[i]->update();
+            bullets[i]->render(*this->window);
+        }
+
+        //render monsters and obstacles
         for (int i = 0; i < monsters.size(); i++) {
             monsters[i]->update();
             monsters[i]->render(*this->window);
@@ -359,7 +375,7 @@ void GAME::render()
         if (this->player->getHp() <= 0)
             this->gui->renderWin();
         break;
-
+         
     case PAUSEGAME:
         this->renderWorld();
         this->gui->render();
@@ -529,13 +545,30 @@ void GAME::setIsPause(bool isPause) {
 }
 
 void GAME::removeOutOfBoundEnemies() {
-    /*for (int i = 0; i < monsters.size(); i++) {
-        if (monsters[i]->getDir() == 1 and monsters[i]->getPosition() > this->window->getSize().x + 100) {
-            delete monsters[i];
-            monsters.remove(monsters[i]);
+    for (int i = 0; i < monsters.size(); i++) {
+        if (monsters[i]->getDir() == 1 && monsters[i]->getPos().x > this->window->getSize().x + 150) {
+            std::swap(monsters[i], monsters[monsters.size() - 1]);
+            monsters.pop_back();
             i--;
         }
-    }*/
+        else if (monsters[i]->getDir() == -1 && monsters[i]->getPos().x < 0 - 150) {
+            std::swap(monsters[i], monsters[monsters.size() - 1]);
+            monsters.pop_back();
+            i--;
+        }
+    }
+    for (int i = 0; i < obstacles.size(); i++) {
+        if (obstacles[i]->getDir() == 1 && obstacles[i]->getPos().x > this->window->getSize().x + 150) {
+            std::swap(obstacles[i], obstacles[obstacles.size() - 1]);
+            monsters.pop_back();
+            i--;
+        }
+        else if (obstacles[i]->getDir() == -1 && obstacles[i]->getPos().x < 0 - 150) {
+            std::swap(obstacles[i], obstacles[obstacles.size() - 1]);
+            obstacles.pop_back();
+            i--;
+        }
+    }
 }
 
 
@@ -569,6 +602,27 @@ void GAME::checkCollision() {
 
         std::cout << "Win case!" << std::endl;
     }
+
+    //damge monsteres and obstacles
+    for (int i = 0; i < bullets.size(); i++) {
+        for (int m=0; m < monsters.size(); m++) {
+            if (monsters[m]->getSprite().getGlobalBounds().intersects(bullets[i]->getSprite().getGlobalBounds())) {
+                monsters[m]->recievedDmg(bullets[i]->getDamage());
+                std::swap(bullets[i], bullets[bullets.size() - 1]);
+                bullets.pop_back();
+                i--;
+            }
+        }
+        for (int m=0; m < obstacles.size(); m++) {
+            if (obstacles[m]->getSprite().getGlobalBounds().intersects(bullets[i]->getSprite().getGlobalBounds())) {
+                obstacles[m]->recievedDmg(bullets[i]->getDamage());
+                std::swap(bullets[i], bullets[bullets.size() - 1]);
+                bullets.pop_back();
+                i--;
+            }
+        }
+    }
+    this->removeDeadEnemie();
 }
 
 //reset game
@@ -585,5 +639,38 @@ void GAME::resetGame()
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
     //this->gui->initPauseMenu();
+}  
 
+void GAME::playerShoot() {
+    sf::Vector2f pos = this->player->getPos();
+    this->bullets.push_back(new BULLET(pos));
+
+}
+
+void GAME::removeDeadEnemie() {
+    for (int i = 0; i < monsters.size(); i++) {
+        if (monsters[i]->getHP() == 0) {
+            std::swap(monsters[i], monsters[monsters.size() - 1]);
+            monsters.pop_back();
+            i--;
+        }
+    }
+    for (int i = 0; i < obstacles.size(); i++) {
+        if (obstacles[i]->getHP() == 0) {
+            std::swap(obstacles[i], obstacles[obstacles.size() - 1]);
+            obstacles.pop_back();
+            /*std::cout << "Remove obstacle " << i << std::endl;*/
+            i--;
+        }
+    }
+}
+
+void GAME::removeBullet() {
+    for (int i = 0; i < bullets.size(); i++) {
+        if (bullets[i]->getMoveLength() == 0) {
+            std::swap(bullets[i], bullets[bullets.size() - 1]);
+            bullets.pop_back();
+            i--;
+        }
+    }
 }

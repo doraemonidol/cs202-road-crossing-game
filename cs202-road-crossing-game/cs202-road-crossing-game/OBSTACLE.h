@@ -22,4 +22,5 @@ public:
 	sf::Sprite getSprite();
 	int getHP();
 	void recievedDmg(int dmg);
+	int getDir();
 };

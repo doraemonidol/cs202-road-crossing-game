@@ -1,5 +1,6 @@
 #pragma once
 #include "SPACESHIP.h"
+#include "BULLET.h"
 #include "MENU.h"
 #include "SoundEffect.hpp"
 #include "SoundManager.hpp"
@@ -33,6 +34,10 @@ private:
 
     //Player
     SPACESHIP* player;
+    std::vector<BULLET*>  bullets;
+    sf::Clock reloadBullet;
+    float reloadBulletTime;
+    int remainBullets;
     GUI* gui;
 
     //Scene
@@ -89,6 +94,9 @@ public:
     void removeOutOfBoundEnemies();
     void resetGame();
     void checkCollision();
+    void playerShoot();
+    void removeDeadEnemie();
+    void removeBullet();
     //set
     void setSPACESHIP(SPACESHIP player);
     void setGUI(GUI gui);
