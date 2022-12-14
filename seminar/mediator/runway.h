@@ -7,15 +7,15 @@
 class Flight;
 class Runway;
 class Command;
-class IATCMediator;
+class IMediator;
 
 class Runway : public Command {
 private:
     std::string id;
-    IATCMediator* atcMediator;
+    IMediator* atcMediator;
 
 public:
-    Runway(IATCMediator*& atcMediator, std::string _id);
+    Runway(IMediator*& atcMediator, std::string _id);
     void land(std::string id = "");
     std::string getID();
 };

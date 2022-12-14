@@ -1,6 +1,6 @@
 #include "runway.h"
 
-Runway::Runway(IATCMediator*& atcMediator, std::string _id)
+Runway::Runway(IMediator*& atcMediator, std::string _id)
 {
     this->atcMediator = atcMediator;
     this->id = _id;

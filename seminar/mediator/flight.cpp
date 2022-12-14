@@ -1,6 +1,6 @@
 #include "flight.h"
 
-Flight::Flight(IATCMediator*& atcMediator, std::string _id)
+Flight::Flight(IMediator*& atcMediator, std::string _id)
 {
     this->atcMediator = atcMediator;
     this->id = _id;

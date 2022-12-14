@@ -7,10 +7,10 @@
 class Flight : public Command {
 private:
     std::string id;
-    IATCMediator* atcMediator;
+    IMediator* atcMediator;
 
 public:
-    Flight(IATCMediator*& atcMediator, std::string _id);
+    Flight(IMediator*& atcMediator, std::string _id);
     void land(std::string id);
     void getReady();
     std::string getID();

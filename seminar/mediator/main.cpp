@@ -6,8 +6,8 @@ using namespace std;
 
 int main()
 {
-    IATCMediator* atcMediator = new AirportMediator();
-    Flight* sparrow101 = new Flight(atcMediator, "Sparrow101");
+    IMediator* atcMediator = new AirportMediator();
+    Flight* sparrow101 = new Flight(atcMediator, "Group8");
     Runway* mainRunway = new Runway(atcMediator, "TanSonNhatAirport");
     sparrow101->getReady();
     mainRunway->land();

@@ -8,7 +8,7 @@
 class Flight;
 class Runway;
 
-class IATCMediator {
+class IMediator {
 public:
     virtual void registerRunway(Runway* runway, bool status) = 0;
     virtual void registerFlight(Flight* flight) = 0;
