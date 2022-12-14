@@ -14,8 +14,10 @@ public:
 	OBSTACLE(){};
 	OBSTACLE(int dir, int pos, int height){};
 	virtual void render(sf::RenderTarget& target) = 0;
-	virtual void update() = 0;
+    virtual void update(float deltaTime) = 0;
 	virtual const sf::Vector2f& getPos() const = 0;
+    virtual bool isCollide(sf::FloatRect obj) = 0;
+    virtual bool canDelete() = 0;
 	float getSpeed();
 	void addSpeed(float speedAdd); //speed += speedAdd
 	void setSpeed(float speed); //set speed to

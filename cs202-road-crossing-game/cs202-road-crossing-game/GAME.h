@@ -82,12 +82,15 @@ public:
     void updateInput();
     void updateWorld();
     void updateView();
-    //void updateBullets();
-    //void updateEnemies();
+    void updateBullets();
+    void updateEnemies(float deltaTime);
     //void updateCombat();
     void update();
+    //void updateEnemies();
     void pauseGame();
     void renderWorld();
+    void renderBullets();
+    void renderEnemies();
     void render();
     void saveGame();
     void loadGame();

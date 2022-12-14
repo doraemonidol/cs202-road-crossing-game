@@ -8,6 +8,9 @@ public:
 
     bool Update(int row, float deltaTime, bool faceRight);
     void initAnim(sf::Texture* texture, sf::Vector2u imgCnt, float switchTime);
+    sf::Vector2u getCurImgCnt();
+    void setSwitchTime(float switchTime);
+    void setCurImg(sf::Vector2u newImg);
     sf::IntRect uvRect;
 
 private:

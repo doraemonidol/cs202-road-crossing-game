@@ -54,3 +54,18 @@ void ANIMATION::initAnim(sf::Texture* texture, sf::Vector2u imgCnt, float switch
     uvRect.width = texture->getSize().x / float(imgCnt.x);
     uvRect.height = texture->getSize().y / float(imgCnt.y);
 }
+
+sf::Vector2u ANIMATION::getCurImgCnt()
+{
+    return curImg;
+}
+
+void ANIMATION::setSwitchTime(float switchTime)
+{
+    this->switchTime = switchTime;
+}
+
+void ANIMATION::setCurImg(sf::Vector2u newImg)
+{
+    curImg = newImg;
+}

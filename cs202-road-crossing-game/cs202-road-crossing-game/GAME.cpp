@@ -1,6 +1,6 @@
 #include "OBSTACLE.h"
 #include "UFO.h"
-#include "METEOR.h"
+#include "LASER.h"
 #include "MONSTER.h"
 #include "BIG_MONSTER.h"
 #include "SMALL_MONSTER.h"
@@ -47,7 +47,7 @@ void GAME::initEnemies()
     this->spawnTimerMax = 50.f;
     this->spawnTimer = this->spawnTimerMax;
     spawnTimeCheck += clock.getElapsedTime();
-    /*std::cout << spawnTimeCheck.asSeconds() << "\n";*/
+    //std::cout << spawnTimeCheck.asSeconds() << "\n";
     if (spawnTimeCheck.asSeconds() < 0.05f) {
         return;
     }
@@ -64,6 +64,7 @@ void GAME::initEnemies()
             continue;
         }
         int type = rand() % 4 + 1;
+        //type = 4;
         std::cout << type << std::endl;
         int dir = rand() % 2;
         dir = dir == 1 ? 1 : -1;
@@ -78,7 +79,7 @@ void GAME::initEnemies()
             obstacles.push_back(new UFO(dir, pos, height));
         }
         else{
-            obstacles.push_back(new METEOR(dir, pos, height));
+            obstacles.push_back(new LASER(height));
         }
         height -= 150;
     }
@@ -149,6 +150,7 @@ GAME::~GAME()
 void GAME::run()
 {
     while (this->window->isOpen()) {
+        //std::cout << "Game Update \n";
         soundController->update();
         deltaTime = clock.restart().asSeconds();
         this->updatePollEvents();
@@ -323,7 +325,8 @@ void GAME::update()
         // this->updateInput();
         this->initEnemies();
 
-        this->removeBullet();
+        this->updateEnemies(deltaTime);
+        this->updateBullets();
 
         this->player->update(this->gui->getBGSize().y, deltaTime);
 
@@ -352,24 +355,13 @@ void GAME::render()
         this->renderWorld();
         this->gui->render();
 
+
+        // Render bullet, enemies
+        this->renderBullets();
+        this->renderEnemies();
+
         // Draw all the stuffs
         this->player->render(*this->window);
-
-        // Update and render bullet
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets[i]->update();
-            bullets[i]->render(*this->window);
-        }
-
-        //render monsters and obstacles
-        for (int i = 0; i < monsters.size(); i++) {
-            monsters[i]->update();
-            monsters[i]->render(*this->window);
-        }
-        for (int i = 0; i < obstacles.size(); i++) {
-            obstacles[i]->update();
-            obstacles[i]->render(*this->window);
-        }
 
         // Game over screen
         if (this->player->getHp() <= 0)
@@ -380,14 +372,13 @@ void GAME::render()
         this->renderWorld();
         this->gui->render();
 
+        // Render bullet, enemies
+        this->renderBullets();
+        this->renderEnemies();
+
         // Draw all the stuffs
         this->player->render(*this->window);
-        for (int i = 0; i < monsters.size(); i++) {
-            monsters[i]->render(*this->window);
-        }
-        for (int i = 0; i < obstacles.size(); i++) {
-            obstacles[i]->render(*this->window);
-        }
+
         this->gui->renderPauseMenu();
         break;
 
@@ -395,14 +386,13 @@ void GAME::render()
         this->renderWorld();
         this->gui->render();
 
+        // Render bullet, enemies
+        this->renderBullets();
+        this->renderEnemies();
+
         // Draw all the stuffs
         this->player->render(*this->window);
-        for (int i = 0; i < monsters.size(); i++) {
-            monsters[i]->render(*this->window);
-        }
-        for (int i = 0; i < obstacles.size(); i++) {
-            obstacles[i]->render(*this->window);
-        }
+
         this->gui->renderWin();
         break;
 
@@ -413,15 +403,14 @@ void GAME::render()
         this->renderWorld();
         this->gui->render();
 
+        // Render bullet, enemies
+        this->renderBullets();
+        this->renderEnemies();
+
         // Draw all the stuffs
         this->player->render(*this->window);
         this->player->renderDead(*this->window);
-        for (int i = 0; i < monsters.size(); i++) {
-            monsters[i]->render(*this->window);
-        }
-        for (int i = 0; i < obstacles.size(); i++) {
-            obstacles[i]->render(*this->window);
-        }
+
         if (!isDead)
             this->gui->renderLose();
         break;
@@ -487,13 +476,13 @@ GAME& GAME::operator=(GAME other) {
 
 void GAME::playMusic(std::string file)
 {
-    std::cout << "music1\n";
+   // std::cout << "music1\n";
     soundController->playSound(file);
 }
 
 void GAME::playSound(std::string file)
 {
-    std::cout << "music4\n";
+   // std::cout << "music4\n";
     soundController->playEffect(file);
 }
 
@@ -585,7 +574,7 @@ void GAME::checkCollision() {
         }
     }
     for (OBSTACLE* obstacle : this->obstacles) {
-        if (obstacle->getSprite().getGlobalBounds().intersects(this->player->getSprite().getGlobalBounds())) {
+        if (obstacle->isCollide(this->player->getSprite().getGlobalBounds())) {
             scene = LOSESCENE;
             isDead = true;
             playMusic(music["LOSE"]);
@@ -605,24 +594,55 @@ void GAME::checkCollision() {
 
     //damge monsteres and obstacles
     for (int i = 0; i < bullets.size(); i++) {
+
+        //std::cout << i << std::endl;
         for (int m=0; m < monsters.size(); m++) {
             if (monsters[m]->getSprite().getGlobalBounds().intersects(bullets[i]->getSprite().getGlobalBounds())) {
                 monsters[m]->recievedDmg(bullets[i]->getDamage());
-                std::swap(bullets[i], bullets[bullets.size() - 1]);
-                bullets.pop_back();
+                bullets.erase(bullets.begin() + i);
                 i--;
             }
         }
-        for (int m=0; m < obstacles.size(); m++) {
+      /*  for (int m=0; m < obstacles.size(); m++) {
             if (obstacles[m]->getSprite().getGlobalBounds().intersects(bullets[i]->getSprite().getGlobalBounds())) {
                 obstacles[m]->recievedDmg(bullets[i]->getDamage());
-                std::swap(bullets[i], bullets[bullets.size() - 1]);
-                bullets.pop_back();
+                bullets.erase(bullets.begin() + i);
                 i--;
+                std::cout << m << std::endl;
             }
-        }
+        }*/
     }
     this->removeDeadEnemie();
+}
+
+void GAME::updateEnemies(float deltaTime)
+{
+   // std::cout << "Obstacle Size: " << obstacles.size() << "\n";
+    // Update monsters and obstacles
+    for (int i = 0; i < monsters.size(); i++) {
+        monsters[i]->update();
+    }
+    for (int i = 0; i < obstacles.size(); i++) {
+        obstacles[i]->update(deltaTime);
+    }
+}
+
+void GAME::renderBullets() {
+    // Update and render bullet
+    for (int i = 0; i < bullets.size(); i++) {
+        bullets[i]->render(*this->window);
+    }
+}
+
+void GAME::renderEnemies()
+{
+    // Render monsters and obstacles
+    for (int i = 0; i < monsters.size(); i++) {
+        monsters[i]->render(*this->window);
+    }
+    for (int i = 0; i < obstacles.size(); i++) {
+        obstacles[i]->render(*this->window);
+    }
 }
 
 //reset game
@@ -639,6 +659,15 @@ void GAME::resetGame()
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
     //this->gui->initPauseMenu();
+}
+
+void GAME::updateBullets()
+{
+    this->removeBullet();
+    // Update and render bullet
+    for (int i = 0; i < bullets.size(); i++) {
+        bullets[i]->update();
+    }
 }  
 
 void GAME::playerShoot() {
@@ -650,26 +679,24 @@ void GAME::playerShoot() {
 void GAME::removeDeadEnemie() {
     for (int i = 0; i < monsters.size(); i++) {
         if (monsters[i]->getHP() == 0) {
-            std::swap(monsters[i], monsters[monsters.size() - 1]);
-            monsters.pop_back();
+            monsters.erase(monsters.begin() + i);
             i--;
         }
     }
-    for (int i = 0; i < obstacles.size(); i++) {
+    /*for (int i = 0; i < obstacles.size(); i++) {
         if (obstacles[i]->getHP() == 0) {
             std::swap(obstacles[i], obstacles[obstacles.size() - 1]);
             obstacles.pop_back();
-            /*std::cout << "Remove obstacle " << i << std::endl;*/
+            std::cout << "Remove obstacle " << i << std::endl;
             i--;
         }
-    }
+    }*/
 }
 
 void GAME::removeBullet() {
     for (int i = 0; i < bullets.size(); i++) {
         if (bullets[i]->getMoveLength() == 0) {
-            std::swap(bullets[i], bullets[bullets.size() - 1]);
-            bullets.pop_back();
+            bullets.erase(bullets.begin() + i);
             i--;
         }
     }

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BULLET.cpp" />
+    <ClCompile Include="LASER.cpp" />
     <ClCompile Include="OPTIONS.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -30,7 +31,6 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MENU.cpp" />
-    <ClCompile Include="METEOR.cpp" />
     <ClCompile Include="MONSTER.cpp" />
     <ClCompile Include="OBSTACLE.cpp" />
     <ClCompile Include="SMALL_MONSTER.cpp" />
@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BULLET.h" />
+    <ClInclude Include="LASER.h" />
     <ClInclude Include="OPTIONS.h" />
     <ClInclude Include="SoundEffect.hpp" />
     <ClInclude Include="SoundManager.hpp" />
@@ -49,7 +50,6 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MENU.h" />
-    <ClInclude Include="METEOR.h" />
     <ClInclude Include="MONSTER.h" />
     <ClInclude Include="OBSTACLE.h" />
     <ClInclude Include="SMALL_MONSTER.h" />

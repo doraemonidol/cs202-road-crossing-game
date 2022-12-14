@@ -1,6 +1,6 @@
 #include "OBSTACLE.h"
 #include "UFO.h"
-#include "METEOR.h"
+#include "LASER.h"
 #include "MONSTER.h"
 #include "BIG_MONSTER.h"
 #include "SMALL_MONSTER.h"

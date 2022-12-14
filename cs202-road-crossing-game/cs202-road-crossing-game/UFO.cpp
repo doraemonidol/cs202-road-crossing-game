@@ -1,6 +1,6 @@
 #include "OBSTACLE.h"
 #include "UFO.h"
-#include "METEOR.h"
+#include "LASER.h"
 #include "MONSTER.h"
 #include "BIG_MONSTER.h"
 #include "SMALL_MONSTER.h"
@@ -36,8 +36,19 @@ void UFO::render(sf::RenderTarget &target){
 	target.draw(this->sprite);
 }
 
-void UFO::update(){
+void UFO::update(float deltaTime)
+{
 	this->sprite.move(speed * dir, 0);
+}
+
+bool UFO::isCollide(sf::FloatRect obj)
+{
+    return this->sprite.getGlobalBounds().intersects(obj);
+}
+
+bool UFO::canDelete()
+{
+    return true;
 }
 
 const sf::Vector2f &UFO::getPos() const{
