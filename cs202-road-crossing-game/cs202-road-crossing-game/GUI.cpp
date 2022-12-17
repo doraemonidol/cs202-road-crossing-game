@@ -144,6 +144,22 @@ GUI::~GUI()
     }*/
 }
 
+void GUI::resetGUI()
+{
+    this->levelText.setPosition(700.f, 10.f);
+    loseTitle.setPosition(this->window->getSize().x / 2.f - this->loseTitle.getGlobalBounds().width / 2.f,
+        this->window->getSize().y / 2.f - this->loseTitle.getGlobalBounds().height / 2.f);
+    this->loseText.setPosition(
+        this->window->getSize().x / 2.f - this->loseText.getGlobalBounds().width / 2.f,
+        this->window->getSize().y / 2.f - this->loseText.getGlobalBounds().height / 2.f - loseTitle.getGlobalBounds().height);
+    winTitle.setPosition(this->window->getSize().x / 2.f - this->winTitle.getGlobalBounds().width / 2.f,
+        this->window->getSize().y / 2.f - this->winTitle.getGlobalBounds().height / 2.f);
+    this->winText.setPosition(
+        this->window->getSize().x / 2.f - this->winText.getGlobalBounds().width / 2.f,
+        this->window->getSize().y / 2.f - this->winText.getGlobalBounds().height / 2.f - winTitle.getGlobalBounds().height);
+    this->pauseText.setPosition(5.0f, this->window->getSize().y - 20.0f);
+}
+
 void GUI::updateHealth(int health)
 {
     float y = this->getDisplacement();
@@ -197,7 +213,7 @@ void GUI::update(int level)
 
 void GUI::render()
 {
-    this->window->draw(this->worldBackground);
+    this->renderBG();
     this->window->draw(this->levelText);
     this->renderGamePause();
     for (int i = 1; i <= this->player->getHpMax(); i++) {
@@ -213,6 +229,11 @@ void GUI::updateGamePause()
 {
     float y = this->getDisplacement();
     pauseText.setPosition(10, SCREEN_HEIGHT - pauseText.getGlobalBounds().height - 10 - y);
+}
+
+void GUI::renderBG()
+{
+    this->window->draw(this->worldBackground);
 }
 
 void GUI::renderGamePause()
@@ -279,8 +300,8 @@ void GUI::closeLose()
 
 void GUI::initWin()
 {
-    winLoseDisplacement = this->getDisplacement() + 100;
-    std::cout << winLoseDisplacement << "<< here\n";
+    winLoseDisplacement = this->getDisplacement() + 400;
+    //std::cout << winLoseDisplacement << "<< here\n";
     this->winMenu->movePos(sf::Vector2f(0, winLoseDisplacement));
     this->winMenu->unpdateButtonDisplacement(sf::Vector2f(0, winLoseDisplacement - 100));
     this->winMenu->init();
@@ -293,9 +314,7 @@ int GUI::updateWinMenu(sf::Event e, GAME* gm)
 
 void GUI::renderWin()
 {
-    float y = this->getDisplacement();
-
-    winTitle.setPosition(winTitle.getPosition().x, y / 2 + 50);
+    winTitle.setPosition(winTitle.getPosition().x, SCREEN_HEIGHT / 2 - winTitle.getGlobalBounds().height - 25);
     this->window->draw(winTitle);
 
     winText.setPosition(winText.getPosition().x, winTitle.getPosition().y + winTitle.getGlobalBounds().height - 25);

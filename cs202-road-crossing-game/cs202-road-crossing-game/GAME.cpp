@@ -6,8 +6,7 @@
 #include "SMALL_MONSTER.h"
 #include "main.h"
 #include "GUI.h"
-#include "GAME.h"
-#include <iostream>
+#include "GAME.h"        
 //Private functions
 void GAME::initWindow()
 {
@@ -98,6 +97,7 @@ void GAME::initMenu() {
 
     //Con/Des
 GAME::GAME()
+    : sceneManager()
 {
     soundController = new SoundManager(music["TITLE"]);
     this->isPause = false;
@@ -113,6 +113,7 @@ GAME::GAME()
     /*this->loadGame();*/
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
+    this->sceneManager.attachView(&view);
 }
 
 GAME::GAME(const int a) {
@@ -305,6 +306,7 @@ void GAME::updateWorld()
 }
 
 void GAME::updateView() {
+    std::cout << "updating view\n";
     float y = player->getPos().y;
     if (y > SCREEN_HEIGHT / 2)
         y = SCREEN_HEIGHT / 2;
@@ -320,7 +322,6 @@ void GAME::update()
 {
     switch (scene) {
     case INGAME:
-        this->checkCollision();
         //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
         this->initEnemies();
@@ -335,7 +336,14 @@ void GAME::update()
         this->updateWorld();
 
         this->updateView();
+        this->checkCollision();
         break;
+    case NEXTLEVEL:
+        bool opt = sceneManager.update(this->gui->getBGSize().y, deltaTime, scene);
+        if (opt) {
+            this->gui->resetGUI();
+            scene = WINSCENE;
+        }
     }
 }
 
@@ -354,7 +362,6 @@ void GAME::render()
         // Draw world
         this->renderWorld();
         this->gui->render();
-
 
         // Render bullet, enemies
         this->renderBullets();
@@ -383,16 +390,17 @@ void GAME::render()
         break;
 
     case WINSCENE:
-        this->renderWorld();
-        this->gui->render();
+        //this->renderWorld();
+        //this->gui->render();
 
-        // Render bullet, enemies
-        this->renderBullets();
-        this->renderEnemies();
+        //// Render bullet, enemies
+        //this->renderBullets();
+        //this->renderEnemies();
 
-        // Draw all the stuffs
-        this->player->render(*this->window);
+        //// Draw all the stuffs
+        //this->player->render(*this->window);
 
+        this->gui->renderBG();
         this->gui->renderWin();
         break;
 
@@ -414,7 +422,9 @@ void GAME::render()
         if (!isDead)
             this->gui->renderLose();
         break;
-    
+    default:
+        this->gui->renderBG();
+        this->sceneManager.render(*this->window, scene);
     }
 
     this->window->display();
@@ -585,8 +595,13 @@ void GAME::checkCollision() {
     }
     int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
     if (this->player->getPos().y == minHeight) {
-        scene = WINSCENE;
+        this->scene = NEXTLEVEL;
+        //std::cout
+        this->sceneManager.resetNextLevel();
         playMusic(music["WIN"]);
+        //this->initPlayer();
+        view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+        this->window->setView(view);
         this->gui->initWin();
 
         std::cout << "Win case!" << std::endl;
@@ -600,7 +615,10 @@ void GAME::checkCollision() {
             if (monsters[m]->getSprite().getGlobalBounds().intersects(bullets[i]->getSprite().getGlobalBounds())) {
                 monsters[m]->recievedDmg(bullets[i]->getDamage());
                 bullets.erase(bullets.begin() + i);
+                //std::cout << bullets.size() << "< < < < < <\n >>>>>>";
                 i--;
+                if (i < 0)
+                    break;
             }
         }
       /*  for (int m=0; m < obstacles.size(); m++) {
@@ -612,6 +630,7 @@ void GAME::checkCollision() {
             }
         }*/
     }
+   // std::cout << "passed\n";
     this->removeDeadEnemie();
 }
 
@@ -652,6 +671,7 @@ void GAME::resetGame()
     // scene = MENUSCENE;
     view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
     this->window->setView(view);
+    this->gui->resetGUI();
     delete this->player;
     this->initPlayer();
     monsters.clear();

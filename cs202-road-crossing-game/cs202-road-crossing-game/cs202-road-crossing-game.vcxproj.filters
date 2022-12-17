@@ -30,9 +30,6 @@
     <ClCompile Include="BIG_MONSTER.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="METEOR.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MONSTER.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,6 +63,12 @@
     <ClCompile Include="BULLET.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LASER.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SCREEN_MANAGER.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SPACESHIP.h">
@@ -75,9 +78,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GAME.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="METEOR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OBSTACLE.h">
@@ -117,6 +117,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BULLET.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LASER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SCREEN_MANAGER.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

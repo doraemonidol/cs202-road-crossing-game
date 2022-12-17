@@ -2,8 +2,9 @@
 #include "SPACESHIP.h"
 #include "BULLET.h"
 #include "MENU.h"
+#include "SCREEN_MANAGER.h"  
 #include "SoundEffect.hpp"
-#include "SoundManager.hpp"
+#include "SoundManager.hpp"  
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 enum Scene;
@@ -13,6 +14,7 @@ enum pauseMenuBtn;
 class GUI;
 class MONSTER;
 class OBSTACLE;
+class SCENE_MANAGER;
 
 class GAME {
 private:
@@ -31,6 +33,7 @@ private:
     unsigned level, scene;
     float deltaTime = 0.0f;
     sf::Clock clock;
+    SCENE_MANAGER sceneManager;
 
     //Player
     SPACESHIP* player;

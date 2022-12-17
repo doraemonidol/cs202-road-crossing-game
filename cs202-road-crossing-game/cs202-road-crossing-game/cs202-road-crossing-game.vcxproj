@@ -22,6 +22,7 @@
     <ClCompile Include="BULLET.cpp" />
     <ClCompile Include="LASER.cpp" />
     <ClCompile Include="OPTIONS.cpp" />
+    <ClCompile Include="SCREEN_MANAGER.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="UTILS.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="BULLET.h" />
     <ClInclude Include="LASER.h" />
     <ClInclude Include="OPTIONS.h" />
+    <ClInclude Include="SCREEN_MANAGER.h" />
     <ClInclude Include="SoundEffect.hpp" />
     <ClInclude Include="SoundManager.hpp" />
     <ClInclude Include="UTILS.h" />

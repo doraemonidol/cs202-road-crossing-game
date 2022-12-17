@@ -13,7 +13,8 @@
 #include <string.h>
 #include <map>
 #include <sstream>
-#include <unordered_map>
+#include <unordered_map> 
+#include <iostream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -39,6 +40,8 @@ enum btnState {
 enum Scene {
     MENUSCENE,
     INGAME,
+    NEXTLEVEL,
+    FINALLEVEL,
     PAUSEGAME,
     WINSCENE,
     LOSESCENE,

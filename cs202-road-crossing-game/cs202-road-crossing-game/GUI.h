@@ -31,13 +31,15 @@ private:
 
     //Private functions
     void initTextures();
-    void initBG();
     void initGUI();
 
 public:
+    void initBG();
     GUI();
     GUI(sf::RenderWindow* window, SPACESHIP* player);
     virtual ~GUI();
+
+    void resetGUI();
 
     float getDisplacement();
     sf::Vector2u getBGSize();
@@ -50,6 +52,7 @@ public:
     void render();
 
     // Game pause
+    void renderBG();
     void renderGamePause();
     void updateGamePause();
 
