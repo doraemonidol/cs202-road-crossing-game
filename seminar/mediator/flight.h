@@ -2,9 +2,8 @@
 #include "Header.h"
 #include "runway.h"
 #include "mediator.h"
-#include "BaseComponent.h"
 
-class Flight : public Command {
+class Flight {
 private:
     std::string id;
     IMediator* atcMediator;

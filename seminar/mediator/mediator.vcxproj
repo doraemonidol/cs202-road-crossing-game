@@ -133,7 +133,6 @@
     <ClCompile Include="runway.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="flight.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="IMediator.h" />
