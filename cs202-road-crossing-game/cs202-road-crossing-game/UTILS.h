@@ -25,6 +25,8 @@ public:
     int update(sf::RenderWindow* window, sf::Event e);
     sf::FloatRect getSize();
     int getIndex();
+    void changeText(std::string newText);
+    std::string getText();
 
 private:
     sf::RectangleShape button;

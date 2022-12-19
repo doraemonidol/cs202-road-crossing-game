@@ -58,6 +58,10 @@ void MENU::init()
     curState = mainMenu;
 }
 
+void MENU::ToggleSound() {
+    this->settingBtn->changeText(0);
+}
+
 void MENU::draw(sf::RenderWindow* window)
 {
     window->draw(this->worldBackground);

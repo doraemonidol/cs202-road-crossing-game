@@ -10,6 +10,7 @@ SoundManager::SoundManager()
         throw std::runtime_error("SoundManager is unique.");
     _music.setLoop(true);
     _musicName = "";
+    isMute = false;
 }
 
 SoundManager::SoundManager(std::string name)
@@ -20,6 +21,7 @@ SoundManager::SoundManager(std::string name)
         throw std::runtime_error("SoundManager is unique.");
     _music.setLoop(true);
     playSound(name);
+    isMute = false;
 }
 
 SoundManager::~SoundManager(void)
@@ -28,6 +30,8 @@ SoundManager::~SoundManager(void)
 
 void SoundManager::playSound(std::string name)
 {
+    if (isMute)
+        return;
     if (!_music.openFromFile(name))
         throw std::runtime_error("sfml error : openFromFile.");
     _music.play();
@@ -36,6 +40,8 @@ void SoundManager::playSound(std::string name)
 
 void SoundManager::playEffect(std::string name)
 {
+    if (isMute)
+        return;
     if (_sounds.size() > maxSounds)
         return;
     _sounds.push(std::shared_ptr<SoundEffect>(new SoundEffect(name)));
@@ -43,7 +49,19 @@ void SoundManager::playEffect(std::string name)
 
 void SoundManager::update(void)
 {
+    if (isMute)
+        return;
     SoundEffect::handleQueue(_sounds);
+}
+
+void SoundManager::switchMute()
+{
+    isMute = !isMute;
+    if (isMute) {
+        _music.pause();
+    } else {
+        _music.play();
+    }
 }
 
 std::string SoundManager::toString(void) const

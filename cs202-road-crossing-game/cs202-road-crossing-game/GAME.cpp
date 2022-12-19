@@ -186,6 +186,8 @@ void GAME::updatePollEvents()
                 scene = INGAME;
                 break;
             case TOGGLESOUND:
+                soundController->switchMute();
+                menu.ToggleSound();
                 break;
             case TOGGLETHEME:
                 break;

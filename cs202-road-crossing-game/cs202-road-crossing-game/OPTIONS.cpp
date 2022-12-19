@@ -133,6 +133,15 @@ void OPTIONS::tidyButtons(float padding)
     }
 }
 
+void OPTIONS::changeText(int index)
+{
+    std::string newText = "Sound: ON";
+    if (button[index]->getText() == "Sound: ON")
+        newText = "Sound: OFF";
+
+    button[index]->changeText(newText);
+}
+
 void OPTIONS::pressSFX(GAME* gm)
 {
     gm->playSound(PRESS_SFX);

@@ -29,6 +29,7 @@ public:
     void movePos(sf::Vector2f pos);
     void alignButtons(int type);
     void tidyButtons(float padding);
+    void changeText(int index);
 
     // Sound
     SoundManager* soundController = nullptr;

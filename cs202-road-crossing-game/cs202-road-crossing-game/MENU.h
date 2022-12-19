@@ -25,6 +25,7 @@ public:
     void init();
     void draw(sf::RenderWindow* window);
     int update(sf::RenderWindow* window, sf::Event e, GAME* gm);
+    void ToggleSound();
 
 private:
     sf::Font font;

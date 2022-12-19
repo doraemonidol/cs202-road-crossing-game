@@ -228,3 +228,13 @@ sf::FloatRect BUTTON::getSize() {
 int BUTTON::getIndex() {
     return index;
 }
+
+void BUTTON::changeText(std::string newText)
+{
+    text.setString(newText);
+}
+
+std::string BUTTON::getText()
+{
+    return text.getString().toAnsiString();
+}
