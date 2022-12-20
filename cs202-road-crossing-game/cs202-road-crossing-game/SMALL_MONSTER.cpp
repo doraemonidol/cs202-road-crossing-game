@@ -17,6 +17,7 @@ SMALL_MONSTER::SMALL_MONSTER(){
 	this->sprite.setPosition(-100, 100);
 	speed = 2.0;
 	dir = 0;
+	height = 100;
 	HP = 25;
 }
 
@@ -29,6 +30,7 @@ SMALL_MONSTER::SMALL_MONSTER(int dir, int pos, int height){
 	this->sprite.setPosition(pos, height);
 	speed = 2.0;
 	this->dir = dir;
+	this->height = height;
 	HP = 25;
 }
 

@@ -1,10 +1,13 @@
 #include "TRAFFICLIGHT.h"
 
 TRAFFICLIGHT::TRAFFICLIGHT(int pos, int height){
-	if(!this->texture.loadFromFile("Textures/traffic-light-on.png")){
+	if(!textureON.loadFromFile("Textures/traffic-light-on.png")){
 		std::cout << "ERROR::TRAFFICLIGHT::INITTEXTURE::Could not load texture file.\n";
 	}
-	this->sprite.setTexture(this->texture);
+	if(!textureOFF.loadFromFile("Textures/traffic-light-off.png")){
+		std::cout << "ERROR::TRAFFICLIGHT::INITTEXTURE::Could not load texture file.\n";
+	}
+	this->sprite.setTexture(textureON);
 	this->sprite.scale(0.2f, 0.2f);
 	this->sprite.setPosition(pos, height);
 	this->height = height - 75;
@@ -16,18 +19,23 @@ void TRAFFICLIGHT::render(sf::RenderTarget &target){
 }
 
 void TRAFFICLIGHT::update(){
+	isRed = !isRed;
 	if(isRed){
-		if(!this->texture.loadFromFile("Textures/traffic-light-off.png")){
-			std::cout << "ERROR::TRAFFICLIGHT::INITTEXTURE::Could not load texture file.\n";
-		}
+		sprite.setTexture(textureOFF);
 	}
 	else{
-		if(!this->texture.loadFromFile("Textures/traffic-light-on.png")){
-			std::cout << "ERROR::TRAFFICLIGHT::INITTEXTURE::Could not load texture file.\n";
-		}
+		sprite.setTexture(textureON);
 	}
 }
 
 sf::Sprite TRAFFICLIGHT::getSprite(){
 	return sprite;
+}
+
+bool TRAFFICLIGHT::isRedLight(){
+	return isRed;
+}
+
+int TRAFFICLIGHT::getHeight(){
+	return height;
 }

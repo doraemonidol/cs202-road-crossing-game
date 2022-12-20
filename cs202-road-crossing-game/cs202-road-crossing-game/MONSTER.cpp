@@ -12,6 +12,10 @@ int MONSTER::getDir(){
 	return dir;
 }
 
+int MONSTER::getHeight(){
+	return height;
+}
+
 float MONSTER::getPosition(){
 	return this->sprite.getPosition().x;
 }

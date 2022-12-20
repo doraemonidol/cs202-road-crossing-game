@@ -4,7 +4,8 @@
 class TRAFFICLIGHT{
 private:
 	sf::Sprite sprite;
-	sf::Texture texture;
+	sf::Texture textureON;
+	sf::Texture textureOFF;
 	int height;
 	bool isRed;
 public:
@@ -12,5 +13,7 @@ public:
 	void render(sf::RenderTarget &target);
 	void update();
 	sf::Sprite getSprite();
+	bool isRedLight();
+	int getHeight();
 };
 

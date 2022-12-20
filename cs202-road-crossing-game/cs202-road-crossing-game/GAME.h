@@ -6,6 +6,7 @@
 #include "SoundEffect.hpp"
 #include "SoundManager.hpp"
 #include "TRAFFICLIGHT.h"
+#include <set>
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 enum Scene;
@@ -54,6 +55,7 @@ private:
     std::vector<MONSTER*> monsters;
     std::vector<OBSTACLE*> obstacles;
     std::vector<TRAFFICLIGHT*> lights;
+    std::set<int> redLightHeight;
 
     //Sound
     SoundManager* soundController;
@@ -75,6 +77,7 @@ private:
     void initPlayer();
     void initEnemies();
     void initLights();
+    void changeLight();
 
 public:
     GAME();
@@ -90,7 +93,7 @@ public:
     void updateView();
     void updateBullets();
     void updateEnemies(float deltaTime);
-    void updateLights(float deltaTime);
+    void updateLights();
     //void updateCombat();
     void update();
     //void updateEnemies();

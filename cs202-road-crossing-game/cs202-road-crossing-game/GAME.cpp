@@ -51,6 +51,7 @@ void GAME::initEnemies()
     if (spawnTimeCheck.asSeconds() < 0.05f) {
         return;
     }
+    if(monsters.size() + obstacles.size() > 15) return;
     spawnTimeCheck = sf::seconds(0);
     int size = 0;
     int height = SCREEN_HEIGHT - 150;
@@ -92,6 +93,25 @@ void GAME::initLights(){
     while(height >= minHeight){
         lights.push_back(new TRAFFICLIGHT(25, height + 75));
         height -= 150;
+    }
+}
+
+void GAME::changeLight(){
+    for(int i = 0; i < lights.size(); i++){
+        if(lights[i]->isRedLight()){
+            int isTurnGreen = rand() % 500;
+            if(!isTurnGreen){
+                lights[i]->update();
+                redLightHeight.erase(lights[i]->getHeight());
+            }
+        }
+        else{
+            int isTurnRed = rand() % 1500;
+            if(!isTurnRed){
+                lights[i]->update();
+                redLightHeight.insert(lights[i]->getHeight());
+            }
+        }
     }
 }
 
@@ -324,7 +344,7 @@ void GAME::updateWorld()
 }
 
 void GAME::updateView() {
-    std::cout << "updating view\n";
+    //std::cout << "updating view\n";
     float y = player->getPos().y;
     if (y > SCREEN_HEIGHT / 2)
         y = SCREEN_HEIGHT / 2;
@@ -343,7 +363,7 @@ void GAME::update()
         //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
         this->initEnemies();
-
+        this->changeLight();
         this->updateEnemies(deltaTime);
         this->updateBullets();
 
@@ -660,6 +680,7 @@ void GAME::updateEnemies(float deltaTime)
    // std::cout << "Obstacle Size: " << obstacles.size() << "\n";
     // Update monsters and obstacles
     for (int i = 0; i < monsters.size(); i++) {
+        if(redLightHeight.find(monsters[i]->getHeight()) != redLightHeight.end()) continue;
         monsters[i]->update();
     }
     for (int i = 0; i < obstacles.size(); i++) {
@@ -667,7 +688,7 @@ void GAME::updateEnemies(float deltaTime)
     }
 }
 
-void GAME::updateLights(float deltaTime){
+void GAME::updateLights(){
     // Update lights
     for(int i = 0; i < lights.size(); i++) {
         lights[i]->update();

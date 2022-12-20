@@ -9,6 +9,7 @@ protected:
 	sf::Texture texture;
 	float speed;
 	int dir;
+	int height;
 	int HP;
 public:
 	MONSTER(){}
@@ -20,6 +21,7 @@ public:
 	void addSpeed(float speedAdd); //speed += speedAdd
 	void setSpeed(float speed); //set speed to
 	int getDir();
+	int getHeight();
 	float getPosition();
 	sf::Sprite getSprite();
 	int getHP();
