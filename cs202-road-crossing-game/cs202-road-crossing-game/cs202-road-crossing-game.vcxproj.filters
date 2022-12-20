@@ -69,6 +69,9 @@
     <ClCompile Include="SCREEN_MANAGER.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TRAFFICLIGHT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SPACESHIP.h">
@@ -123,6 +126,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SCREEN_MANAGER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRAFFICLIGHT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -25,6 +25,7 @@
     <ClCompile Include="SCREEN_MANAGER.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="TRAFFICLIGHT.cpp" />
     <ClCompile Include="UTILS.cpp" />
     <ClCompile Include="ANIMATION.cpp" />
     <ClCompile Include="BIG_MONSTER.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="SCREEN_MANAGER.h" />
     <ClInclude Include="SoundEffect.hpp" />
     <ClInclude Include="SoundManager.hpp" />
+    <ClInclude Include="TRAFFICLIGHT.h" />
     <ClInclude Include="UTILS.h" />
     <ClInclude Include="ANIMATION.h" />
     <ClInclude Include="BIG_MONSTER.h" />

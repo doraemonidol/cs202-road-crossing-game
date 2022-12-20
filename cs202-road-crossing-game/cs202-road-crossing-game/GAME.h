@@ -4,7 +4,8 @@
 #include "MENU.h"
 #include "SCREEN_MANAGER.h"  
 #include "SoundEffect.hpp"
-#include "SoundManager.hpp"  
+#include "SoundManager.hpp"
+#include "TRAFFICLIGHT.h"
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 enum Scene;
@@ -52,6 +53,7 @@ private:
     sf::Time spawnTimeCheck;
     std::vector<MONSTER*> monsters;
     std::vector<OBSTACLE*> obstacles;
+    std::vector<TRAFFICLIGHT*> lights;
 
     //Sound
     SoundManager* soundController;
@@ -72,6 +74,7 @@ private:
 
     void initPlayer();
     void initEnemies();
+    void initLights();
 
 public:
     GAME();
@@ -87,6 +90,7 @@ public:
     void updateView();
     void updateBullets();
     void updateEnemies(float deltaTime);
+    void updateLights(float deltaTime);
     //void updateCombat();
     void update();
     //void updateEnemies();
@@ -94,6 +98,7 @@ public:
     void renderWorld();
     void renderBullets();
     void renderEnemies();
+    void renderLights();
     void render();
     void saveGame();
     void loadGame();

@@ -7,6 +7,7 @@
 #include "main.h"
 #include "GUI.h"
 #include "GAME.h"        
+#include "TRAFFICLIGHT.h"
 //Private functions
 void GAME::initWindow()
 {
@@ -85,6 +86,15 @@ void GAME::initEnemies()
    /* removeOutOfBoundEnemies();*/
 }
 
+void GAME::initLights(){
+    int height = SCREEN_HEIGHT - 150;
+    int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
+    while(height >= minHeight){
+        lights.push_back(new TRAFFICLIGHT(25, height + 75));
+        height -= 150;
+    }
+}
+
 
 void GAME::initGUI() {
     this->gui = new GUI(this->window, this->player);
@@ -113,6 +123,7 @@ GAME::GAME()
     /*this->loadGame();*/
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
+    this->initLights();
     this->sceneManager.attachView(&view);
 }
 
@@ -145,6 +156,11 @@ GAME::~GAME()
         delete monster;
     }
     monsters.clear();
+
+    for(TRAFFICLIGHT *light : this->lights) {
+        delete light;
+    }
+    lights.clear();
 }
 
 //Functions
@@ -365,9 +381,10 @@ void GAME::render()
         this->renderWorld();
         this->gui->render();
 
-        // Render bullet, enemies
+        // Render bullet, enemies, lights
         this->renderBullets();
         this->renderEnemies();
+        this->renderLights();
 
         // Draw all the stuffs
         this->player->render(*this->window);
@@ -384,6 +401,7 @@ void GAME::render()
         // Render bullet, enemies
         this->renderBullets();
         this->renderEnemies();
+        this->renderLights();
 
         // Draw all the stuffs
         this->player->render(*this->window);
@@ -416,6 +434,7 @@ void GAME::render()
         // Render bullet, enemies
         this->renderBullets();
         this->renderEnemies();
+        this->renderLights();
 
         // Draw all the stuffs
         this->player->render(*this->window);
@@ -648,6 +667,13 @@ void GAME::updateEnemies(float deltaTime)
     }
 }
 
+void GAME::updateLights(float deltaTime){
+    // Update lights
+    for(int i = 0; i < lights.size(); i++) {
+        lights[i]->update();
+    }
+}
+
 void GAME::renderBullets() {
     // Update and render bullet
     for (int i = 0; i < bullets.size(); i++) {
@@ -666,6 +692,13 @@ void GAME::renderEnemies()
     }
 }
 
+void GAME::renderLights(){
+    // Render lights
+    for(int i = 0; i < lights.size(); i++) {
+        lights[i]->render(*this->window);
+    }
+}
+
 //reset game
 void GAME::resetGame()
 {
@@ -680,6 +713,7 @@ void GAME::resetGame()
     obstacles.clear();
     this->spawnTimeCheck = clock.getElapsedTime();
     this->initEnemies();
+    this->initLights();
     //this->gui->initPauseMenu();
 }
 
