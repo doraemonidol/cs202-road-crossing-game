@@ -84,7 +84,6 @@ void GAME::initEnemies()
         }
         height -= 150;
     }
-   /* removeOutOfBoundEnemies();*/
 }
 
 void GAME::initLights(){
@@ -585,29 +584,37 @@ void GAME::setIsPause(bool isPause) {
 }
 
 void GAME::removeOutOfBoundEnemies() {
-    for (int i = 0; i < monsters.size(); i++) {
-        if (monsters[i]->getDir() == 1 && monsters[i]->getPos().x > this->window->getSize().x + 150) {
-            std::swap(monsters[i], monsters[monsters.size() - 1]);
-            monsters.pop_back();
-            i--;
+    int i = 0;
+    while(i < monsters.size()){
+        if(monsters[i]->getDir() == 1 && monsters[i]->getPos().x > this->window->getSize().x + 150) {
+            MONSTER *temp = monsters[i];
+            monsters.erase(monsters.begin() + i);
+            delete temp;
+            //std::cout << "removed a monster\n";
         }
-        else if (monsters[i]->getDir() == -1 && monsters[i]->getPos().x < 0 - 150) {
-            std::swap(monsters[i], monsters[monsters.size() - 1]);
-            monsters.pop_back();
-            i--;
+        else if(monsters[i]->getDir() == -1 && monsters[i]->getPos().x < 0 - 150) {
+            MONSTER *temp = monsters[i];
+            monsters.erase(monsters.begin() + i);
+            delete temp;
+            //std::cout << "removed a monster\n";
         }
+        else i++;
     }
-    for (int i = 0; i < obstacles.size(); i++) {
-        if (obstacles[i]->getDir() == 1 && obstacles[i]->getPos().x > this->window->getSize().x + 150) {
-            std::swap(obstacles[i], obstacles[obstacles.size() - 1]);
-            monsters.pop_back();
-            i--;
+    i = 0;
+    while(i < obstacles.size()){
+        if(obstacles[i]->getDir() == 1 && obstacles[i]->getPos().x > this->window->getSize().x + 150) {
+            OBSTACLE *temp = obstacles[i];
+            obstacles.erase(obstacles.begin() + i);
+            delete temp;
+            //std::cout << "removed an obstacle\n";
         }
-        else if (obstacles[i]->getDir() == -1 && obstacles[i]->getPos().x < 0 - 150) {
-            std::swap(obstacles[i], obstacles[obstacles.size() - 1]);
-            obstacles.pop_back();
-            i--;
+        else if(obstacles[i]->getDir() == -1 && obstacles[i]->getPos().x < 0 - 150) {
+            OBSTACLE *temp = obstacles[i];
+            obstacles.erase(obstacles.begin() + i);
+            delete temp;
+            //std::cout << "removed an obstacle\n";
         }
+        else i++;
     }
 }
 
@@ -686,6 +693,7 @@ void GAME::updateEnemies(float deltaTime)
     for (int i = 0; i < obstacles.size(); i++) {
         obstacles[i]->update(deltaTime);
     }
+    removeOutOfBoundEnemies();
 }
 
 void GAME::updateLights(){
