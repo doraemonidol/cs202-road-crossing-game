@@ -196,6 +196,7 @@ void SPACESHIP::initAfterLoad() {
 
 bool SPACESHIP::upDead(float deltaTime)
 {
+    //std::cout << deltaTime << " \n";
     if (this->blowup.Update(0, deltaTime, true))
         return true;
     this->blowupSprite.setTextureRect(blowup.uvRect);

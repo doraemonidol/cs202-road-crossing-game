@@ -5,17 +5,16 @@
 #include "SCREEN_MANAGER.h"  
 #include "SoundEffect.hpp"
 #include "SoundManager.hpp"
-#include "TRAFFICLIGHT.h"
-#include <set>
+#include "ENEMY_CONTROLLER.h"
+
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
+#define FPS 60.f
 enum Scene;
 enum btnFunc;
 enum pauseMenuBtn;
 
 class GUI;
-class MONSTER;
-class OBSTACLE;
 class SCENE_MANAGER;
 
 class GAME {
@@ -36,6 +35,8 @@ private:
     float deltaTime = 0.0f;
     sf::Clock clock;
     SCENE_MANAGER sceneManager;
+    ENEMY_CONTROLLER enemyController;
+    LEVEL_MANAGER levelManager;
 
     //Player
     SPACESHIP* player;
@@ -47,15 +48,6 @@ private:
 
     //Scene
     MENU menu;
-
-    //Enemies
-    float spawnTimer;
-    float spawnTimerMax;
-    sf::Time spawnTimeCheck;
-    std::vector<MONSTER*> monsters;
-    std::vector<OBSTACLE*> obstacles;
-    std::vector<TRAFFICLIGHT*> lights;
-    std::set<int> redLightHeight;
 
     //Sound
     SoundManager* soundController;
@@ -73,16 +65,13 @@ private:
     void initSystems();
     void initGUI();
     void initMenu();
-
+    void initEnemy();
     void initPlayer();
-    void initEnemies();
-    void initLights();
-    void changeLight();
 
 public:
     GAME();
     GAME(const int a);
-    virtual ~GAME();
+    ~GAME();
 
     //Functions
     void run();
@@ -92,35 +81,31 @@ public:
     void updateWorld();
     void updateView();
     void updateBullets();
-    void updateEnemies(float deltaTime);
-    void updateLights();
+    void updateEnemies();
     //void updateCombat();
     void update();
-    //void updateEnemies();
-    void pauseGame();
+
     void renderWorld();
     void renderBullets();
     void renderEnemies();
-    void renderLights();
     void render();
+
     void saveGame();
     void loadGame();
-    void removeOutOfBoundEnemies();
     void resetGame();
+
     void checkCollision();
+
     void playerShoot();
-    void removeDeadEnemie();
     void removeBullet();
+
     //set
     void setSPACESHIP(SPACESHIP player);
     void setGUI(GUI gui);
-    void setSpawnTimer(float spawnTimer);
-    void setSpawnTimerMax(float spawnTimerMax);
     void setClocK(sf::Clock clock);
     void setDeltaTime(float deltaTime);
     void setLevel(unsigned level);
     void setScene(unsigned scene);
-    void setTextures(std::map<std::string, sf::Texture*> other);
     void setWindow(sf::RenderWindow window);
     void setView(sf::View view);
     void setIsPause(bool isPause);

@@ -37,7 +37,7 @@ public:
     void initBG();
     GUI();
     GUI(sf::RenderWindow* window, SPACESHIP* player);
-    virtual ~GUI();
+    ~GUI();
 
     void resetGUI();
 

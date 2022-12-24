@@ -132,16 +132,6 @@ GUI::~GUI()
     for (auto& i : this->textures) {
         delete i.second;
     }
-
-    ////Delete bullets
-    //for (auto* i : this->bullets) {
-    //    delete i;
-    //}
-
-    //Delete enemies
-    /* for (auto* i : this->enemies) {
-        delete i;
-    }*/
 }
 
 void GUI::resetGUI()

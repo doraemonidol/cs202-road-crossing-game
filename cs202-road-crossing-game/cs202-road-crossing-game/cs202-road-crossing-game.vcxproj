@@ -20,7 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BULLET.cpp" />
+    <ClCompile Include="ENEMY_BASE.cpp" />
+    <ClCompile Include="ENEMY_CONTROLLER.cpp" />
     <ClCompile Include="LASER.cpp" />
+    <ClCompile Include="LEVEL_MANAGER.cpp" />
     <ClCompile Include="OPTIONS.cpp" />
     <ClCompile Include="SCREEN_MANAGER.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
@@ -41,7 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BULLET.h" />
+    <ClInclude Include="ENEMY_BASE.h" />
+    <ClInclude Include="ENEMY_CONTROLLER.h" />
     <ClInclude Include="LASER.h" />
+    <ClInclude Include="LEVEL_MANAGER.h" />
     <ClInclude Include="OPTIONS.h" />
     <ClInclude Include="SCREEN_MANAGER.h" />
     <ClInclude Include="SoundEffect.hpp" />

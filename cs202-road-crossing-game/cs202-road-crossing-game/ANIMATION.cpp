@@ -25,6 +25,7 @@ bool ANIMATION::Update(int row, float deltaTime, bool faceRight)
     bool res = false;
     curImg.y = row;
     totalTime += deltaTime;
+    //std::cout << totalTime << "\n";
 
     if (totalTime >= switchTime) {
         totalTime -= switchTime;

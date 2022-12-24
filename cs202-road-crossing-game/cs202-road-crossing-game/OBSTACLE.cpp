@@ -1,3 +1,4 @@
+#include "ENEMY_BASE.h"
 #include "OBSTACLE.h"
 #include "UFO.h"
 #include "LASER.h"
@@ -8,29 +9,41 @@
 #include "SPACESHIP.h"
 #include "GAME.h"
 
-float OBSTACLE::getSpeed(){
-	return speed;
+OBSTACLE::OBSTACLE(int dir, ENEMY_BASE* base)
+    : ENEMY_BASE(*base)
+{
+    this->dir = dir;
+    if (this->texture != nullptr)
+        this->sprite.setTexture(*this->texture);
+    this->sprite.setPosition(this->pos);
 }
 
-void OBSTACLE::addSpeed(float speedAdd){
-	speed += speedAdd;
+int OBSTACLE::getDir()
+{
+    return dir;
 }
 
-void OBSTACLE::setSpeed(float speed){
-	this->speed = speed;
+int OBSTACLE::getRowID()
+{
+    return rowID;
 }
 
-sf::Sprite OBSTACLE::getSprite() {
-	return sprite;
+const sf::Vector2f& OBSTACLE::getPos()
+{
+    return (this->sprite.getPosition());
 }
 
-int OBSTACLE::getHP(){
-	return HP;
+float OBSTACLE::getSpeed()
+{
+    return speed;
 }
 
-void OBSTACLE::recievedDmg(int dmg){
-	HP = std::max(0, HP - dmg);
+void OBSTACLE::addSpeed(float speedAdd)
+{
+    speed += speedAdd;
 }
-int OBSTACLE::getDir() {
-	return dir;
+
+void OBSTACLE::setSpeed(float speed)
+{
+    this->speed = speed;
 }

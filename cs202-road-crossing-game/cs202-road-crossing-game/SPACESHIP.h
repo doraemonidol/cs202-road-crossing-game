@@ -30,7 +30,7 @@ private:
 
 public:
     SPACESHIP();
-    virtual ~SPACESHIP();
+    ~SPACESHIP();
 
     //Accessor
     const sf::Vector2f& getPos() const;

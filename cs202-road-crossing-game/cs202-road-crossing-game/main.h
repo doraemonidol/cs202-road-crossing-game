@@ -15,6 +15,10 @@
 #include <sstream>
 #include <unordered_map> 
 #include <iostream>
+#include <algorithm>
+#include <cstdlib>
+#include <queue>
+#include <set>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -29,6 +33,9 @@
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
+#define DESTROY_ZONE 150
+#define MAX_ENEMY_TYPE 4
+#define MAX_LEVEL 3
 
 enum btnState {
     DEFAULT,
@@ -68,4 +75,11 @@ enum pauseMenuBtn {
     SAVEGAME,
     LEADERBOARD,
     BACKTOMENU
+};
+
+enum enemyType {
+    SMALLMONSTER,
+    BIGMONSTER,
+    UFOENEMY,
+    LASERENEMY
 };

@@ -1,36 +1,24 @@
+#include "ENEMY_BASE.h"
 #include "main.h"
 #include "OBSTACLE.h"
 #include "GAME.h"
 #include "LASER.h"
 
-LASER::LASER()
+LASER::LASER(ENEMY_BASE* base)
+    : OBSTACLE(0, base)
 {
-    if (!this->texture.loadFromFile(LASER_BEAM_TEXTURE)) {
-        std::cout << "ERROR::LASER::INITTEXTURE::Could not load texture file.\n";
-    }
-    this->sprite.setTexture(this->texture);
-    this->sprite.setPosition(-100, 100);
-    speed = 1.f;
-    dir = 0;
-    HP = 75;
+    this->initTexture();
     isStarting = true;
     toDelete = false;
 }
 
-LASER::LASER(int height)
+LASER::~LASER()
 {
-    this->height = height;
-    this->initTexture();
-    speed = 1.f;
-    dir = 0;
-    HP = 75;
-    isStarting = true;
-    toDelete = false;
 }
 
 void LASER::initTexture()
 {
-   // std::cout << "initializing texture for laser\n";
+    //std::cout << "initializing texture for laser\n";
     if (!this->laserTexture.loadFromFile(LASER_BEAM_TEXTURE)) {
         std::cout << "ERROR::LASER::INITTEXTURE::Could not load texture file.\n";
     }
@@ -39,7 +27,7 @@ void LASER::initTexture()
    // std::cout << "passed\n";
     this->laser.setTexture(this->laserTexture);
     this->laser.setOrigin(this->laser.getGlobalBounds().width / (2 * LASER_IMG_CNT), 0);
-    this->laser.setPosition(SCREEN_WIDTH / 2, height);
+    this->laser.setPosition(SCREEN_WIDTH / 2, this->pos.y);
 
     //std::cout << "initializing texture for laser\n";
     if (!this->droneLeftTexture.loadFromFile(LEFT_DRONE_TEXTURE)) {
@@ -48,7 +36,7 @@ void LASER::initTexture()
     droneLeftAnim.initAnim(&this->droneLeftTexture, sf::Vector2u { IMG_CNT, 1 }, NORMAL_SWITCH_TIME);
    // std::cout << "passed\n";
     this->droneLeft.setTexture(this->droneLeftTexture);
-    this->droneLeft.setPosition(LEFT_DRONE_STARTING_POSITION, height);
+    this->droneLeft.setPosition(LEFT_DRONE_STARTING_POSITION, this->pos.y);
 
     //std::cout << "initializing texture for laser\n";
     if (!this->droneRightTexture.loadFromFile(RIGHT_DRONE_TEXTURE)) {
@@ -57,46 +45,31 @@ void LASER::initTexture()
     droneRightAnim.initAnim(&this->droneRightTexture, sf::Vector2u { IMG_CNT, 1 }, NORMAL_SWITCH_TIME);
     //std::cout << "passed\n";
     this->droneRight.setTexture(this->droneRightTexture);
-    this->droneRight.setPosition(RIGHT_DRONE_STARTING_POSITION, height);
+    this->droneRight.setPosition(RIGHT_DRONE_STARTING_POSITION, this->pos.y);
 
     laserLeft.setSize(sf::Vector2f(0, this->laser.getGlobalBounds().height));
     laserLeft.setFillColor(sf::Color::Transparent);
     //laserLeft.setOutlineColor(sf::Color::White);
     //laserLeft.setOutlineThickness(2);
     laserLeft.setOrigin(0.f, -5.f);
-    laserLeft.setPosition(LEFT_DRONE_POSITION, height);
+    laserLeft.setPosition(LEFT_DRONE_POSITION, this->pos.y);
 
     laserRight.setSize(laserLeft.getSize());
     laserRight.setFillColor(sf::Color::Transparent);
     //laserRight.setOutlineColor(sf::Color::Blue);
     //laserRight.setOutlineThickness(2);
     laserRight.setOrigin(laserRight.getSize().x, -5.f);
-    laserRight.setPosition(RIGHT_LASER_ORIGIN, height);
+    laserRight.setPosition(RIGHT_LASER_ORIGIN, this->pos.y);
 
     this->droneRight.setTextureRect(droneRightAnim.uvRect);
     this->droneLeft.setTextureRect(droneLeftAnim.uvRect);
+    //std::cout << "laser texture done\n";
 }
 
-void LASER::render(sf::RenderTarget& target)
+bool LASER::update(float deltaTime)
 {
-    target.draw(this->laserLeft);
-    target.draw(this->laserRight);
-    if (isStarting || prevFrame == IMG_CNT - 1) {
-        target.draw(this->droneLeft);
-        target.draw(this->droneRight);
-        return;
-    }
-    int curFrame = this->droneLeftAnim.getCurImgCnt().x;
-    //std::cout << curFrame << std::endl;
-    target.draw(this->droneLeft);
-    target.draw(this->droneRight);
-    if (curFrame >= FRAME_BEGIN_LASER && curFrame < IMG_CNT - 1) {
-        target.draw(this->laser);
-    }
-}
+    // START FRAMES
 
-void LASER::update(float deltaTime)
-{
     if (isStarting) {
         this->droneLeft.move((float)speed, 0);
         this->droneRight.move((float)-speed, 0);/*
@@ -105,20 +78,25 @@ void LASER::update(float deltaTime)
         if (this->droneLeft.getPosition().x >= LEFT_DRONE_POSITION) {
             isStarting = false;
         }
-        return;
+        return false;
     }
+
+    // END FRAMES
+
     if (prevFrame == IMG_CNT - 1) {
         this->droneLeft.move((float)-speed, 0);
         this->droneRight.move((float)speed, 0);
         if (this->droneLeft.getPosition().x <= LEFT_DRONE_STARTING_POSITION) {
             toDelete = true;
+            //std::cout << "laser done";
+            return true;
         }
 
         laserLeft.setSize(sf::Vector2f(0.f, 0.f));
         laserRight.setSize(sf::Vector2f(0.f, 0.f));
-        laserLeft.setPosition(sf::Vector2f(-100, height));
-        laserRight.setPosition(sf::Vector2f(SCREEN_WIDTH + 100, height));
-        return;
+        laserLeft.setPosition(sf::Vector2f(-100, this->pos.y));
+        laserRight.setPosition(sf::Vector2f(SCREEN_WIDTH + 100, this->pos.y));
+        return false;
     }
     //std::cout << deltaTime << "\n";
     this->droneLeftAnim.Update(0, deltaTime, true);
@@ -134,7 +112,7 @@ void LASER::update(float deltaTime)
         laserLeft.setSize(sf::Vector2f(droneLeft.getGlobalBounds().width, droneLeft.getGlobalBounds().height - 10));
         laserRight.setSize(sf::Vector2f(droneRight.getGlobalBounds().width, droneRight.getGlobalBounds().height - 10));
         laserRight.setOrigin(laserRight.getSize().x, -5.f);
-        laserRight.setPosition(RIGHT_LASER_ORIGIN, height);
+        laserRight.setPosition(RIGHT_LASER_ORIGIN, this->pos.y);
     }
 
     if (curFrame == FRAME_BEGIN_LASER) {
@@ -159,7 +137,7 @@ void LASER::update(float deltaTime)
             laserLeft.setSize(sf::Vector2f(this->laserLeft.getSize().x + inc[curFrame - FRAME_BEGIN_LASER] * 2, droneLeft.getGlobalBounds().height - 10));
             laserRight.setSize(laserLeft.getSize());
             laserRight.setOrigin(laserRight.getSize().x, -5.f);
-            laserRight.setPosition(RIGHT_LASER_ORIGIN, height);
+            laserRight.setPosition(RIGHT_LASER_ORIGIN, this->pos.y);
         }
 
         if (curFrame == FRAME_END_SWITCH || curFrame == 0) {
@@ -178,35 +156,59 @@ void LASER::update(float deltaTime)
         this->droneLeftAnim.setSwitchTime(NORMAL_SWITCH_TIME);
         this->droneRightAnim.setSwitchTime(NORMAL_SWITCH_TIME);
     }
+    return false;
 }
 
-const sf::Vector2f& LASER::getPos() const
+void LASER::render(sf::RenderTarget& target)
 {
-    return this->sprite.getPosition();
+    target.draw(this->laserLeft);
+    target.draw(this->laserRight);
+    if (isStarting || prevFrame == IMG_CNT - 1) {
+        target.draw(this->droneLeft);
+        target.draw(this->droneRight);
+        return;
+    }
+    int curFrame = this->droneLeftAnim.getCurImgCnt().x;
+    // std::cout << curFrame << std::endl;
+    target.draw(this->droneLeft);
+    target.draw(this->droneRight);
+    if (curFrame >= FRAME_BEGIN_LASER && curFrame < IMG_CNT - 1) {
+        target.draw(this->laser);
+    }
 }
 
 bool LASER::isCollide(sf::FloatRect obj)
 {
     if (droneLeft.getGlobalBounds().intersects(obj)) {
-       // std::cout << "droneleft\n";
+        // std::cout << "droneleft\n";
         return true;
     }
     if (droneRight.getGlobalBounds().intersects(obj)) {
-      //  std::cout << "drone Right\n";
+        //  std::cout << "drone Right\n";
         return true;
     }
     if (laserLeft.getGlobalBounds().intersects(obj)) {
-       // std::cout << "laser Left\n";
+        // std::cout << "laser Left\n";
         return true;
     }
     if (laserRight.getGlobalBounds().intersects(obj)) {
-       // std::cout << "laser Right\n";
+        // std::cout << "laser Right\n";
         return true;
     }
     return false;
 }
 
-bool LASER::canDelete()
+bool LASER::canDelete(sf::Vector2u windowSize)
 {
     return toDelete;
+}
+
+bool LASER::isOutOfBound(sf::Vector2u windowSize)
+{
+    return false;
+}
+
+const sf::Vector2f& LASER::getPos() const
+{
+    return this->sprite.getPosition();
 }

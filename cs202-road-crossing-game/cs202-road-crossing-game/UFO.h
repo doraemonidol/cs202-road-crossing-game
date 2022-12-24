@@ -2,11 +2,13 @@
 
 class UFO : public OBSTACLE {
 public:
-	UFO();
-	UFO(int dir, int pos, int height);
-	void render(sf::RenderTarget &target);
-    void update(float deltaTime);
+    UFO(int dir, ENEMY_BASE* base);
+    ~UFO() {}
+
+	void render(sf::RenderTarget& target);
+    bool update(float deltaTime);
+
     bool isCollide(sf::FloatRect obj);
-    bool canDelete();
-	const sf::Vector2f &getPos() const;
+    bool canDelete(sf::Vector2u windowSize);
+    bool isOutOfBound(sf::Vector2u windowSize);
 };

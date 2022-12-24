@@ -1,29 +1,31 @@
 #pragma once
+#include "ENEMY_BASE.h"
 #include "main.h"
-#include <cstdlib>
-#include <ctime>
 
-class MONSTER{
+class MONSTER : public ENEMY_BASE{
 protected:
-	sf::Sprite sprite;
-	sf::Texture texture;
-	float speed;
-	int dir;
-	int height;
-	int HP;
+    sf::Sprite sprite;
+    int dir;
+
 public:
-	MONSTER(){}
-	MONSTER(int dir, int pos, int height){}
+	//MONSTER(){}
+    MONSTER(int dir, ENEMY_BASE* base);
+    virtual ~MONSTER() {}
+
 	virtual void render(sf::RenderTarget& target) = 0;
 	virtual void update() = 0;
-	virtual const sf::Vector2f &getPos() const = 0;
-	float getSpeed();
+
+    bool isCollide(sf::FloatRect obj);
+    bool canDelete(sf::Vector2u windowSize);
+    bool isOutOfBound(sf::Vector2u windowSize);
+    bool isDead();
+
+    int getDir();
+    int getRowID();
+    const sf::Vector2f& getPos();
+    float getSpeed();
 	void addSpeed(float speedAdd); //speed += speedAdd
 	void setSpeed(float speed); //set speed to
-	int getDir();
-	int getHeight();
-	float getPosition();
-	sf::Sprite getSprite();
-	int getHP();
+
 	void recievedDmg(int dmg);
 };

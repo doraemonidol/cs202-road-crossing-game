@@ -21,7 +21,7 @@ private:
 
 public:
     SCENE_MANAGER();
-    virtual ~SCENE_MANAGER();
+    ~SCENE_MANAGER();
 
     void attachView(sf::View* view);
 

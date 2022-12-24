@@ -13,6 +13,7 @@ class SoundEffect {
 public:
     SoundEffect(void);
     SoundEffect(std::string);
+
     SoundEffect(SoundEffect const& src);
     ~SoundEffect(void);
 

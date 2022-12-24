@@ -1,3 +1,4 @@
+#include "ENEMY_BASE.h"
 #include "OBSTACLE.h"
 #include "UFO.h"
 #include "LASER.h"
@@ -8,37 +9,20 @@
 #include "SPACESHIP.h"
 #include "GAME.h"
 
-UFO::UFO(){
-	if(!this->texture.loadFromFile("Textures/obstacle-4.png")){
-		std::cout << "ERROR::MOSNTER::INITTEXTURE::Could not load texture file.\n";
-	}
-	this->sprite.setTexture(this->texture);
-	this->sprite.scale(1.3f, 1.3f);
-	this->sprite.setPosition(-100, 100);
-	speed = 3.0;
-	dir = 0;
-	HP = 50;
-}
-
-UFO::UFO(int dir, int pos, int height){
-	if(!this->texture.loadFromFile("Textures/obstacle-4.png")){
-		std::cout << "ERROR::MOSNTER::INITTEXTURE::Could not load texture file.\n";
-	}
-	this->sprite.setTexture(this->texture);
-	this->sprite.scale(1.3f, 1.3f);
-	this->sprite.setPosition(pos, height);
-	speed = 3.0;
-	this->dir = dir;
-	HP = 50;
-}
-
-void UFO::render(sf::RenderTarget &target){
-	target.draw(this->sprite);
-}
-
-void UFO::update(float deltaTime)
+UFO::UFO(int dir, ENEMY_BASE* base)
+    : OBSTACLE::OBSTACLE(dir, base)
 {
-	this->sprite.move(speed * dir, 0);
+}
+
+void UFO::render(sf::RenderTarget& target)
+{
+    target.draw(this->sprite);
+}
+
+bool UFO::update(float deltaTime)
+{
+    this->sprite.move(speed * dir, 0);
+    return false;
 }
 
 bool UFO::isCollide(sf::FloatRect obj)
@@ -46,11 +30,12 @@ bool UFO::isCollide(sf::FloatRect obj)
     return this->sprite.getGlobalBounds().intersects(obj);
 }
 
-bool UFO::canDelete()
+bool UFO::canDelete(sf::Vector2u windowSize)
 {
     return true;
 }
 
-const sf::Vector2f &UFO::getPos() const{
-	return this->sprite.getPosition();
+bool UFO::isOutOfBound(sf::Vector2u windowSize)
+{
+    return false;
 }

@@ -26,18 +26,22 @@ class LASER : public OBSTACLE {
     std::vector<float> inc = { 0, 2, 1, 1, 2, 7, 3, 8, 8, 9,
                                8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 
                                16, 16, 16, 16, 16, 24, 24, 24, 24, 32};
-    int height, prevFrame;
+    int prevFrame;
     ANIMATION laserAnim, droneLeftAnim, droneRightAnim;
     bool isStarting;
     bool toDelete;
 
 public:
-    LASER();
-    LASER(int height);
+    LASER(ENEMY_BASE* base);
+    ~LASER();
     void initTexture();
+
+    bool update(float deltaTime);
     void render(sf::RenderTarget& target);
-    void update(float deltaTime);
-    const sf::Vector2f& getPos() const;
+
     bool isCollide(sf::FloatRect obj);
-    bool canDelete();
+    bool canDelete(sf::Vector2u windowSize);
+    bool isOutOfBound(sf::Vector2u windowSize);
+
+    const sf::Vector2f& getPos() const;
 };

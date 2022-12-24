@@ -1,3 +1,4 @@
+#include "ENEMY_BASE.h"
 #include "OBSTACLE.h"
 #include "UFO.h"
 #include "LASER.h"
@@ -8,30 +9,22 @@
 #include "SPACESHIP.h"
 #include "GAME.h"
 
-BIG_MONSTER::BIG_MONSTER(){
-	if(!this->texture.loadFromFile("Textures/obstacle-2.png")){
-		std::cout << "ERROR::MOSNTER::INITTEXTURE::Could not load texture file.\n";
-	}
-	this->sprite.setTexture(this->texture);
-	this->sprite.scale(1.3f, 1.3f);
-	this->sprite.setPosition(-100, 100);
-	speed = 1.0;
-	dir = 0;
-	height = 100;
-	HP = 100;
-}
+//BIG_MONSTER::BIG_MONSTER(){
+//	if(!this->texture.loadFromFile("Textures/obstacle-2.png")){
+//		std::cout << "ERROR::MOSNTER::INITTEXTURE::Could not load texture file.\n";
+//	}
+//	this->sprite.setTexture(this->texture);
+//	this->sprite.scale(1.3f, 1.3f);
+//	this->sprite.setPosition(-100, 100);
+//	speed = 1.0;
+//	dir = 0;
+//	height = 100;
+//	HP = 100;
+//}
 
-BIG_MONSTER::BIG_MONSTER(int dir, int pos, int height){
-	if(!this->texture.loadFromFile("Textures/obstacle-2.png")){
-		std::cout << "ERROR::MOSNTER::INITTEXTURE::Could not load texture file.\n";
-	}
-	this->sprite.setTexture(this->texture);
-	this->sprite.scale(1.3f, 1.3f);
-	this->sprite.setPosition(pos, height);
-	speed = 1.0;
-	this->dir = dir;
-	this->height = height;
-	HP = 100;
+BIG_MONSTER::BIG_MONSTER(int dir, ENEMY_BASE* base)
+    : MONSTER::MONSTER(dir, base)
+{
 }
 
 void BIG_MONSTER::render(sf::RenderTarget &target){
@@ -40,8 +33,4 @@ void BIG_MONSTER::render(sf::RenderTarget &target){
 
 void BIG_MONSTER::update(){
 	this->sprite.move(speed * dir, 0);
-}
-
-const sf::Vector2f &BIG_MONSTER::getPos() const{
-	return this->sprite.getPosition();
 }
