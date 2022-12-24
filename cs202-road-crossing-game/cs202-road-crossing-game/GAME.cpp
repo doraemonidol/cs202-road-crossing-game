@@ -555,20 +555,20 @@ void GAME::renderEnemies()
 void GAME::resetGame()
 {
     playMusic(music["INGAME"]);
-    std::cout << "1";
+    //std::cout << "1";
     // scene = MENUSCENE;
     view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
-    std::cout << "1";
+    //std::cout << "1";
     this->window->setView(view);
-    std::cout << "1";
+    //std::cout << "1";
     this->gui->resetGUI();
-    std::cout << "1";
+    //std::cout << "1";
     delete this->player;
-    std::cout << "1";
+    //std::cout << "1";
     this->initPlayer();
-    std::cout << "1";
+    //std::cout << "1";
     enemyController.initNewLevel(levelManager.getLevel(level));
-    std::cout << "1";
+    //std::cout << "1";
 
     //this->gui->initPauseMenu();
 }

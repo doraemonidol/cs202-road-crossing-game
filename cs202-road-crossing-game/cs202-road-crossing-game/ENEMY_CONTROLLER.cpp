@@ -14,26 +14,26 @@ ENEMY_CONTROLLER::~ENEMY_CONTROLLER()
 void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
 {
 
-    std::cout << "2";
+    //std::cout << "2";
     this->clearAll();
-    std::cout << "2";
+    //std::cout << "2";
 
     newLevel->transferEnemyBase(base);
-    std::cout << "2";
+    //std::cout << "2";
     newLevel->transferSpawnLine(spawnLine);
-    std::cout << "2";
+    //std::cout << "2";
     newLevel->transferSpawnTimer(spawnTimer);
-    std::cout << "2";
+    //std::cout << "2";
     newLevel->transferMaxEnemyOnLine(maxEnemyonLine);
-    std::cout << "2";
+    //std::cout << "2";
     //std::cout << "Assign Spawn Line: " << spawnLine.size() << "\n";
 
     laserQueue.resize(spawnLine.size(), nullptr);
-    std::cout << "2";
+    //std::cout << "2";
     redLightOn.resize(spawnLine.size(), false);
-    std::cout << "2";
+    //std::cout << "2";
     canSpawn.resize(spawnLine.size(), true);
-    std::cout << "2";
+    //std::cout << "2";
 
     initLight();
     std::cout << "2";
@@ -247,17 +247,17 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
 
 void ENEMY_CONTROLLER::clearAll()
 {
-    std::cout << "3";
+    //std::cout << "3";
     deallocate();
-    std::cout << "3";
+    //std::cout << "3";
     monsters.clear();
-    std::cout << "3";
+    //std::cout << "3";
     obstacles.clear();
-    std::cout << "3";
+   //std::cout << "3";
     lights.clear();
-    std::cout << "3";
+   //std::cout << "3";
     laserQueue.clear();
-    std::cout << "3";
+   // std::cout << "3";
 }
 
 void ENEMY_CONTROLLER::deallocate() {

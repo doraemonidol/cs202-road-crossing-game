@@ -42,7 +42,7 @@ ENEMY_BASE::ENEMY_BASE(int rowID, int rate, sf::Vector2f pos)
 
 ENEMY_BASE::~ENEMY_BASE()
 {
-    std::cout << "delete base\n";
+   // std::cout << "delete base\n";
     //delete texture;
 }
 
