@@ -53,6 +53,7 @@ MONSTER* ENEMY_CONTROLLER::isShoot(sf::FloatRect obj)
             return monsters[i];
         }
     }
+    return nullptr;
 }
 
 bool ENEMY_CONTROLLER::isCollidewPlayer(sf::FloatRect obj)

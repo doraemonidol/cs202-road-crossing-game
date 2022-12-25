@@ -1,5 +1,5 @@
 #pragma once
-#define NEXT_LEVEL_SPEED 1.5f
+#define NEXT_LEVEL_SPEED 2.5f
 #define PORTAL_POSITION sf::Vector2f(SCREEN_WIDTH / 3 * 2, SCREEN_HEIGHT / 2)
 #define SIDEVIEW_POSITION sf::Vector2f(sideview.getGlobalBounds().width, SCREEN_HEIGHT / 2)
 #define PORTAL_DEPTH 25

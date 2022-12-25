@@ -73,6 +73,8 @@ public:
     GAME(const int a);
     ~GAME();
 
+    GAME& operator=(GAME other);
+
     //Functions
     void run();
 
@@ -82,7 +84,6 @@ public:
     void updateView();
     void updateBullets();
     void updateEnemies();
-    //void updateCombat();
     void update();
 
     void renderWorld();
@@ -95,11 +96,9 @@ public:
     void resetGame();
 
     void checkCollision();
-
     void playerShoot();
     void removeBullet();
 
-    //set
     void setSPACESHIP(SPACESHIP player);
     void setGUI(GUI gui);
     void setClocK(sf::Clock clock);
@@ -112,6 +111,4 @@ public:
 
     void playMusic(std::string file);
     void playSound(std::string file);
-
-    GAME& operator=(GAME other);
 };

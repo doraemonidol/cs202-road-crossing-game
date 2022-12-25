@@ -8,7 +8,7 @@ BULLET::BULLET() {
 	this->sprite.scale(0.05f, 0.05f);
 	this->sprite.setPosition(400, 600);
 	this->sprite.setRotation(-90.f);
-	this->speed = 2;
+	this->speed = 6;
 	this->damage = 100;
 	this->moveLength = 500;
 }
@@ -21,7 +21,7 @@ BULLET::BULLET(sf::Vector2f pos) {
 	this->sprite.scale(0.05f, 0.05f);
 	this->sprite.setPosition(pos.x+18, pos.y);
 	this->sprite.setRotation(-90.f);
-	this->speed = 2;
+	this->speed = 6;
 	this->damage = 100;
 	this->moveLength = 500;
 }

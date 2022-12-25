@@ -45,8 +45,12 @@ void MONSTER::setSpeed(float speed){
 	this->speed = speed;
 }
 
-void MONSTER::recievedDmg(int dmg){
-	hp = std::max(0, hp - dmg);
+void MONSTER::recievedDmg(int dmg)
+{
+        std::cout << "passed check2\n"
+                  << this->getHp() << "\n";
+    this->hp = std::max(0, this->hp - dmg);
+    std::cout << "passed check3\n";
 }
 
 bool MONSTER::isCollide(sf::FloatRect obj)

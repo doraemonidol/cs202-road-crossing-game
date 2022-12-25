@@ -27,7 +27,7 @@ void SPACESHIP::initVariables()
 void SPACESHIP::initTexture()
 {
     //Load a texture from file
-    if (!this->textures["SPACESHIP"].loadFromFile("Textures/player-anim.png")) {
+    if (!this->textures["SPACESHIP"].loadFromFile("Textures/player-anim-2x.png")) {
         std::cout << "ERROR::SPACESHIP::INITTEXTURE::Could not load texture file."
             << "\n";
     }
@@ -43,7 +43,7 @@ void SPACESHIP::initSprite()
     this->sprite.setTexture(this->textures["SPACESHIP"]);
     this->blowupSprite.setTexture(this->textures["BLOWUPEFFECT"]);
     //Resize the sprite
-    this->sprite.scale(2.0f, 2.0f);
+    //this->sprite.scale(2.0f, 2.0f);
     this->blowupSprite.scale(2.0f, 2.0f);
 }
 

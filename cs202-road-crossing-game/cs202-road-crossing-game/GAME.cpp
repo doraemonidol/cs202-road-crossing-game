@@ -3,7 +3,8 @@
 #include "GUI.h"
 #include "GAME.h"       
 
-    // Con/Des
+// CONSTRUCTORS / DESTRUCTORS
+
 GAME::GAME()
     : sceneManager()
 {
@@ -50,8 +51,17 @@ GAME::~GAME()
     }
 }
 
+// OPERATORS
 
-//Private functions
+GAME& GAME::operator=(GAME other)
+{
+    std::swap(window, other.window);
+    /*std::swap()*/
+    return *this;
+}
+
+// PRIVATE FUNCTIONS
+
 void GAME::initWindow()
 {
     this->window = new sf::RenderWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Crossing the Universe", sf::Style::Close | sf::Style::Titlebar);
@@ -122,6 +132,8 @@ void GAME::run()
         prevTime = curTime;
     }
 }
+
+// UPDATE FUNCTIONS
 
 void GAME::updatePollEvents()
 {
@@ -281,6 +293,20 @@ void GAME::updateView() {
     this->window->setView(view);
 }
 
+void GAME::updateBullets()
+{
+    this->removeBullet();
+    // Update and render bullet
+    for (int i = 0; i < bullets.size(); i++) {
+        bullets[i]->update();
+    }
+}
+
+void GAME::updateEnemies()
+{
+    this->enemyController.update(deltaTime);
+}
+
 void GAME::update()
 {
     switch (scene) {
@@ -319,8 +345,24 @@ void GAME::update()
     }
 }
 
+// RENDER FUNCTIONS
+
 void GAME::renderWorld()
 {
+}
+
+void GAME::renderBullets()
+{
+    // Update and render bullet
+    for (int i = 0; i < bullets.size(); i++) {
+        bullets[i]->render(*this->window);
+    }
+}
+
+void GAME::renderEnemies()
+{
+    // Render monsters and obstacles
+    enemyController.render(*this->window);
 }
 
 void GAME::render()
@@ -392,6 +434,7 @@ void GAME::render()
     this->window->display();
 }
 
+// LOAD & SAVE GAME
 
 void GAME::saveGame() {
     std::ofstream file;
@@ -435,23 +478,98 @@ void GAME::loadGame() {
     file2.close();
 }
 
-GAME& GAME::operator=(GAME other) {
-    std::swap(window, other.window);
-    /*std::swap()*/
-    return *this;
+// Reset game
+
+void GAME::resetGame()
+{
+    playMusic(music["INGAME"]);
+    // std::cout << "1";
+    //  scene = MENUSCENE;
+    view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+    // std::cout << "1";
+    this->window->setView(view);
+    // std::cout << "1";
+    this->gui->resetGUI();
+    // std::cout << "1";
+    delete this->player;
+    // std::cout << "1";
+    this->initPlayer();
+    // std::cout << "1";
+    enemyController.initNewLevel(levelManager.getLevel(level));
+    // std::cout << "1";
+
+    // this->gui->initPauseMenu();
 }
 
-void GAME::playMusic(std::string file)
+// COLLISION
+
+void GAME::checkCollision()
 {
-   // std::cout << "music1\n";
-    soundController->playSound(file);
+    // return;
+    if (enemyController.isCollidewPlayer(this->player->getSprite().getGlobalBounds())) {
+        scene = LOSESCENE;
+        isDead = true;
+        playMusic(music["LOSE"]);
+        this->gui->initLose();
+
+        std::cout << "Lost case!" << std::endl;
+    }
+
+    int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
+    if (this->player->getPos().y == minHeight) {
+        this->scene = NEXTLEVEL;
+        // std::cout
+        level++;
+        this->sceneManager.resetNextLevel();
+        playMusic(music["WIN"]);
+        // this->initPlayer();
+        view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+        this->window->setView(view);
+        this->gui->initWin();
+
+        std::cout << "Win case!" << std::endl;
+    }
+
+    // damge monsteres and obstacles
+    for (int i = 0; i < bullets.size(); i++) {
+       // std::cout << i << "\n";
+        MONSTER* tmp = enemyController.isShoot(bullets[i]->getSprite().getGlobalBounds());
+
+        //std::cout << "passed check\n";
+        if (tmp != nullptr) {
+           // std::cout << "in check\n";
+            tmp->recievedDmg(bullets[i]->getDamage());
+           // std::cout << bullets.size() << "< < < < < <\n >>>>>>";
+            bullets.erase(bullets.begin() + i);
+           // std::cout << bullets.size() << "< < < < < <\n >>>>>>";
+            i--;
+            if (i < 0)
+                break;
+        }
+       // std::cout << "Shooting\n";
+    }
+   // std::cout << "Finish Collision\n";
 }
 
-void GAME::playSound(std::string file)
+void GAME::playerShoot()
 {
-   // std::cout << "music4\n";
-    soundController->playEffect(file);
+   // std::cout << "Shooting\n";
+    sf::Vector2f pos = this->player->getPos();
+    this->bullets.push_back(new BULLET(pos));
+   // std::cout << "Done shooting\n";
 }
+
+void GAME::removeBullet()
+{
+    for (int i = 0; i < bullets.size(); i++) {
+        if (bullets[i]->getMoveLength() == 0) {
+            bullets.erase(bullets.begin() + i);
+            i--;
+        }
+    }
+}
+
+// SETTERS
 
 void GAME::setSPACESHIP(SPACESHIP player) {
     swap(this->player, &player);
@@ -492,107 +610,14 @@ void GAME::setIsPause(bool isPause) {
     this->isPause = isPause;
 }
 
-void GAME::checkCollision() {
-    //return;
-    if (enemyController.isCollidewPlayer(this->player->getSprite().getGlobalBounds())) {
-        scene = LOSESCENE;
-        isDead = true;
-        playMusic(music["LOSE"]);
-        this->gui->initLose();
-            
-        std::cout << "Lost case!" << std::endl;
-    }
-   
-    int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
-    if (this->player->getPos().y == minHeight) {
-        this->scene = NEXTLEVEL;
-        //std::cout
-        level++;
-        this->sceneManager.resetNextLevel();
-        playMusic(music["WIN"]);
-        //this->initPlayer();
-        view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
-        this->window->setView(view);
-        this->gui->initWin();
+// MUSIC and SFX
 
-        std::cout << "Win case!" << std::endl;
-    }
-
-    //damge monsteres and obstacles
-    for (int i = 0; i < bullets.size(); i++) {
-        MONSTER* tmp = enemyController.isShoot(bullets[i]->getSprite().getGlobalBounds());
-        
-        if (tmp != nullptr) {
-            tmp->recievedDmg(bullets[i]->getDamage());
-            bullets.erase(bullets.begin() + i);
-            //std::cout << bullets.size() << "< < < < < <\n >>>>>>";
-            i--;
-            if (i < 0)
-                break;
-        }
-    }
-}
-
-void GAME::updateEnemies()
+void GAME::playMusic(std::string file)
 {
-    this->enemyController.update(deltaTime);
+    soundController->playSound(file);
 }
 
-void GAME::renderBullets() {
-    // Update and render bullet
-    for (int i = 0; i < bullets.size(); i++) {
-        bullets[i]->render(*this->window);
-    }
-}
-
-void GAME::renderEnemies()
+void GAME::playSound(std::string file)
 {
-    // Render monsters and obstacles
-    enemyController.render(*this->window);
-}
-
-//reset game
-void GAME::resetGame()
-{
-    playMusic(music["INGAME"]);
-    //std::cout << "1";
-    // scene = MENUSCENE;
-    view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
-    //std::cout << "1";
-    this->window->setView(view);
-    //std::cout << "1";
-    this->gui->resetGUI();
-    //std::cout << "1";
-    delete this->player;
-    //std::cout << "1";
-    this->initPlayer();
-    //std::cout << "1";
-    enemyController.initNewLevel(levelManager.getLevel(level));
-    //std::cout << "1";
-
-    //this->gui->initPauseMenu();
-}
-
-void GAME::updateBullets()
-{
-    this->removeBullet();
-    // Update and render bullet
-    for (int i = 0; i < bullets.size(); i++) {
-        bullets[i]->update();
-    }
-}  
-
-void GAME::playerShoot() {
-    sf::Vector2f pos = this->player->getPos();
-    this->bullets.push_back(new BULLET(pos));
-
-}
-
-void GAME::removeBullet() {
-    for (int i = 0; i < bullets.size(); i++) {
-        if (bullets[i]->getMoveLength() == 0) {
-            bullets.erase(bullets.begin() + i);
-            i--;
-        }
-    }
+    soundController->playEffect(file);
 }
