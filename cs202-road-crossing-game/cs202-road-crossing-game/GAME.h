@@ -33,6 +33,7 @@ private:
     //Systems
     unsigned level, scene;
     float deltaTime = 0.0f;
+    
     sf::Clock clock;
     SCENE_MANAGER sceneManager;
     ENEMY_CONTROLLER enemyController;
@@ -41,8 +42,8 @@ private:
     //Player
     SPACESHIP* player;
     std::vector<BULLET*>  bullets;
-    sf::Clock reloadBullet;
-    float reloadBulletTime;
+    sf::Time bulletLoadTime;
+    sf::Clock bulletClock;
     int remainBullets;
     GUI* gui;
 
@@ -98,7 +99,7 @@ public:
     void checkCollision();
     void playerShoot();
     void removeBullet();
-
+    void loadBullet();
     void setSPACESHIP(SPACESHIP player);
     void setGUI(GUI gui);
     void setClocK(sf::Clock clock);

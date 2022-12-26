@@ -8,6 +8,7 @@ private:
 	int speed;
 	int damage;
 	int moveLength;
+	bool isPlayerBullet;
 public:
 	BULLET();
 	BULLET(sf::Vector2f pos);

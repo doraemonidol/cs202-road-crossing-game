@@ -91,6 +91,10 @@ void GAME::initEnemy() {
 void GAME::initPlayer()
 {
     this->player = new SPACESHIP();
+    this->bulletClock.restart();
+    this->remainBullets = 0;
+    this->bulletLoadTime = sf::seconds(0);
+
 }
 
 template <class T>void swap(T* a, T* b) {
@@ -186,11 +190,16 @@ void GAME::updatePollEvents()
                     break;
                 case sf::Keyboard::S:
                     if (this->isPause) {
+
                     }
                     break;
                 case sf::Keyboard::Space:
                     if (!this->isPause) {
-                        this->playerShoot();
+                        if (remainBullets > 0) {
+                            std::cout << remainBullets << std::endl;
+                            remainBullets -= 1;
+                            this->playerShoot();
+                        }
                     }
                     break;
                 case sf::Keyboard::R:
@@ -295,10 +304,25 @@ void GAME::updateView() {
 
 void GAME::updateBullets()
 {
+    this->loadBullet();
     this->removeBullet();
     // Update and render bullet
     for (int i = 0; i < bullets.size(); i++) {
         bullets[i]->update();
+    }
+}
+
+void GAME::loadBullet() {
+    if (remainBullets == 5) {
+        bulletClock.restart();
+        return;
+    }
+    bulletLoadTime += bulletClock.getElapsedTime();
+    bulletClock.restart();
+    std::cout << bulletLoadTime.asSeconds() << std::endl;
+    if (bulletLoadTime.asSeconds() >= 5.0f) {
+        remainBullets += 1;
+        bulletLoadTime = sf::seconds(0.0f);
     }
 }
 
@@ -553,10 +577,10 @@ void GAME::checkCollision()
 
 void GAME::playerShoot()
 {
-   // std::cout << "Shooting\n";
-    sf::Vector2f pos = this->player->getPos();
-    this->bullets.push_back(new BULLET(pos));
-   // std::cout << "Done shooting\n";
+        // std::cout << "Shooting\n";
+        sf::Vector2f pos = this->player->getPos();
+        this->bullets.push_back(new BULLET(pos));
+        // std::cout << "Done shooting\n";
 }
 
 void GAME::removeBullet()
