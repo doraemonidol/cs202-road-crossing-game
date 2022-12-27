@@ -1,6 +1,7 @@
 #pragma once
-
 #include "main.h"
+#include "ANIMATION.h"
+
 enum btnState;
 class BUTTON {
 public:
@@ -9,12 +10,14 @@ public:
     BUTTON(std::string hoverT, std::string activeT, std::string defaultT);
     BUTTON(std::string t, std::string fon, int charSize, sf::Vector2f size, sf::Color bgColor[btnStateCnt], sf::Color textColor[btnStateCnt]);
     BUTTON(std::string t, std::string fon, int charSize, std::string activeTexture, sf::Color textColor[btnStateCnt], int index);
+    BUTTON(std::string, sf::Vector2u imgCnt, float switchTime, sf::Vector2f, int index);
 
     void setFont(std::string fon);
     void setBackColor(sf::Color color);
     void setTextColor(sf::Color color);
     void setPosition(sf::Vector2f pos);
     void movePosition(sf::Vector2f pos);
+    void movePosition2(sf::Vector2f pos);
     void updateDisplacement(sf::Vector2f pos);
     void setTexture(std::string hoverT, std::string activeT, std::string defaultT);
     void drawTo(sf::RenderWindow* window);
@@ -22,7 +25,8 @@ public:
     void onDefault();
     void onClick();
     void onHover();
-    int update(sf::RenderWindow* window, sf::Event e);
+    int update(sf::RenderWindow* window, sf::Event e, float deltaTime);
+    int updateAnim(float deltaTime);
     sf::FloatRect getSize();
     int getIndex();
     void changeText(std::string newText);
@@ -30,6 +34,7 @@ public:
 
 private:
     sf::RectangleShape button;
+    ANIMATION switchAnim;
     sf::Texture texture[btnStateCnt];
     sf::Color bgColor[btnStateCnt], textColor[btnStateCnt];
     sf::Sprite activeSprite;
@@ -38,6 +43,8 @@ private:
     unsigned state;
     sf::Text text;
     sf::Vector2f pos;
+    bool isPlayingAnim;
+    int toReturn;
 };
 
 class UTILS {

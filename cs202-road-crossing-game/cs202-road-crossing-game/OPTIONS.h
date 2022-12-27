@@ -20,13 +20,17 @@ public:
 
     void init();
     void addButton(std::string t, std::string fon, int charSize, std::string activeTexture, sf::Color textColor[], int index);
+    void addButton(BUTTON* button);
+    
     void draw(sf::RenderWindow* window);
     void MoveUp();
     void MoveDown();
     int GetPressedItem() { return selectedItemIndex; }
     int update(sf::RenderWindow* window, sf::Event e, GAME* gm);
+    int updateAnim(GAME* gm);
     void unpdateButtonDisplacement(sf::Vector2f pos);
     void movePos(sf::Vector2f pos);
+    void movePos2(sf::Vector2f pos);
     void alignButtons(int type);
     void tidyButtons(float padding);
     void changeText(int index);

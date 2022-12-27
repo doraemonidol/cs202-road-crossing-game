@@ -1,3 +1,4 @@
+#include "main.h"
 #include "UTILS.h"
 
 BUTTON::BUTTON(std::string t, int charSize, sf::Vector2f size, sf::Color bgColor, sf::Color textColor)
@@ -12,6 +13,7 @@ BUTTON::BUTTON(std::string t, int charSize, sf::Vector2f size, sf::Color bgColor
     button.setFillColor(bgColor);
     type = 2;
     state = DEFAULT;
+    isPlayingAnim = false;
 }
 
 BUTTON::BUTTON(std::string hoverT, std::string activeT, std::string defaultT)
@@ -22,6 +24,7 @@ BUTTON::BUTTON(std::string hoverT, std::string activeT, std::string defaultT)
     button.setSize(sf::Vector2f(texture[DEFAULT].getSize()));
     type = 3;
     state = DEFAULT;
+    isPlayingAnim = false;
 }
 
 BUTTON::BUTTON(std::string t, std::string fon, int charSize, sf::Vector2f size, sf::Color bgColor[btnStateCnt], sf::Color textColor[btnStateCnt])
@@ -42,6 +45,7 @@ BUTTON::BUTTON(std::string t, std::string fon, int charSize, sf::Vector2f size, 
     button.setFillColor(bgColor[DEFAULT]);
     type = 4;
     state = DEFAULT;
+    isPlayingAnim = false;
 }
 
 BUTTON::BUTTON(std::string t, std::string fon, int charSize, std::string activeTexture, sf::Color textColor[btnStateCnt], int index)
@@ -74,6 +78,35 @@ BUTTON::BUTTON(std::string t, std::string fon, int charSize, std::string activeT
     type = 5;
     state = DEFAULT;
     pos = sf::Vector2f(0, 0);
+    isPlayingAnim = false;
+}
+
+BUTTON::BUTTON(std::string switchAnim, sf::Vector2u imgCnt, float switchTime, sf::Vector2f pos, int index)
+{
+    this->index = index;
+    if (!this->texture[DEFAULT].loadFromFile("Textures/" + switchAnim)) {
+        std::cout << "ERROR::BUTTON::BUTTON6::DEFAULT::Could not load texture file.\n";
+    }
+    this->switchAnim.initAnim(&(this->texture[DEFAULT]), imgCnt, switchTime);
+    
+    activeSprite.setTexture(texture[DEFAULT]);
+    this->activeSprite.setTextureRect(this->switchAnim.uvRect);
+
+    // button.setOutlineColor(sf::Color::White);
+    // button.setOutlineThickness(2);
+    button.setSize(sf::Vector2f(this->switchAnim.uvRect.width, this->switchAnim.uvRect.height));
+    button.setOrigin(button.getGlobalBounds().width / 2, button.getGlobalBounds().height / 2);
+    button.setFillColor(sf::Color::Transparent);
+    button.setPosition(pos);
+
+    // text.setOrigin(button.getGlobalBounds().width / 2, button.getGlobalBounds().height / 2);
+    activeSprite.setOrigin(button.getGlobalBounds().width / 2, button.getGlobalBounds().height / 2);
+    activeSprite.setPosition(pos);
+    
+    type = 6;
+    state = DEFAULT;
+    this->pos = sf::Vector2f(0, 0);
+    isPlayingAnim = false;
 }
 
 void BUTTON::setFont(std::string fon)
@@ -112,6 +145,19 @@ void BUTTON::movePosition(sf::Vector2f pos)
     float yPos = (button.getPosition().y + button.getGlobalBounds().height / 2) - (text.getGlobalBounds().height / 2);
     text.setPosition(xPos, yPos);
 }
+
+void BUTTON::movePosition2(sf::Vector2f pos)
+{
+    button.setPosition(button.getPosition().x + pos.x - this->pos.x, button.getPosition().y + pos.y - this->pos.y);
+
+    float xPos = (button.getPosition().x + button.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2);
+    float yPos = (button.getPosition().y + button.getGlobalBounds().height / 2) - (text.getGlobalBounds().height / 2);
+    text.setPosition(xPos, yPos);
+
+    activeSprite.setPosition(button.getPosition());
+
+    this->pos = pos;
+}
 void BUTTON::updateDisplacement(sf::Vector2f pos)
 {
     this->pos = pos;
@@ -140,12 +186,26 @@ void BUTTON::drawTo(sf::RenderWindow* window)
             case 5: 
                 window->draw(activeSprite);
                 break;
-                
+            case 6:
+                window->draw(activeSprite);
+                break;
             }
             break;
         case HOVER:
             switch (type) {
             case 5:
+                window->draw(activeSprite);
+                break;
+            case 6:
+                window->draw(activeSprite);
+                break;
+            }
+            break;
+        case DEFAULT:
+            switch (type) {
+            case 5:
+                break;
+            case 6:
                 window->draw(activeSprite);
                 break;
             }
@@ -169,13 +229,15 @@ bool BUTTON::isMouseOver(sf::RenderWindow* window)
 void BUTTON::onDefault()
 {
     switch (type) {
-    case 5: {
+    case 5: 
         text.setColor(textColor[DEFAULT]);
 
         // this->activeSprite.setPosition(sf::Vector2f(button.getPosition()));
         //  this->playerHp[i].setScale(2.f, 2.f);
         break;
-    }
+
+    case 6:
+        break;
     }
     state = DEFAULT;
     
@@ -183,44 +245,78 @@ void BUTTON::onDefault()
 
 void BUTTON::onClick() {
     switch (type) {
-    case 5: {
+    case 5: 
         text.setColor(textColor[ACTIVE]);
 
         this->activeSprite.setPosition(sf::Vector2f(button.getPosition().x - button.getGlobalBounds().width / 2, button.getPosition().y - activeSprite.getGlobalBounds().height / 2));
       //  this->playerHp[i].setScale(2.f, 2.f);
         break;
-    }
+    case 6:
+        isPlayingAnim = true;
+        break;
     }
     state = ACTIVE;
 }
 
 void BUTTON::onHover() {
     switch (type) {
-    case 5: {
+    case 5: 
         text.setColor(textColor[ACTIVE]);
 
         this->activeSprite.setPosition(sf::Vector2f(button.getPosition().x - button.getGlobalBounds().width / 2, button.getPosition().y - activeSprite.getGlobalBounds().height / 2));
         //  this->playerHp[i].setScale(2.f, 2.f);
         break;
-    }
+    case 6:
+        break;
     }
     state = HOVER;
 }
 
-int BUTTON::update(sf::RenderWindow* window, sf::Event e)
+int BUTTON::update(sf::RenderWindow* window, sf::Event e, float deltaTime)
 {
+    if (isPlayingAnim)
+        return DEFAULT;
+
     if (isMouseOver(window)) {
-        if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Enter) {
-            onClick();
-            return ACTIVE;
-        } else if (e.type == sf::Event::MouseButtonPressed) {
-            onClick();
-            return ACTIVE;
+        switch (type) {
+        case 6:
+            if (e.type == sf::Event::MouseButtonPressed) {
+                onClick();
+            }
+            break;
+        default:
+            if (e.type == sf::Event::KeyPressed && e.key.code == sf::Keyboard::Enter) {
+                onClick();
+                return ACTIVE;
+            } else if (e.type == sf::Event::MouseButtonPressed) {
+                onClick();
+                return ACTIVE;
+            }
+            onHover();
+            return HOVER;
         }
-        onHover();
-        return HOVER;
     }
     return DEFAULT;
+}
+int BUTTON::updateAnim(float deltaTime)
+{
+    if (isPlayingAnim) {
+        switch (type) {
+        case 6:
+            //std::cout << "\n switch anim " << switchAnim.getCurImgCnt().y << " ";
+            isPlayingAnim = !switchAnim.Update(switchAnim.getCurImgCnt().y, deltaTime, true);
+            this->activeSprite.setTextureRect(this->switchAnim.uvRect);
+            if (!isPlayingAnim) {
+                switchAnim.setCurImg(sf::Vector2u(0, (switchAnim.getCurImgCnt().y + 1) % 2));
+                this->activeSprite.setTextureRect(this->switchAnim.uvRect);
+                return ACTIVE;
+            }
+            break;
+        default:
+            break;
+        }
+        return DEFAULT;
+    }
 }
 sf::FloatRect BUTTON::getSize() {
     return button.getGlobalBounds();

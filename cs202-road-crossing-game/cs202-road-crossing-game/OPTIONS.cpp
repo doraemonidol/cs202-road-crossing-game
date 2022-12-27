@@ -31,6 +31,11 @@ void OPTIONS::addButton(std::string t, std::string fon, int charSize, std::strin
     button.push_back(new BUTTON(t, fon, charSize, activeTexture, textColor, index));
 }
 
+void OPTIONS::addButton(BUTTON* button)
+{
+    this->button.push_back(button);
+}
+
 void OPTIONS::draw(sf::RenderWindow* window)
 {
     for (int i = 0; i < button.size(); i++) {
@@ -76,9 +81,9 @@ int OPTIONS::update(sf::RenderWindow* window, sf::Event e, GAME* gm)
             break;
         }
     } 
-    if (e.type == sf::Event::MouseMoved || e.type == sf::Event::MouseButtonPressed) {
+    //if (e.type == sf::Event::MouseMoved || e.type == sf::Event::MouseButtonPressed) {
         for (int i = 0; i < button.size(); i++) {
-            int state = this->button[i]->update(window, e);
+            int state = this->button[i]->update(window, e, gm->getDeltaTime());
             switch (state) {
             case ACTIVE:
                 pressSFX(gm);
@@ -94,8 +99,29 @@ int OPTIONS::update(sf::RenderWindow* window, sf::Event e, GAME* gm)
                 break;
             }
         }
-    }
+   // }
     return -1;
+}
+
+int OPTIONS::updateAnim(GAME* gm)
+{
+    for (int i = 0; i < button.size(); i++) {
+        int state = this->button[i]->updateAnim(gm->getDeltaTime());
+        switch (state) {
+        case ACTIVE:
+            pressSFX(gm);
+            return this->button[i]->getIndex();
+        case HOVER:
+            if (i != selectedItemIndex) {
+                switchSFX(gm);
+                button[selectedItemIndex]->onDefault();
+                selectedItemIndex = i;
+            }
+            break;
+        default:
+            break;
+        }
+    }
 }
 
 void OPTIONS::unpdateButtonDisplacement(sf::Vector2f pos)
@@ -109,6 +135,13 @@ void OPTIONS::movePos(sf::Vector2f pos) {
     this->pos = pos;
     for (int i = 0; i < button.size(); i++) {
         this->button[i]->movePosition(pos);
+    }
+}
+void OPTIONS::movePos2(sf::Vector2f pos)
+{
+    this->pos = pos;
+    for (int i = 0; i < button.size(); i++) {
+        this->button[i]->movePosition2(pos);
     }
 }
 

@@ -10,6 +10,8 @@
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 #define FPS 60.f
+#define BULLET_RELOAD_TIME 5.0f
+#define MAX_BULLET 4
 enum Scene;
 enum btnFunc;
 enum pauseMenuBtn;
@@ -42,8 +44,7 @@ private:
     //Player
     SPACESHIP* player;
     std::vector<BULLET*>  bullets;
-    sf::Time bulletLoadTime;
-    sf::Clock bulletClock;
+    float bulletLoadTime;
     int remainBullets;
     GUI* gui;
 
@@ -79,6 +80,7 @@ public:
     //Functions
     void run();
 
+    void updateIngameGUI();
     void updatePollEvents();
     void updateInput();
     void updateWorld();
@@ -109,6 +111,8 @@ public:
     void setWindow(sf::RenderWindow window);
     void setView(sf::View view);
     void setIsPause(bool isPause);
+
+    float getDeltaTime();
 
     void playMusic(std::string file);
     void playSound(std::string file);

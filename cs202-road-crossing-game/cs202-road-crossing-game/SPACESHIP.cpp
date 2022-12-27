@@ -10,11 +10,8 @@
 
 void SPACESHIP::initVariables()
 {
-    this->movementSpeed = 1.f;
-    this->speed = 150;
-
-    this->attackCooldownMax = 10.f;
-    this->attackCooldown = this->attackCooldownMax;
+    //this->movementSpeed = 1.f;
+    this->speed = 100;
 
     this->hpMax = 3;
     this->hp = this->hpMax;
@@ -105,23 +102,7 @@ void SPACESHIP::loseHp(const int value)
 
 void SPACESHIP::move(const float dirX, const float dirY)
 {
-    this->sprite.move(this->movementSpeed * dirX, this->movementSpeed * dirY);
-}
-
-const bool SPACESHIP::canAttack()
-{
-    if (this->attackCooldown >= this->attackCooldownMax) {
-        this->attackCooldown = 0.f;
-        return true;
-    }
-
-    return false;
-}
-
-void SPACESHIP::updateAttack()
-{
-    if (this->attackCooldown < this->attackCooldownMax)
-        this->attackCooldown += 0.5f;
+    this->sprite.move(dirX, dirY);
 }
 
 void SPACESHIP::updateCollision(int worldBGTexY)
@@ -179,7 +160,6 @@ void SPACESHIP::updateInput(float deltaTime)
 void SPACESHIP::update(int worldBGTexY, float deltaTime)
 {
     this->updateInput(deltaTime);
-    this->updateAttack();
     this->updateCollision(worldBGTexY);
     this->anim.Update(row, deltaTime, faceRight);
 }

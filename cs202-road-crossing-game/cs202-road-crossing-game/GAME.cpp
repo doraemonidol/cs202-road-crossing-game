@@ -91,9 +91,8 @@ void GAME::initEnemy() {
 void GAME::initPlayer()
 {
     this->player = new SPACESHIP();
-    this->bulletClock.restart();
     this->remainBullets = 0;
-    this->bulletLoadTime = sf::seconds(0);
+    this->bulletLoadTime = 0;
 
 }
 
@@ -209,6 +208,8 @@ void GAME::updatePollEvents()
                 default:
                     break;
                 }
+            } else {
+                gui->updateIngameGUI(e, this);
             }
             break;
         case PAUSEGAME: {
@@ -313,16 +314,14 @@ void GAME::updateBullets()
 }
 
 void GAME::loadBullet() {
-    if (remainBullets == 5) {
-        bulletClock.restart();
+    if (remainBullets == MAX_BULLET) {
         return;
     }
-    bulletLoadTime += bulletClock.getElapsedTime();
-    bulletClock.restart();
-    std::cout << bulletLoadTime.asSeconds() << std::endl;
-    if (bulletLoadTime.asSeconds() >= 5.0f) {
+    bulletLoadTime += deltaTime;
+    //std::cout << bulletLoadTime << std::endl;
+    if (bulletLoadTime >= BULLET_RELOAD_TIME) {
         remainBullets += 1;
-        bulletLoadTime = sf::seconds(0.0f);
+        bulletLoadTime -= BULLET_RELOAD_TIME;
     }
 }
 
@@ -338,6 +337,7 @@ void GAME::update()
         //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
         //std::cout << "1 ";
+        this->updateIngameGUI();
         this->enemyController.spawn(deltaTime);
         //std::cout << "2 ";
         this->updateEnemies();
@@ -373,6 +373,7 @@ void GAME::update()
 
 void GAME::renderWorld()
 {
+    this->gui->renderBG();
 }
 
 void GAME::renderBullets()
@@ -399,7 +400,6 @@ void GAME::render()
     case INGAME:
         // Draw world
         this->renderWorld();
-        this->gui->render();
 
         // Render bullet, enemies, lights
         this->renderBullets();
@@ -407,6 +407,7 @@ void GAME::render()
 
         // Draw all the stuffs
         this->player->render(*this->window);
+        this->gui->render();
 
         // Game over screen
         if (this->player->getHp() <= 0)
@@ -415,7 +416,6 @@ void GAME::render()
          
     case PAUSEGAME:
         this->renderWorld();
-        this->gui->render();
 
         // Render bullet, enemies
         this->renderBullets();
@@ -423,6 +423,7 @@ void GAME::render()
 
         // Draw all the stuffs
         this->player->render(*this->window);
+        this->gui->render();
 
         this->gui->renderPauseMenu();
         break;
@@ -437,7 +438,6 @@ void GAME::render()
             isDead = !(this->player->upDead(deltaTime));
         }
         this->renderWorld();
-        this->gui->render();
 
         // Render bullet, enemies
         this->renderBullets();
@@ -446,6 +446,7 @@ void GAME::render()
         // Draw all the stuffs
         this->player->render(*this->window);
         this->player->renderDead(*this->window);
+        this->gui->render();
 
         if (!isDead)
             this->gui->renderLose();
@@ -500,6 +501,30 @@ void GAME::loadGame() {
     file2.read((char*)&pos, sizeof(sf::Vector2f));
     this->player->setPosition(pos);
     file2.close();
+}
+
+void GAME::updateIngameGUI()
+{
+    int option = gui->updateIngameGUIAnim(this);
+    switch (option) {
+    case 0:
+        soundController->switchMute();
+        menu.ToggleSound();
+        break;
+    case 1:
+        std::cout << "Instructions Scene\n";
+        break;
+    case 2:
+        if (this->isPause == false) {
+            this->gui->initPauseMenu();
+            this->isPause = true;
+            scene = PAUSEGAME;
+        } else {
+            this->isPause = false;
+            scene = INGAME;
+        }
+        break;
+    }
 }
 
 // Reset game
@@ -644,4 +669,9 @@ void GAME::playMusic(std::string file)
 void GAME::playSound(std::string file)
 {
     soundController->playEffect(file);
+}
+
+float GAME::getDeltaTime()
+{
+    return deltaTime;
 }

@@ -35,6 +35,8 @@ void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
     canSpawn.resize(spawnLine.size(), true);
     //std::cout << "2";
 
+    curSpawnTimer = spawnTimer;
+
     initLight();
     std::cout << "2";
 }
@@ -198,8 +200,8 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
         //std::cout << "Line: " << l << "\n";
         for (int i = 0; i < MAX_ENEMY_TYPE; i++) {
             //std::cout << i << " \n";
-            int isSpawn = rand() % 2;
-            if (isSpawn == 0) {
+            int isSpawn = rand() % 100;
+            if (isSpawn > 75) {
                 continue;
             }
             int type = rand() % 100 + 1,

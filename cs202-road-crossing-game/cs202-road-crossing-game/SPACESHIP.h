@@ -15,11 +15,6 @@ private:
     sf::Vector2u imgCnt = { 1, 3 };
     float switchTime = 5;
 
-    float movementSpeed;
-
-    float attackCooldown;
-    float attackCooldownMax;
-
     int hp;
     int hpMax;
 
@@ -47,9 +42,6 @@ public:
 
     //Functions
     void move(const float dirX, const float dirY);
-    const bool canAttack();
-
-    void updateAttack();
     void updateCollision(int worldBGTexY);
     void updateInput(float deltaTime);
     void update(int worldBGTexY, float deltaTime);

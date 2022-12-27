@@ -69,4 +69,7 @@ void ANIMATION::setSwitchTime(float switchTime)
 void ANIMATION::setCurImg(sf::Vector2u newImg)
 {
     curImg = newImg;
+    uvRect.top = curImg.y * uvRect.height;
+    uvRect.left = curImg.x * uvRect.width;
+    uvRect.width = abs(uvRect.width);
 }

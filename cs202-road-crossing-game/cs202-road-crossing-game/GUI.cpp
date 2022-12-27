@@ -40,11 +40,12 @@ void GUI::initGUI()
                   << "\n";
 
     //Init level text
-    this->levelText.setPosition(700.f, 10.f);
     this->levelText.setFont(this->font);
     this->levelText.setCharacterSize(30);
     this->levelText.setFillColor(sf::Color::White);
     this->levelText.setString("test");
+    this->levelText.setOrigin(this->levelText.getGlobalBounds().width / 2, this->levelText.getGlobalBounds().height / 2);
+    this->levelText.setPosition(700.f, 10.f);
 
     loseTitle.setTexture(*this->textures["LOSE TITLE"]);
     loseTitle.setPosition(this->window->getSize().x / 2.f - this->loseTitle.getGlobalBounds().width / 2.f,
@@ -103,6 +104,11 @@ void GUI::initGUI()
     this->pauseMenu->tidyButtons(10);
     //this->pauseMenu->setPos(sf::Vector2f(0, 0));
     this->pauseMenu->init();
+
+    this->ingameGUI = new OPTIONS;
+    this->ingameGUI->addButton(new BUTTON("mute-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(690, 30), 0));
+    this->ingameGUI->addButton(new BUTTON("how-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(730, 30), 1));
+    this->ingameGUI->addButton(new BUTTON("pause-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(770, 30), 2));
 
     //Init player GUI
     this->updateHealth(this->player->getHpMax());
@@ -190,7 +196,7 @@ void GUI::updateLevel(int level)
 
     this->levelText.setString(ss.str());
     float y = this->getDisplacement();
-    this->levelText.setPosition(700.f, y + 10.f);
+    this->levelText.setPosition(SCREEN_WIDTH / 2, y + 10.f);
 }
 
 void GUI::update(int level)
@@ -203,9 +209,9 @@ void GUI::update(int level)
 
 void GUI::render()
 {
-    this->renderBG();
     this->window->draw(this->levelText);
     this->renderGamePause();
+    this->renderIngameGUI();
     for (int i = 1; i <= this->player->getHpMax(); i++) {
         this->window->draw(this->playerHp[i]);
     }
@@ -318,4 +324,22 @@ void GUI::closeWin()
     std::cout << winLoseDisplacement << "\n";
     this->winMenu->movePos(sf::Vector2f(0, -winLoseDisplacement));
     this->winMenu->unpdateButtonDisplacement(sf::Vector2f(0, 0));
+}
+
+int GUI::updateIngameGUI(sf::Event e, GAME* gm)
+{
+    return ingameGUI->update(window, e, gm);
+}
+
+int GUI::updateIngameGUIAnim(GAME* gm)
+{
+    return ingameGUI->updateAnim(gm);
+}
+
+void GUI::renderIngameGUI()
+{
+    //std::cout << "rendering\n";
+    float y = this->getDisplacement();
+    this->ingameGUI->movePos2(sf::Vector2f(0, y));
+    ingameGUI->draw(window);
 }

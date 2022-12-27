@@ -22,12 +22,12 @@ private:
     sf::Text pauseText;
     sf::Text loseText;
     sf::Text winText;
-    OPTIONS* pauseMenu, *loseMenu, *winMenu;
+    OPTIONS* pauseMenu, *loseMenu, *winMenu, *ingameGUI;
 
     //PlayerGUI
     sf::Sprite playerHp[4];
     sf::Sprite loseTitle, winTitle;
-    float pauseMenuDisplacement, winLoseDisplacement;
+    float pauseMenuDisplacement, winLoseDisplacement, ingameGUIDisplacement;
 
     //Private functions
     void initTextures();
@@ -72,4 +72,9 @@ public:
     int updateWinMenu(sf::Event e, GAME* gm);
     void renderWin();
     void closeWin();
+
+    // Ingame GUI
+    int updateIngameGUI(sf::Event e, GAME* gm);
+    int updateIngameGUIAnim(GAME* gm);
+    void renderIngameGUI();
 };
