@@ -123,6 +123,7 @@ void GAME::run()
         totalTime = curTime - prevTime;
         deltaTime += totalTime;
         if (deltaTime > 1.0 / FPS) {
+            this->totalTime += deltaTime;
             //std::cout << deltaTime << " " << 1.0 / FPS << "\n";
             this->updatePollEvents();
             if (this->player->getHp() > 0)
@@ -150,6 +151,7 @@ void GAME::updatePollEvents()
             switch (option) {
             case NEWGAME:
                 playMusic(music["INGAME"]);
+                totalTime = 0;
                 scene = INGAME;
                 this->resetGame();
                 break;
@@ -158,6 +160,7 @@ void GAME::updatePollEvents()
                 break;
             case LOADGAME:
                 playMusic(music["INGAME"]);
+                totalTime = 0;
                 loadGame();
                 scene = INGAME;
                 break;
@@ -348,7 +351,7 @@ void GAME::update()
         this->player->update(this->gui->getBGSize().y, deltaTime);
         //std::cout << "5 ";
 
-        this->gui->update(this->level);
+        this->gui->update(this->level, this->remainBullets, totalTime);
         //std::cout << "6 ";
 
         this->updateWorld();
@@ -531,6 +534,7 @@ void GAME::updateIngameGUI()
 
 void GAME::resetGame()
 {
+    totalTime = 0;
     playMusic(music["INGAME"]);
     // std::cout << "1";
     //  scene = MENUSCENE;

@@ -4,6 +4,8 @@
 #include "OPTIONS.h"
 enum pauseMenuBtn;
 
+#define TIME_POSITION sf::Vector2f(SCREEN_WIDTH / 2, 50)
+
 class GUI {
 private:
     sf::RenderWindow* window;
@@ -17,15 +19,18 @@ private:
     //std::vector<Bullet*> bullets;
 
     //GUI
-    sf::Font font;
+    sf::Font font,  font2;
     sf::Text levelText;
     sf::Text pauseText;
     sf::Text loseText;
     sf::Text winText;
+    sf::Text totalTimeText;
     OPTIONS* pauseMenu, *loseMenu, *winMenu, *ingameGUI;
 
     //PlayerGUI
-    sf::Sprite playerHp[4];
+    sf::Texture bulletBarTexture;
+    sf::Sprite bulletBar;
+    ANIMATION bulletBarControl;
     sf::Sprite loseTitle, winTitle;
     float pauseMenuDisplacement, winLoseDisplacement, ingameGUIDisplacement;
 
@@ -46,13 +51,16 @@ public:
     sf::Sprite getSprite();
 
     //Functions
-    void updateHealth(int health);
+    void updateBulletBar(int bullet);
     void updateLevel(int level);
-    void update(int level);
+    void updateTime(float totalTime);
+    void update(int level, int bullet, float totalTime);
+
+    void renderBG();
+    void renderBulletBar();
     void render();
 
     // Game pause
-    void renderBG();
     void renderGamePause();
     void updateGamePause();
 

@@ -41,11 +41,24 @@ void GUI::initGUI()
 
     //Init level text
     this->levelText.setFont(this->font);
-    this->levelText.setCharacterSize(30);
+    this->levelText.setCharacterSize(25);
     this->levelText.setFillColor(sf::Color::White);
-    this->levelText.setString("test");
+    this->levelText.setString("Level: xx");
     this->levelText.setOrigin(this->levelText.getGlobalBounds().width / 2, this->levelText.getGlobalBounds().height / 2);
-    this->levelText.setPosition(700.f, 10.f);
+    this->levelText.setPosition(SCREEN_WIDTH / 2, 10.f);
+
+    // Load font
+    if (!this->font2.loadFromFile("Fonts/PressStart2P-Regular.ttf"))
+        std::cout << "ERROR::GAME::Failed to load font"
+                  << "\n";
+
+    // Init TOTAL TIME text
+    this->totalTimeText.setFont(this->font2);
+    this->totalTimeText.setCharacterSize(35);
+    this->totalTimeText.setFillColor(sf::Color::White);
+    this->totalTimeText.setString("0.00");
+    this->totalTimeText.setOrigin(this->totalTimeText.getGlobalBounds().width / 2, this->totalTimeText.getGlobalBounds().height / 2);
+    this->totalTimeText.setPosition(TIME_POSITION.x, TIME_POSITION.y);
 
     loseTitle.setTexture(*this->textures["LOSE TITLE"]);
     loseTitle.setPosition(this->window->getSize().x / 2.f - this->loseTitle.getGlobalBounds().width / 2.f,
@@ -106,12 +119,18 @@ void GUI::initGUI()
     this->pauseMenu->init();
 
     this->ingameGUI = new OPTIONS;
-    this->ingameGUI->addButton(new BUTTON("mute-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(690, 30), 0));
-    this->ingameGUI->addButton(new BUTTON("how-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(730, 30), 1));
-    this->ingameGUI->addButton(new BUTTON("pause-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(770, 30), 2));
+    this->ingameGUI->addButton(new BUTTON("mute-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(660, 40), 0));
+    this->ingameGUI->addButton(new BUTTON("how-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(710, 40), 1));
+    this->ingameGUI->addButton(new BUTTON("pause-anim.png", sf::Vector2u(3, 2), 0.1f, sf::Vector2f(760, 40), 2));
 
     //Init player GUI
-    this->updateHealth(this->player->getHpMax());
+    if (!bulletBarTexture.loadFromFile("Textures/bullet-bar-2x.png")) {
+        std::cout << "ERROR::GUI::GUI::BULLETBAR::Could not load texture file.\n";
+    }
+    bulletBarControl.initAnim(&this->bulletBarTexture, sf::Vector2u(1, 6), 0);
+    bulletBar.setTexture(bulletBarTexture);
+    bulletBar.setTextureRect(bulletBarControl.uvRect);
+    this->updateBulletBar(5);
 }
 
 //Con/Des
@@ -143,6 +162,7 @@ GUI::~GUI()
 void GUI::resetGUI()
 {
     this->levelText.setPosition(700.f, 10.f);
+    this->totalTimeText.setPosition(TIME_POSITION.x, TIME_POSITION.y);
     loseTitle.setPosition(this->window->getSize().x / 2.f - this->loseTitle.getGlobalBounds().width / 2.f,
         this->window->getSize().y / 2.f - this->loseTitle.getGlobalBounds().height / 2.f);
     this->loseText.setPosition(
@@ -156,23 +176,8 @@ void GUI::resetGUI()
     this->pauseText.setPosition(5.0f, this->window->getSize().y - 20.0f);
 }
 
-void GUI::updateHealth(int health)
+float GUI::getDisplacement()
 {
-    float y = this->getDisplacement();
-
-    for (int i = 1; i <= health; i++) {
-        this->playerHp[i].setPosition(sf::Vector2f(20.f + (i - 1) * ((*textures["FULL HEART"]).getSize().x * 2 + 5), y + 20.f));
-        this->playerHp[i].setTexture(*textures["FULL HEART"]);
-        this->playerHp[i].setScale(2.f, 2.f);
-    }
-    for (int i = health + 1; i <= this->player->getHpMax(); i++) {
-        this->playerHp[i].setPosition(sf::Vector2f(20.f + (i - 1) * ((*textures["EMPTY HEART"]).getSize().x * 2 + 5), y + 20.f));
-        this->playerHp[i].setTexture(*textures["EMPTY HEART"]);
-        this->playerHp[i].setScale(2.f, 2.f);
-    }
-}
-
-float GUI::getDisplacement() {
     float y = player->getPos().y - SCREEN_HEIGHT / 2;
     if (player->getPos().y > SCREEN_HEIGHT / 2)
         y = 0;
@@ -188,6 +193,19 @@ sf::Vector2u GUI::getBGSize() {
     return (this->worldBackgroundTex.getSize());
 }
 
+sf::Sprite GUI::getSprite()
+{
+    return this->worldBackground;
+}
+
+void GUI::updateBulletBar(int bullet)
+{
+    float y = this->getDisplacement();
+    this->bulletBarControl.setCurImg(sf::Vector2u(0, 5 - bullet));
+    bulletBar.setTextureRect(bulletBarControl.uvRect);
+    this->bulletBar.setPosition(sf::Vector2f(20, y + 20.f));
+}
+
 void GUI::updateLevel(int level)
 {
     std::stringstream ss;
@@ -195,41 +213,55 @@ void GUI::updateLevel(int level)
     ss << "Level: " << level;
 
     this->levelText.setString(ss.str());
+    this->levelText.setOrigin(this->levelText.getGlobalBounds().width / 2, this->levelText.getGlobalBounds().height / 2);
     float y = this->getDisplacement();
     this->levelText.setPosition(SCREEN_WIDTH / 2, y + 10.f);
 }
 
-void GUI::update(int level)
+void GUI::updateTime(float totalTime)
+{
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << totalTime;
+
+    this->totalTimeText.setString(ss.str());
+    this->totalTimeText.setOrigin(this->totalTimeText.getGlobalBounds().width / 2, this->totalTimeText.getGlobalBounds().height / 2);
+    float y = this->getDisplacement();
+    this->totalTimeText.setPosition(TIME_POSITION.x, y + TIME_POSITION.y);
+}
+
+void GUI::update(int level, int bullet, float totalTime)
 {
     this->updateLevel(level);
-    this->updateHealth(this->player->getHp());
+    this->updateTime(totalTime);
+    this->updateBulletBar(bullet);
     this->updateGamePause();
+}
+
+void GUI::renderBG()
+{
+    this->window->draw(this->worldBackground);
+}
+
+void GUI::renderBulletBar()
+{
+    this->window->draw(bulletBar);
 }
 
 
 void GUI::render()
 {
     this->window->draw(this->levelText);
+    this->window->draw(this->totalTimeText);
     this->renderGamePause();
     this->renderIngameGUI();
-    for (int i = 1; i <= this->player->getHpMax(); i++) {
-        this->window->draw(this->playerHp[i]);
-    }
-}
-
-sf::Sprite GUI::getSprite() {
-    return this->worldBackground;
+    this->renderBulletBar();
+    
 }
 
 void GUI::updateGamePause()
 {
     float y = this->getDisplacement();
     pauseText.setPosition(10, SCREEN_HEIGHT - pauseText.getGlobalBounds().height - 10 - y);
-}
-
-void GUI::renderBG()
-{
-    this->window->draw(this->worldBackground);
 }
 
 void GUI::renderGamePause()

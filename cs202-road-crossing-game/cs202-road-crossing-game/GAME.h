@@ -11,7 +11,7 @@ extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
 #define FPS 60.f
 #define BULLET_RELOAD_TIME 5.0f
-#define MAX_BULLET 4
+#define MAX_BULLET 5
 enum Scene;
 enum btnFunc;
 enum pauseMenuBtn;
@@ -34,7 +34,7 @@ private:
 
     //Systems
     unsigned level, scene;
-    float deltaTime = 0.0f;
+    float deltaTime = 0.0f, totalTime = 0.0f;
     
     sf::Clock clock;
     SCENE_MANAGER sceneManager;
