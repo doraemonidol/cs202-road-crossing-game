@@ -45,7 +45,7 @@ void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
 void ENEMY_CONTROLLER::initLight()
 {
     for (int i = 0; i < spawnLine.size(); i++) {
-        lights.push_back(new TRAFFICLIGHT(25, spawnLine[i] + 75));
+        lights.push_back(new TRAFFICLIGHT(spawnLine[i] + 25));
     }
 }
 
@@ -173,6 +173,7 @@ void ENEMY_CONTROLLER::updateLight(float deltaTime)
     // Update lights
     for (int i = 0; i < lights.size(); i++) {
         //std::cout << i << " ";
+        lights[i]->updateAnim(deltaTime);
         if (lights[i]->isRedLight()) {
             int isTurnGreen = rand() % 500;
             if (!isTurnGreen) {
