@@ -559,7 +559,7 @@ void GAME::resetGame()
 void GAME::checkCollision()
 {
     // return;
-    if (enemyController.isCollidewPlayer(this->player->getSprite().getGlobalBounds())) {
+    if (enemyController.isCollidewPlayer(this->player->getCollider1()) || enemyController.isCollidewPlayer(this->player->getCollider2())) {
         scene = LOSESCENE;
         isDead = true;
         playMusic(music["LOSE"]);

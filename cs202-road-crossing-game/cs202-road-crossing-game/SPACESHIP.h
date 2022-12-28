@@ -1,11 +1,13 @@
 #pragma once 
 #include "ANIMATION.h"
-
+#define SPACE_SHIP_ORIGIN_POS sf::Vector2f(600, 700)
 class SPACESHIP {
 private:
     sf::Sprite sprite, blowupSprite;
     std::map<std::string, sf::Texture> textures;
     
+    sf::RectangleShape verticalCollider, horizontalCollider;
+
     // Animation
     //sf::RectangleShape body;
     ANIMATION anim, blowup;
@@ -30,9 +32,12 @@ public:
     //Accessor
     const sf::Vector2f& getPos() const;
     const sf::FloatRect getBounds() const;
+    const sf::FloatRect getCollider1() const;
+    const sf::FloatRect getCollider2() const;
     const int& getHp() const;
     const int& getHpMax() const;
     const sf::Sprite getSprite();
+  
 
     //Modifiers
     void setPosition(const sf::Vector2f pos);

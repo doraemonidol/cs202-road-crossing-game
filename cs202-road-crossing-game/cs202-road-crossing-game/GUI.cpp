@@ -234,7 +234,7 @@ void GUI::update(int level, int bullet, float totalTime)
     this->updateLevel(level);
     this->updateTime(totalTime);
     this->updateBulletBar(bullet);
-    this->updateGamePause();
+    //this->updateGamePause();
 }
 
 void GUI::renderBG()
@@ -252,7 +252,7 @@ void GUI::render()
 {
     this->window->draw(this->levelText);
     this->window->draw(this->totalTimeText);
-    this->renderGamePause();
+    //this->renderGamePause();
     this->renderIngameGUI();
     this->renderBulletBar();
     

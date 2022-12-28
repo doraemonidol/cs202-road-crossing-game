@@ -41,7 +41,17 @@ void SPACESHIP::initSprite()
     this->blowupSprite.setTexture(this->textures["BLOWUPEFFECT"]);
     //Resize the sprite
     //this->sprite.scale(2.0f, 2.0f);
-    this->blowupSprite.scale(2.0f, 2.0f);
+    //this->blowupSprite.scale(2.0f, 2.0f);
+
+    verticalCollider.setFillColor(sf::Color::Transparent);
+    horizontalCollider.setFillColor(sf::Color::Transparent);
+
+    verticalCollider.setSize(sf::Vector2f(40, this->sprite.getGlobalBounds().height / imgCnt.y - 18));
+    horizontalCollider.setSize(sf::Vector2f(this->sprite.getGlobalBounds().width, 15));
+    verticalCollider.setOrigin(sf::Vector2f(verticalCollider.getGlobalBounds().width / 2 - this->sprite.getGlobalBounds().width / 2, 0));
+    horizontalCollider.setOrigin(sf::Vector2f(0, horizontalCollider.getGlobalBounds().height / 2 - this->sprite.getGlobalBounds().height / imgCnt.y / 2 + 10));
+    verticalCollider.setPosition(SPACE_SHIP_ORIGIN_POS);
+    horizontalCollider.setPosition(SPACE_SHIP_ORIGIN_POS);
 }
 
 SPACESHIP::SPACESHIP()
@@ -66,6 +76,16 @@ const sf::Vector2f& SPACESHIP::getPos() const
 const sf::FloatRect SPACESHIP::getBounds() const
 {
     return this->sprite.getGlobalBounds();
+}
+
+const sf::FloatRect SPACESHIP::getCollider1() const
+{
+    return horizontalCollider.getGlobalBounds();
+}
+
+const sf::FloatRect SPACESHIP::getCollider2() const
+{
+    return verticalCollider.getGlobalBounds();
 }
 
 const int& SPACESHIP::getHp() const
@@ -103,6 +123,8 @@ void SPACESHIP::loseHp(const int value)
 void SPACESHIP::move(const float dirX, const float dirY)
 {
     this->sprite.move(dirX, dirY);
+    this->horizontalCollider.move(dirX, dirY);
+    this->verticalCollider.move(dirX, dirY);
 }
 
 void SPACESHIP::updateCollision(int worldBGTexY)
@@ -125,6 +147,8 @@ void SPACESHIP::updateCollision(int worldBGTexY)
     else if (this->getBounds().top + this->getBounds().height >= SCREEN_HEIGHT + 30) {
         this->setPosition(this->getBounds().left, SCREEN_HEIGHT - this->getBounds().height + 30);
     }
+    verticalCollider.setPosition(sprite.getPosition());
+    horizontalCollider.setPosition(sprite.getPosition());
 }
 
 void SPACESHIP::updateInput(float deltaTime)
@@ -166,6 +190,8 @@ void SPACESHIP::update(int worldBGTexY, float deltaTime)
 
 void SPACESHIP::render(sf::RenderTarget& target)
 {
+    target.draw(this->verticalCollider);
+    target.draw(this->horizontalCollider);
     target.draw(this->sprite);
 }
 
