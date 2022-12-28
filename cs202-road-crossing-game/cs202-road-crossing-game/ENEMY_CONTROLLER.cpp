@@ -38,7 +38,8 @@ void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
     curSpawnTimer = spawnTimer;
 
     initLight();
-    std::cout << "2";
+    initSpawn();
+    //std::cout << "2";
 }
 
 void ENEMY_CONTROLLER::initLight()
@@ -246,6 +247,56 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
     }
     curSpawnTimer -= spawnTimer;
     //std::cout << "Return Spawning\n";
+}
+
+void ENEMY_CONTROLLER::initSpawn()
+{
+    for (int l = 0; l < spawnLine.size(); l++) {
+        if (!canSpawn[l] || maxEnemyonLine[l] <= 0)
+            continue;
+        // std::cout << "Line: " << l << "\n";
+        for (int i = 0; i < MAX_ENEMY_TYPE; i++) {
+            // std::cout << i << " \n";
+            int isSpawn = rand() % 100;
+            if (isSpawn > 75) {
+                continue;
+            }
+            int type = rand() % 100 + 1,
+                dir = (rand() % 2 == 1) ? 1 : -1,
+                s = 0;
+
+            if (type >= base[i]->getRate())
+                continue;
+            maxEnemyonLine[l]--;
+            int pos = (dir == 1) ? (rand() % SCREEN_WIDTH) : (SCREEN_WIDTH + 160 + rand() % 100);
+            ENEMY_BASE* newEnemy = new ENEMY_BASE(base[i]->getSpeed(), base[i]->getRate(),
+                base[i]->getTexture(), base[i]->getHp(), l, sf::Vector2f(pos, spawnLine[l]));
+            switch (i) {
+            case BIGMONSTER:
+                monsters.push_back(new BIG_MONSTER(dir, newEnemy));
+                break;
+            case SMALLMONSTER:
+                monsters.push_back(new SMALL_MONSTER(dir, newEnemy));
+                break;
+            case UFOENEMY:
+                // obstacles.push_back(new UFO(dir, newEnemy));
+                break;
+            case LASERENEMY:
+                laserQueue[l] = new LASER(newEnemy);
+                canSpawn[l] = false;
+                break;
+            }
+        }
+        // std::cout << "done spawning \n";
+    }
+    for (int i = 0; i < spawnLine.size(); i++) {
+        // std::cout << i << ": ";
+        if (!isLineEmpty(i) || laserQueue[i] == nullptr)
+            continue;
+        // std::cout << "laser out\n";
+        obstacles.push_back(laserQueue[i]);
+        laserQueue[i] = nullptr;
+    }
 }
 
 void ENEMY_CONTROLLER::clearAll()

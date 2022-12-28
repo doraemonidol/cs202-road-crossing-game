@@ -48,6 +48,7 @@ public:
     void updateLight(float deltaTime);
 
     void spawn(float deltaTime);
+    void initSpawn();
     void clearAll();
     void deallocate();
 };
