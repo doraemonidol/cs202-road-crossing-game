@@ -123,7 +123,8 @@ void GAME::run()
         totalTime = curTime - prevTime;
         deltaTime += totalTime;
         if (deltaTime > 1.0 / FPS) {
-            this->totalTime += deltaTime;
+            if (!this->isPause)
+                this->totalTime += deltaTime;
             //std::cout << deltaTime << " " << 1.0 / FPS << "\n";
             this->updatePollEvents();
             if (this->player->getHp() > 0)
