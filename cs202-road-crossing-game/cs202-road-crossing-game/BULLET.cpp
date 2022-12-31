@@ -26,6 +26,28 @@ BULLET::BULLET(sf::Vector2f pos) {
 	this->moveLength = 500;
 }
 
+BULLET::BULLET(sf::Vector2f pos, bool enemy) {
+	if(!this->texture.loadFromFile("Textures/bullet.png")) {
+		std::cout << "ERROR::BULLET::Could not load texture file.\n";
+	}
+	this->sprite.setTexture(this->texture);
+	this->sprite.scale(0.05f, 0.05f);
+	if(!enemy) {
+		this->sprite.setPosition(pos.x + 18, pos.y);
+		this->sprite.setRotation(-90.f);
+		this->speed = 6;
+		this->damage = 100;
+		this->moveLength = 500;
+	}
+	else {
+		this->sprite.setPosition(pos.x + 45, pos.y + 60);
+		this->sprite.setRotation(90.f);
+		this->speed = -6;
+		this->damage = 100;
+		this->moveLength = 500;
+	}
+}
+
 void BULLET::update() {
 	this->sprite.move(0, -speed);
 	this->moveLength = this->moveLength > 0 ? this->moveLength-- : 0;

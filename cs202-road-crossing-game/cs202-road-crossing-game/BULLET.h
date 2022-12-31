@@ -12,6 +12,7 @@ private:
 public:
 	BULLET();
 	BULLET(sf::Vector2f pos);
+	BULLET(sf::Vector2f pos, bool enemy);
 	sf::Vector2f getPosition();
 	void update();
 	void render(sf::RenderTarget& target);

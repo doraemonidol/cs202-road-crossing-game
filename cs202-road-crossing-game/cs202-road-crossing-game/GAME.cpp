@@ -331,7 +331,7 @@ void GAME::loadBullet() {
 
 void GAME::updateEnemies()
 {
-    this->enemyController.update(deltaTime);
+    this->enemyController.update(deltaTime, bullets);
 }
 
 void GAME::update()
@@ -609,7 +609,7 @@ void GAME::playerShoot()
 {
         // std::cout << "Shooting\n";
         sf::Vector2f pos = this->player->getPos();
-        this->bullets.push_back(new BULLET(pos));
+        this->bullets.push_back(new BULLET(pos, false));
         // std::cout << "Done shooting\n";
 }
 

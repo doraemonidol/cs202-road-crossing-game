@@ -5,6 +5,7 @@
 #include "LASER.h"
 #include "OBSTACLE.h"
 #include "TRAFFICLIGHT.h"
+#include "BULLET.h"
 #include "main.h"
 
 class LASER;
@@ -43,8 +44,8 @@ public:
     void render(sf::RenderTarget& target);
     void renderEnemy(sf::RenderTarget& target);
     void renderLight(sf::RenderTarget& target);
-    void update(float deltaTime);
-    void updateEnemy(float deltaTime);
+    void update(float deltaTime, std::vector<BULLET *> &bullets);
+    void updateEnemy(float deltaTime, std::vector<BULLET *> &bullets);
     void updateLight(float deltaTime);
 
     void spawn(float deltaTime);

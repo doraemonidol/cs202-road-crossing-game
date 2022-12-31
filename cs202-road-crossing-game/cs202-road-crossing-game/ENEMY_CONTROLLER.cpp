@@ -145,20 +145,25 @@ void ENEMY_CONTROLLER::renderLight(sf::RenderTarget& target)
     }
 }
 
-void ENEMY_CONTROLLER::update(float deltaTime) {
+void ENEMY_CONTROLLER::update(float deltaTime, std::vector<BULLET *> &bullets) {
     //std::cout << "Updating Enemy\n";
-    updateEnemy(deltaTime);
+    updateEnemy(deltaTime, bullets);
     //std::cout << "Updating Light\n";
     updateLight(deltaTime);
 }
 
-void ENEMY_CONTROLLER::updateEnemy(float deltaTime)
+void ENEMY_CONTROLLER::updateEnemy(float deltaTime, std::vector<BULLET *>  &bullets)
 {
     // Check red light. Theo row id
     for (int i = 0; i < monsters.size(); i++) {
         if (redLightOn[monsters[i]->getRowID()])
             continue;
         monsters[i]->update();
+        int isShoot = rand() % 500;
+        if(!isShoot){
+            sf::Vector2f pos = monsters[i]->getPos();
+            bullets.push_back(new BULLET(pos, true));
+        }
     }
     for (int i = 0; i < obstacles.size(); i++) {
         if (obstacles[i]->update(deltaTime)) {
