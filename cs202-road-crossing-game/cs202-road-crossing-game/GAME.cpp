@@ -586,9 +586,21 @@ void GAME::checkCollision()
 
     // damge monsteres and obstacles
     for (int i = 0; i < bullets.size(); i++) {
-        // enemies bullets won't kill enemies
-        if(!bullets[i]->PlayerBullet()) continue;
-       // std::cout << i << "\n";
+        // enemies' bullets
+        if(!bullets[i]->PlayerBullet()) {
+            // check whether it hit player
+            if(bullets[i]->getSprite().getGlobalBounds().intersects(player->getCollider1())) {
+                scene = LOSESCENE;
+                isDead = true;
+                playMusic(music["LOSE"]);
+                this->gui->initLose();
+
+                std::cout << "Lost case!" << std::endl;
+            }
+            // skip checking collide with enemies
+            continue;
+        }
+        // std::cout << i << "\n";
         MONSTER* tmp = enemyController.isShoot(bullets[i]->getSprite().getGlobalBounds());
 
         //std::cout << "passed check\n";
