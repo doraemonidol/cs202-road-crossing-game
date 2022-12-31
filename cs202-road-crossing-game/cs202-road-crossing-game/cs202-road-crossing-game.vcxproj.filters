@@ -72,6 +72,18 @@
     <ClCompile Include="TRAFFICLIGHT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ENEMY_BASE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ENEMY_CONTROLLER.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LEVEL_MANAGER.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BOSS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SPACESHIP.h">
@@ -129,6 +141,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TRAFFICLIGHT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ENEMY_BASE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ENEMY_CONTROLLER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LEVEL_MANAGER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BOSS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -55,7 +55,7 @@ LEVEL_MANAGER::LEVEL_MANAGER()
     if (!texture->loadFromFile("Textures/level/1/monster-2-4x.png")) {
         std::cout << "ERROR::LEVEL_MANAGER::LEVEL0::BIGMONSTER::Could not load texture file.\n";
     }
-    enemies[BIGMONSTER] = new ENEMY_BASE(1.f, 50, texture, 25);
+    enemies[BIGMONSTER] = new ENEMY_BASE(1.5, 50, texture, 25);
 
     enemies[LASERENEMY] = new ENEMY_BASE(1.f, 15, nullptr, 25);
 
@@ -76,6 +76,42 @@ LEVEL_MANAGER::LEVEL_MANAGER()
         std::cout << "ERROR::LEVEL_MANAGER::LEVEL0::BACKGROUND::Could not load texture file.\n";
     }
     level[1] = new LEVEL(enemies, spawnLine, texture, 3.f, maxEnemyonLine);
+
+    
+    /**
+    LEVEL 2
+    **/
+    texture = new sf::Texture();
+    if (!texture->loadFromFile("Textures/level/2/monster-1-4x.png")) {
+        std::cout << "ERROR::LEVEL_MANAGER::LEVEL0::SMALLMONSTER::Could not load texture file.\n";
+    }
+    enemies[SMALLMONSTER] = new ENEMY_BASE(1.f, 25, texture, 25);
+
+    texture = new sf::Texture();
+    if (!texture->loadFromFile("Textures/level/2/monster-2-4x.png")) {
+        std::cout << "ERROR::LEVEL_MANAGER::LEVEL0::BIGMONSTER::Could not load texture file.\n";
+    }
+    enemies[BIGMONSTER] = new ENEMY_BASE(1.5, 55, texture, 25);
+
+    enemies[LASERENEMY] = new ENEMY_BASE(1.f, 0, nullptr, 25);
+
+    texture = new sf::Texture();
+    if (!texture->loadFromFile("Textures/level/2/ufo-4x.png")) {
+        std::cout << "ERROR::LEVEL_MANAGER::LEVEL2::UFO::Could not load texture file.\n";
+    }
+    enemies[UFOENEMY] = new ENEMY_BASE(1.f, 0, texture, 25);
+
+    spawnLine.clear();
+    spawnLine.assign({ 300, 225, 150});
+
+    maxEnemyonLine.clear();
+    maxEnemyonLine.assign({ 3, 3, 3});
+
+    texture = new sf::Texture();
+    if (!texture->loadFromFile("Textures/level/2/background.png")) {
+        std::cout << "ERROR::LEVEL_MANAGER::LEVEL2::BACKGROUND::Could not load texture file.\n";
+    }
+    level[2] = new LEVEL(enemies, spawnLine, texture, 3.f, maxEnemyonLine);
 }
 
 LEVEL_MANAGER::~LEVEL_MANAGER()

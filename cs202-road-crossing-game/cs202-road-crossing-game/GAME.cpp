@@ -331,7 +331,7 @@ void GAME::loadBullet() {
 
 void GAME::updateEnemies()
 {
-    this->enemyController.update(deltaTime, bullets);
+    this->enemyController.update(deltaTime, player->getPos(), bullets);
 }
 
 void GAME::update()
@@ -373,7 +373,9 @@ void GAME::update()
     }
 }
 
-// RENDER FUNCTIONS
+/**
+  * RENDER FUNCTIONS
+  */
 
 void GAME::renderWorld()
 {
@@ -536,6 +538,7 @@ void GAME::updateIngameGUI()
 void GAME::resetGame()
 {
     totalTime = 0;
+    bullets.clear();
     playMusic(music["INGAME"]);
     // std::cout << "1";
     //  scene = MENUSCENE;
@@ -549,7 +552,10 @@ void GAME::resetGame()
     // std::cout << "1";
     this->initPlayer();
     // std::cout << "1";
-    enemyController.initNewLevel(levelManager.getLevel(level));
+    gui->setWorldBackground(levelManager.getLevel(level)->getBackgroundTexture());
+    if (level != MAX_LEVEL - 1)
+        enemyController.initNewLevel(levelManager.getLevel(level));
+    else enemyController.initFinalLevel(levelManager.getLevel(level));
     // std::cout << "1";
 
     // this->gui->initPauseMenu();
@@ -566,7 +572,7 @@ void GAME::checkCollision()
         playMusic(music["LOSE"]);
         this->gui->initLose();
 
-        std::cout << "Lost case!" << std::endl;
+        //std::cout << "Lost case!" << std::endl;
     }
 
     int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
@@ -574,14 +580,19 @@ void GAME::checkCollision()
         this->scene = NEXTLEVEL;
         // std::cout
         level++;
-        this->sceneManager.resetNextLevel();
-        playMusic(music["WIN"]);
-        // this->initPlayer();
-        view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
-        this->window->setView(view);
-        this->gui->initWin();
 
-        std::cout << "Win case!" << std::endl;
+        if (level == MAX_LEVEL) {
+            this->scene = ENDGAME;
+        } else {
+            this->sceneManager.resetNextLevel();
+            playMusic(music["WIN"]);
+            // this->initPlayer();
+            view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
+            this->window->setView(view);
+            this->gui->initWin();
+
+            // std::cout << "Win case!" << std::endl;
+        }
     }
 
     // damge monsteres and obstacles
@@ -600,21 +611,13 @@ void GAME::checkCollision()
             // skip checking collide with enemies
             continue;
         }
-        // std::cout << i << "\n";
-        MONSTER* tmp = enemyController.isShoot(bullets[i]->getSprite().getGlobalBounds());
-
-        //std::cout << "passed check\n";
-        if (tmp != nullptr) {
-           // std::cout << "in check\n";
-            tmp->recievedDmg(bullets[i]->getDamage());
-           // std::cout << bullets.size() << "< < < < < <\n >>>>>>";
+        if (enemyController.isShoot(bullets[i]->getSprite().getGlobalBounds(), bullets[i]->getDamage())) {
             bullets.erase(bullets.begin() + i);
-           // std::cout << bullets.size() << "< < < < < <\n >>>>>>";
+            // std::cout << bullets.size() << "< < < < < <\n >>>>>>";
             i--;
             if (i < 0)
                 break;
         }
-       // std::cout << "Shooting\n";
     }
    // std::cout << "Finish Collision\n";
 }

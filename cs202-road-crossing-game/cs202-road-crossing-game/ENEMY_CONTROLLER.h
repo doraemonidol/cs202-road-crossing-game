@@ -1,4 +1,5 @@
 #pragma once
+#include "BOSS.h"
 #include "ENEMY_BASE.h"
 #include "LEVEL_MANAGER.h"
 #include "MONSTER.h"
@@ -14,6 +15,7 @@ class ENEMY_CONTROLLER {
 private:
     ENEMY_BASE* base[MAX_ENEMY_TYPE];
 
+    BOSS boss;
     std::vector<MONSTER*> monsters;
     std::vector<OBSTACLE*> obstacles;
     std::vector<TRAFFICLIGHT*> lights;
@@ -25,15 +27,17 @@ private:
 
     float spawnTimer;
     float curSpawnTimer;
+    bool gameDone = false, finalBoss = false;
 
 public:
-    ENEMY_CONTROLLER() {};
+    ENEMY_CONTROLLER() = default;
     ~ENEMY_CONTROLLER();
 
+    void initFinalLevel(LEVEL* newLevel);
     void initNewLevel(LEVEL* newLevel);
     void initLight();
 
-    MONSTER* isShoot(sf::FloatRect obj);
+    bool isShoot(sf::FloatRect obj, int dmg);
     bool isCollidewPlayer(sf::FloatRect obj);
     bool isLineEmpty(int rowID);
 
@@ -42,9 +46,11 @@ public:
     void destroyObstacles(sf::Vector2u boundSize);
 
     void render(sf::RenderTarget& target);
+    void renderBoss(sf::RenderTarget& target);
     void renderEnemy(sf::RenderTarget& target);
     void renderLight(sf::RenderTarget& target);
-    void update(float deltaTime, std::vector<BULLET *> &bullets);
+    void update(float deltaTime, sf::Vector2f, std::vector<BULLET *> &bullets);
+    bool updateBoss(float deltaTime, sf::Vector2f);
     void updateEnemy(float deltaTime, std::vector<BULLET *> &bullets);
     void updateLight(float deltaTime);
 

@@ -9,32 +9,32 @@ enum pauseMenuBtn;
 class GUI {
 private:
     sf::RenderWindow* window;
-    //Player
+    // Player
     SPACESHIP* player;
 
-    //Textures
+    // Textures
     std::map<std::string, sf::Texture*> textures;
     sf::Texture worldBackgroundTex;
     sf::Sprite worldBackground;
-    //std::vector<Bullet*> bullets;
+    // std::vector<Bullet*> bullets;
 
-    //GUI
-    sf::Font font,  font2;
+    // GUI
+    sf::Font font, font2;
     sf::Text levelText;
     sf::Text pauseText;
     sf::Text loseText;
     sf::Text winText;
     sf::Text totalTimeText;
-    OPTIONS* pauseMenu, *loseMenu, *winMenu, *ingameGUI;
+    OPTIONS *pauseMenu, *loseMenu, *winMenu, *ingameGUI;
 
-    //PlayerGUI
+    // PlayerGUI
     sf::Texture bulletBarTexture;
     sf::Sprite bulletBar;
     ANIMATION bulletBarControl;
     sf::Sprite loseTitle, winTitle;
     float pauseMenuDisplacement, winLoseDisplacement, ingameGUIDisplacement;
 
-    //Private functions
+    // Private functions
     void initTextures();
     void initGUI();
 
@@ -50,7 +50,7 @@ public:
     sf::Vector2u getBGSize();
     sf::Sprite getSprite();
 
-    //Functions
+    // Functions
     void updateBulletBar(int bullet);
     void updateLevel(int level);
     void updateTime(float totalTime);
@@ -85,4 +85,6 @@ public:
     int updateIngameGUI(sf::Event e, GAME* gm);
     int updateIngameGUIAnim(GAME* gm);
     void renderIngameGUI();
+
+    void setWorldBackground(sf::Texture* bg);
 };

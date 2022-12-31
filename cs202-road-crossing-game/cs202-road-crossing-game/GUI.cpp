@@ -375,3 +375,11 @@ void GUI::renderIngameGUI()
     this->ingameGUI->movePos2(sf::Vector2f(0, y));
     ingameGUI->draw(window);
 }
+
+void GUI::setWorldBackground(sf::Texture* bg)
+{
+    this->worldBackground.move(sf::Vector2f(0, (this->worldBackgroundTex.getSize().y - SCREEN_HEIGHT) / (1.0)));
+    worldBackgroundTex = *bg;
+    worldBackground.setTexture(*bg);
+    this->worldBackground.move(sf::Vector2f(0, (this->worldBackgroundTex.getSize().y - SCREEN_HEIGHT) / (-1.0)));
+}

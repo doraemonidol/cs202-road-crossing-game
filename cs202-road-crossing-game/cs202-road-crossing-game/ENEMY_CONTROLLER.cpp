@@ -11,9 +11,20 @@ ENEMY_CONTROLLER::~ENEMY_CONTROLLER()
     this->deallocate();
 }
 
+void ENEMY_CONTROLLER::initFinalLevel(LEVEL* newLevel)
+{
+    initNewLevel(newLevel);
+    boss.reset();
+    gameDone = false;
+    std::cout << "finallll";
+    finalBoss = true;
+}
+
 void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
 {
-
+    std::cout << "no not yet";
+    finalBoss = false;
+    gameDone = false;
     //std::cout << "2";
     this->clearAll();
     //std::cout << "2";
@@ -49,18 +60,30 @@ void ENEMY_CONTROLLER::initLight()
     }
 }
 
-MONSTER* ENEMY_CONTROLLER::isShoot(sf::FloatRect obj)
+bool ENEMY_CONTROLLER::isShoot(sf::FloatRect obj, int dmg)
 {
+    if (finalBoss && boss.isShoot(obj)) {
+        boss.receiveDmg(dmg);
+        return true;
+    }
+
     for (int i = 0; i < monsters.size(); i++) {
         if (monsters[i]->isCollide(obj)) {
-            return monsters[i];
+            monsters[i]->recievedDmg(dmg);
+            return true;
         }
     }
-    return nullptr;
+    return false;
 }
 
 bool ENEMY_CONTROLLER::isCollidewPlayer(sf::FloatRect obj)
 {
+    if (gameDone)
+        return false;
+
+    if (finalBoss && boss.isCollide(obj))
+        return true;
+
     for (int i = 0; i < monsters.size(); i++)
         if (monsters[i]->isCollide(obj)) {
             //system("pause");
@@ -123,8 +146,20 @@ void ENEMY_CONTROLLER::destroyObstacles(sf::Vector2u boundSize)
 
 void ENEMY_CONTROLLER::render(sf::RenderTarget& target)
 {
-    renderEnemy(target);
-    renderLight(target);
+    if (boss.stopShowMonster())
+        return;
+
+    if (!gameDone) {
+        renderEnemy(target);
+        renderLight(target);
+        if (finalBoss)
+            renderBoss(target);
+    }
+}
+
+void ENEMY_CONTROLLER::renderBoss(sf::RenderTarget& target)
+{
+    boss.render(target);
 }
 
 void ENEMY_CONTROLLER::renderEnemy(sf::RenderTarget& target)
@@ -145,11 +180,22 @@ void ENEMY_CONTROLLER::renderLight(sf::RenderTarget& target)
     }
 }
 
-void ENEMY_CONTROLLER::update(float deltaTime, std::vector<BULLET *> &bullets) {
-    //std::cout << "Updating Enemy\n";
-    updateEnemy(deltaTime, bullets);
-    //std::cout << "Updating Light\n";
-    updateLight(deltaTime);
+void ENEMY_CONTROLLER::update(float deltaTime, sf::Vector2f playerPos, std::vector<BULLET *> &bullets)
+{
+    if (!gameDone) {
+        // std::cout << "Updating Enemy\n";
+        updateEnemy(deltaTime, bullets);
+        // std::cout << "Updating Light\n";
+        updateLight(deltaTime);
+        if (finalBoss) {
+            gameDone = updateBoss(deltaTime, playerPos);
+        }
+    }
+}
+
+bool ENEMY_CONTROLLER::updateBoss(float deltaTime, sf::Vector2f playerPos)
+{
+    return boss.update(deltaTime, playerPos);
 }
 
 void ENEMY_CONTROLLER::updateEnemy(float deltaTime, std::vector<BULLET *>  &bullets)

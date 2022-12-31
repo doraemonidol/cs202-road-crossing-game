@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BOSS.cpp" />
     <ClCompile Include="BULLET.cpp" />
     <ClCompile Include="ENEMY_BASE.cpp" />
     <ClCompile Include="ENEMY_CONTROLLER.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="UFO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BOSS.h" />
     <ClInclude Include="BULLET.h" />
     <ClInclude Include="ENEMY_BASE.h" />
     <ClInclude Include="ENEMY_CONTROLLER.h" />
