@@ -38,6 +38,7 @@ BULLET::BULLET(sf::Vector2f pos, bool enemy) {
 		this->speed = 6;
 		this->damage = 100;
 		this->moveLength = 500;
+		isPlayerBullet = true;
 	}
 	else {
 		this->sprite.setPosition(pos.x + 45, pos.y + 60);
@@ -45,6 +46,7 @@ BULLET::BULLET(sf::Vector2f pos, bool enemy) {
 		this->speed = -6;
 		this->damage = 100;
 		this->moveLength = 500;
+		isPlayerBullet = false;
 	}
 }
 
@@ -71,4 +73,8 @@ sf::Sprite BULLET::getSprite() {
 
 int BULLET::getMoveLength() {
 	return this->moveLength;
+}
+
+bool BULLET::PlayerBullet() {
+	return isPlayerBullet;
 }

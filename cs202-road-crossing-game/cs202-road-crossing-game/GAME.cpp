@@ -586,6 +586,8 @@ void GAME::checkCollision()
 
     // damge monsteres and obstacles
     for (int i = 0; i < bullets.size(); i++) {
+        // enemies bullets won't kill enemies
+        if(!bullets[i]->PlayerBullet()) continue;
        // std::cout << i << "\n";
         MONSTER* tmp = enemyController.isShoot(bullets[i]->getSprite().getGlobalBounds());
 

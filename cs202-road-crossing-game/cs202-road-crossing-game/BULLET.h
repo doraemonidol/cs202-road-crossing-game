@@ -19,4 +19,5 @@ public:
 	int getDamage();
 	sf::Sprite getSprite();
 	int getMoveLength();
+	bool PlayerBullet();
 };
