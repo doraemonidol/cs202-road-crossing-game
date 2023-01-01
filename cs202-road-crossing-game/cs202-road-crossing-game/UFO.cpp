@@ -32,10 +32,15 @@ bool UFO::isCollide(sf::FloatRect obj)
 
 bool UFO::canDelete(sf::Vector2u windowSize)
 {
-    return true;
+    return this->isOutOfBound(windowSize);
 }
 
 bool UFO::isOutOfBound(sf::Vector2u windowSize)
 {
-    return false;
+    return (this->dir == 1 && this->getPos().x > windowSize.x + DESTROY_ZONE) || (this->dir == -1 && this->getPos().x < 0 - DESTROY_ZONE);
+}
+
+bool UFO::isUFO()
+{
+    return true;
 }

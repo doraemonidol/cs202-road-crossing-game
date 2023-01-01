@@ -44,4 +44,6 @@ public:
     bool isOutOfBound(sf::Vector2u windowSize);
 
     const sf::Vector2f& getPos() const;
+
+    bool isUFO();
 };

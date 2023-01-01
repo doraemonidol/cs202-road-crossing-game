@@ -212,3 +212,8 @@ const sf::Vector2f& LASER::getPos() const
 {
     return this->sprite.getPosition();
 }
+
+bool LASER::isUFO()
+{
+    return false;
+}

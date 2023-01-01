@@ -63,7 +63,7 @@ LEVEL_MANAGER::LEVEL_MANAGER()
     if (!texture->loadFromFile("Textures/level/1/ufo-4x.png")) {
         std::cout << "ERROR::LEVEL_MANAGER::LEVEL0::UFO::Could not load texture file.\n";
     }
-    enemies[UFOENEMY] = new ENEMY_BASE(1.f, 0, texture, 25);
+    enemies[UFOENEMY] = new ENEMY_BASE(1.f, 25, texture, 25);
 
     spawnLine.clear();
     spawnLine.assign({ 450, 300, 150, 0, -150 });

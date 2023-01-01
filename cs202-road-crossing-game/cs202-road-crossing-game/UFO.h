@@ -11,4 +11,6 @@ public:
     bool isCollide(sf::FloatRect obj);
     bool canDelete(sf::Vector2u windowSize);
     bool isOutOfBound(sf::Vector2u windowSize);
+
+    bool isUFO();
 };

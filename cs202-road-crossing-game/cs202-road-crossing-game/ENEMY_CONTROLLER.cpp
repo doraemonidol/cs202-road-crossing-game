@@ -207,12 +207,12 @@ void ENEMY_CONTROLLER::updateEnemy(float deltaTime, std::vector<BULLET *>  &bull
         if (redLightOn[monsters[i]->getRowID()])
             continue;
         monsters[i]->update();
-        int isShoot = rand() % 500;
-        if(!isShoot){
-            //std::cout << "shooting\n";
-            sf::Vector2f pos = monsters[i]->getPos();
-            bullets.push_back(new BULLET(pos, true));
-        }
+        //int isShoot = rand() % 500;
+        //if(!isShoot){
+        //    //std::cout << "shooting\n";
+        //    sf::Vector2f pos = monsters[i]->getPos();
+        //    bullets.push_back(new BULLET(pos, true));
+        //}
     }
     for (int i = 0; i < obstacles.size(); i++) {
         if (obstacles[i]->update(deltaTime)) {
@@ -278,7 +278,7 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
                 monsters.push_back(new SMALL_MONSTER(dir, newEnemy));
                 break;
             case UFOENEMY:
-                // obstacles.push_back(new UFO(dir, newEnemy));
+                 obstacles.push_back(new UFO(dir, newEnemy));
                 break;
             case LASERENEMY:
                 //std::cout << l << " in laser \n";
@@ -334,7 +334,7 @@ void ENEMY_CONTROLLER::initSpawn()
                 monsters.push_back(new SMALL_MONSTER(dir, newEnemy));
                 break;
             case UFOENEMY:
-                // obstacles.push_back(new UFO(dir, newEnemy));
+                 obstacles.push_back(new UFO(dir, newEnemy));
                 break;
             case LASERENEMY:
                 laserQueue[l] = new LASER(newEnemy);

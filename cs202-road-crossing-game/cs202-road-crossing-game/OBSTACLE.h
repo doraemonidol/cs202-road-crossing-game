@@ -23,4 +23,6 @@ public:
     float getSpeed();
     void addSpeed(float speedAdd); // speed += speedAdd
     void setSpeed(float speed); // set speed to
+
+    virtual bool isUFO() = 0;
 };
