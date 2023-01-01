@@ -207,16 +207,18 @@ void ENEMY_CONTROLLER::updateEnemy(float deltaTime, std::vector<BULLET *>  &bull
         if (redLightOn[monsters[i]->getRowID()])
             continue;
         monsters[i]->update();
-        //int isShoot = rand() % 500;
-        //if(!isShoot){
-        //    //std::cout << "shooting\n";
-        //    sf::Vector2f pos = monsters[i]->getPos();
-        //    bullets.push_back(new BULLET(pos, true));
-        //}
     }
     for (int i = 0; i < obstacles.size(); i++) {
         if (obstacles[i]->update(deltaTime)) {
             canSpawn[obstacles[i]->getRowID()] = true;
+        }
+        if (obstacles[i]->isUFO()) {
+            int isShoot = rand() % 500;
+            if(!isShoot){
+                //std::cout << "shooting\n";
+                sf::Vector2f pos = obstacles[i]->getPos();
+                bullets.push_back(new BULLET(pos, true));
+            }
         }
     }
 }
