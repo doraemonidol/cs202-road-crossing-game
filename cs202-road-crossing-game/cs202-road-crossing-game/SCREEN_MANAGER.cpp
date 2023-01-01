@@ -6,6 +6,8 @@ void SCENE_MANAGER::initVariables()
 {
     atPortal = false;
     passedPortal = false;
+    doneLanding = false;
+    playCnt = 2;
 }
 
 void SCENE_MANAGER::initTexture()
@@ -19,6 +21,10 @@ void SCENE_MANAGER::initTexture()
         std::cout << "ERROR::SCREEN_MANAGER::INITTEXTURE::Could not load texture file."
                   << "\n";
     }
+    if (!this->textures["FINAL"].loadFromFile("Textures/final-scene.png")) {
+        std::cout << "ERROR::SCREEN_MANAGER::INITTEXTURE::Could not load texture file."
+                  << "\n";
+    }
 }
 
 void SCENE_MANAGER::initSprite()
@@ -26,14 +32,18 @@ void SCENE_MANAGER::initSprite()
     // Set the texture to the sprite
     this->sideview.setTexture(this->textures["SIDEVIEW"]);
     this->portal.setTexture(this->textures["PORTAL"]);
+    this->finalSprite.setTexture(this->textures["FINAL"]);
 
     // Origin
     this->sideview.setOrigin(sideview.getGlobalBounds().width, this->sideview.getGlobalBounds().height / 2);
     this->portal.setOrigin(0.f, this->portal.getGlobalBounds().height / 2);
+    this->finalSprite.setOrigin(finalSprite.getGlobalBounds().width / 32, this->finalSprite.getGlobalBounds().height / 6);
 
     // Position the sprite
     this->sideview.setPosition(SIDEVIEW_POSITION);
     this->portal.setPosition(PORTAL_POSITION);
+    this->finalSprite.setPosition(sf::Vector2f(SCREEN_WIDTH / 32, SCREEN_HEIGHT / 6));
+    this->finalSprite.setScale(sf::Vector2f(1.8, 1.8));
 }
 
 SCENE_MANAGER::SCENE_MANAGER()
@@ -44,6 +54,8 @@ SCENE_MANAGER::SCENE_MANAGER()
     this->initSprite();
     this->sideviewAnim.initAnim(&this->textures["SIDEVIEW"], { 4, 1 }, 0.2);
     this->portalAnim.initAnim(&this->textures["PORTAL"], { 16, 1 }, 0.2);
+    this->finalAnim.initAnim(&this->textures["FINAL"], { 16, 3 }, 0.1);
+    this->finalAnim.setCurImg(sf::Vector2u(2, 0));
 }
 
 SCENE_MANAGER::~SCENE_MANAGER()
@@ -63,6 +75,7 @@ void SCENE_MANAGER::resetNextLevel()
 
 bool SCENE_MANAGER::updateNextLevel(float deltaTime)
 {
+    //std::cout << "IN NEXT LEVEL\n";
     this->portalAnim.Update(0, deltaTime, true);
     this->portal.setTextureRect(portalAnim.uvRect);
 
@@ -83,13 +96,42 @@ bool SCENE_MANAGER::updateNextLevel(float deltaTime)
         (sideview.getGlobalBounds().left - this->portal.getGlobalBounds().left - PORTAL_DEPTH > 0)) {
         int tmp = bound.left;
         // system("pause");
-        // std::cout << "in\n";
         bound.width -= abs(sideview.getGlobalBounds().left - this->portal.getGlobalBounds().left) - PORTAL_DEPTH;
         bound.left = tmp;
     }
     
     this->sideview.setTextureRect(bound);
     return false;
+}
+bool SCENE_MANAGER::updateFinalScene(float deltaTime)
+{
+    if (!doneLanding) {
+        if (playCnt >= 0) {
+            playCnt -= this->finalAnim.Update(2, deltaTime, true);
+            if (playCnt < 0) {
+                this->finalAnim.setCurImg(sf::Vector2u(0, 0));
+            }
+            this->finalSprite.setTextureRect(finalAnim.uvRect);
+        } else {
+            // std::cout << "landing \n";
+            if (this->finalAnim.Update(0, deltaTime, true)) {
+                this->finalAnim.setCurImg(sf::Vector2u(0, 1));
+                doneLanding = true;
+                return false;
+            }
+            this->finalSprite.setTextureRect(finalAnim.uvRect);
+            // std::cout << finalAnim.getCurImgCnt().x << " ";
+        }
+    } else {
+        //std::cout << "looping \n";
+        //std::cout << finalAnim.getCurImgCnt().x << " ";
+        this->finalAnim.Update(1, deltaTime, true);
+        this->finalSprite.setTextureRect(finalAnim.uvRect);
+    }
+    this->finalSprite.setScale(sf::Vector2f(1.8, 1.8));
+    this->finalSprite.setOrigin(finalSprite.getLocalBounds().width / 2, this->finalSprite.getLocalBounds().height / 2);
+    this->finalSprite.setPosition(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
+    return true;
 }
 // Functions
 bool SCENE_MANAGER::update(int worldBGTexY, float deltaTime, int scene)
@@ -98,9 +140,13 @@ bool SCENE_MANAGER::update(int worldBGTexY, float deltaTime, int scene)
     case NEXTLEVEL:
         return this->updateNextLevel(deltaTime);
         break;
+    case ENDGAME:
+        this->updateFinalScene(deltaTime);
+        break;
     default:
         break;
     }
+    return false;
     //this->anim.Update(row, deltaTime, faceRight);
 }
 
@@ -109,6 +155,9 @@ void SCENE_MANAGER::render(sf::RenderTarget& target, int scene)
     switch (scene) {
     case NEXTLEVEL:
         this->renderNextLevel(target);
+        break;
+    case ENDGAME:
+        this->renderFinalScene(target);
         break;
     default:
         break;
@@ -126,4 +175,10 @@ void SCENE_MANAGER::renderNextLevel(sf::RenderTarget& target)
 {
     target.draw(this->portal);
     target.draw(this->sideview);
+}
+
+void SCENE_MANAGER::renderFinalScene(sf::RenderTarget& target)
+{
+    //std::cout << "renderring final sprite \n";
+    target.draw(this->finalSprite);
 }

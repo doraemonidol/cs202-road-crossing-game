@@ -7,12 +7,12 @@ enum Scene;
 class SCENE_MANAGER {
 private:
     std::map<std::string, sf::Texture> textures;
-    sf::Sprite sideview, portal;
+    sf::Sprite sideview, portal, finalSprite;
     sf::View* view;
-    bool atPortal = false, passedPortal = false;
-
+    bool atPortal = false, passedPortal = false, doneLanding = false;
+    int playCnt;
     // Animation
-    ANIMATION sideviewAnim, portalAnim;
+    ANIMATION sideviewAnim, portalAnim, landingAnim, finalAnim;
 
     // Private functions
     void initVariables();
@@ -28,8 +28,10 @@ public:
     void resetNextLevel();
 
     bool updateNextLevel(float deltaTime);
+    bool updateFinalScene(float deltaTime);
     bool update(int worldBGTexY, float deltaTime, int scene);
     void render(sf::RenderTarget& target, int scene);
     void initAfterLoad();
     void renderNextLevel(sf::RenderTarget& target);
+    void renderFinalScene(sf::RenderTarget& target);
 };

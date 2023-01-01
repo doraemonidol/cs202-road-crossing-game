@@ -16,13 +16,13 @@ void ENEMY_CONTROLLER::initFinalLevel(LEVEL* newLevel)
     initNewLevel(newLevel);
     boss.reset();
     gameDone = false;
-    std::cout << "finallll";
+    //std::cout << "finallll";
     finalBoss = true;
 }
 
 void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
 {
-    std::cout << "no not yet";
+    //std::cout << "no not yet";
     finalBoss = false;
     gameDone = false;
     //std::cout << "2";
@@ -146,9 +146,6 @@ void ENEMY_CONTROLLER::destroyObstacles(sf::Vector2u boundSize)
 
 void ENEMY_CONTROLLER::render(sf::RenderTarget& target)
 {
-    if (boss.stopShowMonster())
-        return;
-
     if (!gameDone) {
         renderEnemy(target);
         renderLight(target);
@@ -159,6 +156,7 @@ void ENEMY_CONTROLLER::render(sf::RenderTarget& target)
 
 void ENEMY_CONTROLLER::renderBoss(sf::RenderTarget& target)
 {
+    //std::cout << "rendering boss\n";
     boss.render(target);
 }
 
@@ -183,13 +181,17 @@ void ENEMY_CONTROLLER::renderLight(sf::RenderTarget& target)
 void ENEMY_CONTROLLER::update(float deltaTime, sf::Vector2f playerPos, std::vector<BULLET *> &bullets)
 {
     if (!gameDone) {
+        if (finalBoss) {
+            gameDone = updateBoss(deltaTime, playerPos);
+            if (boss.getHp() <= 0) {
+                clearAll();
+                return;
+            }
+        }
         // std::cout << "Updating Enemy\n";
         updateEnemy(deltaTime, bullets);
         // std::cout << "Updating Light\n";
         updateLight(deltaTime);
-        if (finalBoss) {
-            gameDone = updateBoss(deltaTime, playerPos);
-        }
     }
 }
 
@@ -207,6 +209,7 @@ void ENEMY_CONTROLLER::updateEnemy(float deltaTime, std::vector<BULLET *>  &bull
         monsters[i]->update();
         int isShoot = rand() % 500;
         if(!isShoot){
+            //std::cout << "shooting\n";
             sf::Vector2f pos = monsters[i]->getPos();
             bullets.push_back(new BULLET(pos, true));
         }
@@ -289,7 +292,7 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
         }
         //std::cout << "done spawning \n";
     }
-    for (int i = 0; i < spawnLine.size(); i++) {
+    for (int i = 0; i < laserQueue.size(); i++) {
         //std::cout << i << ": ";
         if (!isLineEmpty(i) || laserQueue[i] == nullptr)
             continue;

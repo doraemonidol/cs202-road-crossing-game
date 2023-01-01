@@ -42,8 +42,6 @@ void BOSS::initAnimation()
 
 void BOSS::initSprite()
 {
-    speed = BOSS_NORMAL_SPEED;
-    hp = 100;
 
     pos = sf::Vector2f(SCREEN_WIDTH / 2, -10); // SCREEN_HEIGHT + sprite.getGlobalBounds().height);
     sprite.setTexture(texture[IDLE]);
@@ -61,7 +59,9 @@ void BOSS::initVariables()
     isPlaying = false;
     bullets.clear();
     deadDir = 1;
-    whiteDuration = 2;
+    whiteDuration = 1;
+    speed = BOSS_NORMAL_SPEED;
+    hp = 100;
 
     shooter[2] = sf::Vector2f(pos.x - 90, 40);
     shooter[1] = sf::Vector2f(pos.x + 20, 55);
@@ -100,7 +100,7 @@ bool BOSS::updead(float deltaTime)
 {
     if (deadDir == 1) {
         if (dieAnim.Update(0, deltaTime, true)) {
-            dieOverlay.setFillColor(sf::Color::White);
+            //dieOverlay.setFillColor(sf::Color::White);
             deadDir = -1;
             return false;
         }
@@ -109,20 +109,23 @@ bool BOSS::updead(float deltaTime)
         dieSprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 300);
 
         int a = dieOverlay.getFillColor().a;
+        //std::cout << a << "\n";
         dieOverlay.setFillColor(sf::Color(255, 255, 255, std::min(255.f, a + 255 * deltaTime * deadDir)));
         return false;
     }
 
     whiteDuration -= deltaTime;
-    if (whiteDuration > 0)
+    if (whiteDuration > 0) {
         return false;
+    }
 
     int a = dieOverlay.getFillColor().a;
+    //std::cout << a << "<--\n";
 
-    if (a == 0)
+    if (a <= 0)
         return true;
 
-    dieOverlay.setFillColor(sf::Color(255, 255, 255, std::max(0.f, a + 255 * 2 * deltaTime * deadDir)));
+    dieOverlay.setFillColor(sf::Color(255, 255, 255, std::max(0.f, a + 255 * deltaTime * deadDir)));
     return false;
 }
 

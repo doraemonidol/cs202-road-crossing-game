@@ -123,6 +123,7 @@ void GAME::run()
         totalTime = curTime - prevTime;
         deltaTime += totalTime;
         if (deltaTime > 1.0 / FPS) {
+            deltaTime = std::min(0.25, (double)deltaTime);
             if (!this->isPause)
                 this->totalTime += deltaTime;
             //std::cout << deltaTime << " " << 1.0 / FPS << "\n";
@@ -364,12 +365,20 @@ void GAME::update()
         //std::cout << "9 ";
         enemyController.destroyEnemy(this->window->getSize());
         break;
-    case NEXTLEVEL:
+    case NEXTLEVEL: {
         bool opt = sceneManager.update(this->gui->getBGSize().y, deltaTime, scene);
         if (opt) {
             this->gui->resetGUI();
-            scene = WINSCENE;
+            if (level == MAX_LEVEL)
+                scene = ENDGAME;
+            else
+                scene = WINSCENE;
         }
+        break;
+    }
+    case ENDGAME:
+        sceneManager.update(this->gui->getBGSize().y, deltaTime, scene);
+        break;
     }
 }
 
@@ -457,6 +466,12 @@ void GAME::render()
         if (!isDead)
             this->gui->renderLose();
         break;
+
+    case ENDGAME:
+        //view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
+        sceneManager.renderFinalScene(*this->window);
+        break;
+
     default:
         this->gui->renderBG();
         this->sceneManager.render(*this->window, scene);
@@ -578,13 +593,13 @@ void GAME::checkCollision()
     int minHeight = -1 * (this->gui->getBGSize().y - SCREEN_HEIGHT);
     if (this->player->getPos().y == minHeight) {
         this->scene = NEXTLEVEL;
+        this->sceneManager.resetNextLevel();
         // std::cout
         level++;
 
         if (level == MAX_LEVEL) {
-            this->scene = ENDGAME;
+            std::cout << "ended\n";
         } else {
-            this->sceneManager.resetNextLevel();
             playMusic(music["WIN"]);
             // this->initPlayer();
             view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));

@@ -91,7 +91,7 @@ LEVEL_MANAGER::LEVEL_MANAGER()
     if (!texture->loadFromFile("Textures/level/2/monster-2-4x.png")) {
         std::cout << "ERROR::LEVEL_MANAGER::LEVEL0::BIGMONSTER::Could not load texture file.\n";
     }
-    enemies[BIGMONSTER] = new ENEMY_BASE(1.5, 55, texture, 25);
+    enemies[BIGMONSTER] = new ENEMY_BASE(1.5, 25, texture, 25);
 
     enemies[LASERENEMY] = new ENEMY_BASE(1.f, 0, nullptr, 25);
 
@@ -105,7 +105,7 @@ LEVEL_MANAGER::LEVEL_MANAGER()
     spawnLine.assign({ 300, 225, 150});
 
     maxEnemyonLine.clear();
-    maxEnemyonLine.assign({ 3, 3, 3});
+    maxEnemyonLine.assign({ 2, 2, 2});
 
     texture = new sf::Texture();
     if (!texture->loadFromFile("Textures/level/2/background.png")) {
