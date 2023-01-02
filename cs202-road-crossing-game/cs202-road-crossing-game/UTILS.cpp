@@ -1,5 +1,5 @@
+
 #include "main.h"
-#include "UTILS.h"
 
 BUTTON::BUTTON(std::string t, int charSize, sf::Vector2f size, sf::Color bgColor, sf::Color textColor)
 {

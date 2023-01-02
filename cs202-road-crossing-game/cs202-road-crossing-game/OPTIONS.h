@@ -1,7 +1,4 @@
 #pragma once
-#include "SFML/Graphics.hpp"
-#include "SoundEffect.hpp"
-#include "SoundManager.hpp"
 
 const std::string PRESS_SFX = "Sound/btn-confirm.wav";
 const std::string SWITCH_SFX = "Sound/btn-switch.wav";
@@ -9,7 +6,6 @@ const std::string SWITCH_SFX = "Sound/btn-switch.wav";
 enum Scene;
 enum Alignment;
 
-class BUTTON;
 class GAME;
 
 class OPTIONS {

@@ -1,5 +1,5 @@
+
 #include "main.h"
-#include "ENEMY_BASE.h"
 
 
 ENEMY_BASE::ENEMY_BASE(float speed, int rate,

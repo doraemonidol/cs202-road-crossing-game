@@ -1,7 +1,5 @@
-#include "main.h"
-#include "ENEMY_CONTROLLER.h"
-#include "GUI.h"
-#include "GAME.h"       
+
+#include "main.h" 
 
 // CONSTRUCTORS / DESTRUCTORS
 
@@ -332,7 +330,7 @@ void GAME::loadBullet() {
 
 void GAME::updateEnemies()
 {
-    this->enemyController.update(deltaTime, player->getPos(), bullets);
+    this->enemyController.update(deltaTime, player->getPos(), bullets, this);
 }
 
 void GAME::update()
@@ -554,7 +552,9 @@ void GAME::resetGame()
 {
     totalTime = 0;
     bullets.clear();
-    playMusic(music["INGAME"]);
+    if (level == MAX_LEVEL - 1)
+        playMusic(music["FINAL_BOSS"]);
+    else playMusic(music["INGAME"]);
     // std::cout << "1";
     //  scene = MENUSCENE;
     view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.0f));
@@ -598,7 +598,7 @@ void GAME::checkCollision()
         level++;
 
         if (level == MAX_LEVEL) {
-            std::cout << "ended\n";
+            playMusic(music["FINAL_CUT"]);
         } else {
             playMusic(music["WIN"]);
             // this->initPlayer();
@@ -711,4 +711,9 @@ void GAME::playSound(std::string file)
 float GAME::getDeltaTime()
 {
     return deltaTime;
+}
+
+void GAME::stopMusic()
+{
+    soundController->clearQueue();
 }

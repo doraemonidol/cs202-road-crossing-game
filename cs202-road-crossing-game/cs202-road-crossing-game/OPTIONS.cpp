@@ -1,6 +1,4 @@
-#include "OPTIONS.h"
-#include "UTILS.h"
-#include "GAME.h"
+
 #include "main.h"
 
 OPTIONS::OPTIONS() {

@@ -1,9 +1,4 @@
 #pragma once
-#include "MONSTER.h"
-#include "OBSTACLE.h"
-#include "TRAFFICLIGHT.h"
-#include "ENEMY_BASE.h"
-#include "main.h"
 
 enum monsterType;
 

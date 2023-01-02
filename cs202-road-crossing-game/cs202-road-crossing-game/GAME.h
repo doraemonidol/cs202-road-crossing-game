@@ -1,11 +1,4 @@
 #pragma once
-#include "SPACESHIP.h"
-#include "BULLET.h"
-#include "MENU.h"
-#include "SCREEN_MANAGER.h"  
-#include "SoundEffect.hpp"
-#include "SoundManager.hpp"
-#include "ENEMY_CONTROLLER.h"
 
 extern const int SCREEN_HEIGHT;
 extern const int SCREEN_WIDTH;
@@ -57,8 +50,11 @@ private:
         { "LOSE", "Sound/lose.wav" },
         { "WIN", "Sound/win.wav" },
         { "INGAME", "Sound/background-music-3.wav" },
-        { "PRESS_SFX", "Sound/btn-confirm.wav " }, 
-        { "SWITCH_SFX", "Sound/btn-switch.wav " } };
+        { "PRESS_SFX", "Sound/btn-confirm.wav " },
+        { "SWITCH_SFX", "Sound/btn-switch.wav " },
+        { "FINAL_BOSS", "Sound/boss-fight.wav" },
+        { "FINAL_CUT", "Sound/final-cut.wav" },
+        { "BOSS_BLOW_UP", "Sound/BlowingSFX.wav" } };
 
     //Private functions
     void initWindow();
@@ -116,4 +112,5 @@ public:
 
     void playMusic(std::string file);
     void playSound(std::string file);
+    void stopMusic();
 };

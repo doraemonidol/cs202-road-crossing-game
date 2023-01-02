@@ -1,13 +1,5 @@
-#include "ENEMY_BASE.h"
-#include "OBSTACLE.h"
-#include "UFO.h"
-#include "LASER.h"
-#include "MONSTER.h"
-#include "BIG_MONSTER.h"
-#include "SMALL_MONSTER.h"
+
 #include "main.h"
-#include "SPACESHIP.h"
-#include "GAME.h"
 
 UFO::UFO(int dir, ENEMY_BASE* base)
     : OBSTACLE::OBSTACLE(dir, base)

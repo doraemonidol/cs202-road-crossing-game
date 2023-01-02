@@ -1,8 +1,5 @@
-#include "ENEMY_BASE.h"
+
 #include "main.h"
-#include "OBSTACLE.h"
-#include "GAME.h"
-#include "LASER.h"
 
 LASER::LASER(ENEMY_BASE* base)
     : OBSTACLE(0, base)

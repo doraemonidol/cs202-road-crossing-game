@@ -1,6 +1,4 @@
 #pragma once
-#include "main.h"
-#include "ANIMATION.h"
 
 class TRAFFICLIGHT{
 private:

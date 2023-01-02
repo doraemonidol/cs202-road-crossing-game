@@ -1,4 +1,5 @@
-#include "BULLET.h"
+
+#include "main.h"
 
 BULLET::BULLET() {
 	if (!this->texture.loadFromFile("Textures/bullet.png")) {

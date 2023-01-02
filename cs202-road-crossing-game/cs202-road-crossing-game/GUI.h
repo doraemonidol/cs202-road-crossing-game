@@ -1,7 +1,4 @@
 #pragma once
-#include "SPACESHIP.h"
-#include "UTILS.h"
-#include "OPTIONS.h"
 enum pauseMenuBtn;
 
 #define TIME_POSITION sf::Vector2f(SCREEN_WIDTH / 2, 50)

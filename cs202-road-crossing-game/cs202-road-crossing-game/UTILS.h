@@ -1,6 +1,4 @@
 #pragma once
-#include "main.h"
-#include "ANIMATION.h"
 
 enum btnState;
 class BUTTON {

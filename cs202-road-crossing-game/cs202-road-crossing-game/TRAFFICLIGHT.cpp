@@ -1,4 +1,5 @@
-#include "TRAFFICLIGHT.h"
+
+#include "main.h"
 
 TRAFFICLIGHT::TRAFFICLIGHT(int height){
 	if(!texture.loadFromFile("Textures/freeze-laser.png")){

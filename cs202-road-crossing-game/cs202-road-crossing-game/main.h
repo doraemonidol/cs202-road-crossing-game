@@ -29,6 +29,7 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+
 #pragma warning(disable : 4996)
 
 const int SCREEN_WIDTH = 800;
@@ -84,3 +85,26 @@ enum enemyType {
     UFOENEMY,
     LASERENEMY
 };
+
+#include "SoundEffect.hpp"
+#include "SoundManager.hpp"
+#include "ANIMATION.h"
+#include "TRAFFICLIGHT.h"
+#include "SPACESHIP.h"
+#include "UTILS.h"
+#include "BULLET.h"
+#include "BOSS.h"
+#include "OPTIONS.h"
+#include "MENU.h"
+#include "SCREEN_MANAGER.h"  
+#include "GUI.h"
+#include "ENEMY_BASE.h"
+#include "MONSTER.h"
+#include "BIG_MONSTER.h"
+#include "SMALL_MONSTER.h"
+#include "OBSTACLE.h"
+#include "LASER.h"
+#include "UFO.h"
+#include "LEVEL_MANAGER.h"
+#include "ENEMY_CONTROLLER.h"
+#include "GAME.h"

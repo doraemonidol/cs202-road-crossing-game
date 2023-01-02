@@ -1,15 +1,4 @@
 #pragma once
-#include "BOSS.h"
-#include "ENEMY_BASE.h"
-#include "LEVEL_MANAGER.h"
-#include "MONSTER.h"
-#include "LASER.h"
-#include "OBSTACLE.h"
-#include "TRAFFICLIGHT.h"
-#include "BULLET.h"
-#include "main.h"
-
-class LASER;
 
 class ENEMY_CONTROLLER {
 private:
@@ -27,7 +16,7 @@ private:
 
     float spawnTimer;
     float curSpawnTimer;
-    bool gameDone = false, finalBoss = false;
+    bool gameDone = false, finalBoss = false, bossDeath = false;
 
 public:
     ENEMY_CONTROLLER() = default;
@@ -49,7 +38,7 @@ public:
     void renderBoss(sf::RenderTarget& target);
     void renderEnemy(sf::RenderTarget& target);
     void renderLight(sf::RenderTarget& target);
-    void update(float deltaTime, sf::Vector2f, std::vector<BULLET *> &bullets);
+    void update(float deltaTime, sf::Vector2f, std::vector<BULLET *> &bullets, GAME* game);
     bool updateBoss(float deltaTime, sf::Vector2f);
     void updateEnemy(float deltaTime, std::vector<BULLET *> &bullets);
     void updateLight(float deltaTime);

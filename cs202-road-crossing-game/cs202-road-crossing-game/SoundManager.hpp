@@ -28,6 +28,8 @@ public:
     static SoundManager* instance;
     void switchMute();
 
+    void clearQueue();
+
 private:
     std::priority_queue<std::shared_ptr<SoundEffect>> _sounds;
     sf::Music _music;

@@ -1,4 +1,5 @@
-#include "BOSS.h"
+
+#include "main.h"
 
 BOSS::BOSS() {
     initAnimation();

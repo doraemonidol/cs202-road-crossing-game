@@ -1,6 +1,5 @@
+
 #include "main.h"
-#include "ANIMATION.h"
-#include "SCREEN_MANAGER.h"
 
 void SCENE_MANAGER::initVariables()
 {

@@ -1,14 +1,5 @@
-#include "ENEMY_BASE.h"
-#include "OBSTACLE.h"
-#include "UFO.h"
-#include "LASER.h"
-#include "ENEMY_BASE.h"
-#include "MONSTER.h"
-#include "BIG_MONSTER.h"
-#include "SMALL_MONSTER.h"
+
 #include "main.h"
-#include "SPACESHIP.h"
-#include "GAME.h"
 
 MONSTER::MONSTER(int dir, ENEMY_BASE* base)
     : ENEMY_BASE(*base)

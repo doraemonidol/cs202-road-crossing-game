@@ -1,5 +1,4 @@
 #pragma once 
-#include "ANIMATION.h"
 #define SPACE_SHIP_ORIGIN_POS sf::Vector2f(600, 700)
 class SPACESHIP {
 private:

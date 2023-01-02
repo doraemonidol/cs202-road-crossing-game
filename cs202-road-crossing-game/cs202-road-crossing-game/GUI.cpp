@@ -1,12 +1,5 @@
-#include "OBSTACLE.h"
-#include "UFO.h"
-#include "LASER.h"
-#include "MONSTER.h"
-#include "BIG_MONSTER.h"
-#include "SMALL_MONSTER.h"
+
 #include "main.h"
-#include "GUI.h"
-#include "GAME.h"
 
 void GUI::initBG()
 {

@@ -1,6 +1,4 @@
 #pragma once
-#include "SFML/Graphics.hpp"
-#include "OPTIONS.h"
 /**
 MAIN (1)
   |- PLAY (2)
@@ -15,6 +13,7 @@ MAIN (1)
 enum Scene;
 
 class BUTTON;
+class GAME;
 
 class MENU {
 public:

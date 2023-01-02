@@ -64,6 +64,14 @@ void SoundManager::switchMute()
     }
 }
 
+void SoundManager::clearQueue()
+{
+    while (_sounds.size()) {
+        _sounds.pop();
+    }
+    _music.pause();
+}
+
 std::string SoundManager::toString(void) const
 {
     std::stringstream ss;

@@ -1,7 +1,4 @@
 #pragma once
-#include "main.h"
-#include "ANIMATION.h"
-#include "BULLET.h"
 
 #define BOSS_TEXTURE_IDLE "Textures/boss-idle.png"
 #define BOSS_TEXTURE_SHOOT1 "Textures/boss-shoot-1.png"
@@ -16,6 +13,8 @@ enum bossState {
     SHOOTLASER,
     bossStateCnt
 };
+
+class BULLET;
 
 class BOSS {
     float speed, whiteDuration;

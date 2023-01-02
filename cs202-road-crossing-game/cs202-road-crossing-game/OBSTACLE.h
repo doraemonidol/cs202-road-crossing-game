@@ -1,6 +1,4 @@
 #pragma once
-#include "ENEMY_BASE.h"
-#include "main.h"
 
 class OBSTACLE : public ENEMY_BASE{
 protected:

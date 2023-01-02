@@ -1,5 +1,4 @@
 #pragma once
-#include "ANIMATION.h"
 
 #define LASER_BEAM_TEXTURE "Textures/laser-beam-2x.png"
 #define LEFT_DRONE_TEXTURE "Textures/drone-left-2x.png"
@@ -19,6 +18,7 @@
 #define MOVE_TIME 0.5f
 
 enum btnFunc;
+
 class LASER : public OBSTACLE {
     sf::Texture laserTexture, droneLeftTexture, droneRightTexture;
     sf::Sprite droneLeft, droneRight, laser;

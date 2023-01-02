@@ -1,10 +1,5 @@
-#include "ENEMY_CONTROLLER.h"
-#include "MONSTER.h"
-#include "BIG_MONSTER.h"
-#include "SMALL_MONSTER.h"
-#include "OBSTACLE.h"
-#include "LASER.h"
-#include "UFO.h"
+
+#include "main.h"
 
 ENEMY_CONTROLLER::~ENEMY_CONTROLLER()
 {
@@ -18,6 +13,7 @@ void ENEMY_CONTROLLER::initFinalLevel(LEVEL* newLevel)
     gameDone = false;
     //std::cout << "finallll";
     finalBoss = true;
+    bossDeath = false;
 }
 
 void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
@@ -25,6 +21,7 @@ void ENEMY_CONTROLLER::initNewLevel(LEVEL* newLevel)
     //std::cout << "no not yet";
     finalBoss = false;
     gameDone = false;
+    bossDeath = false;
     //std::cout << "2";
     this->clearAll();
     //std::cout << "2";
@@ -178,13 +175,16 @@ void ENEMY_CONTROLLER::renderLight(sf::RenderTarget& target)
     }
 }
 
-void ENEMY_CONTROLLER::update(float deltaTime, sf::Vector2f playerPos, std::vector<BULLET *> &bullets)
+void ENEMY_CONTROLLER::update(float deltaTime, sf::Vector2f playerPos, std::vector<BULLET*>& bullets, GAME* game)
 {
     if (!gameDone) {
         if (finalBoss) {
             gameDone = updateBoss(deltaTime, playerPos);
-            if (boss.getHp() <= 0) {
+            if (boss.getHp() <= 0 && !bossDeath) {
                 clearAll();
+                bossDeath = true;
+                game->stopMusic();
+                game->playSound("Sound/BlowingSFX.wav");
                 return;
             }
         }
