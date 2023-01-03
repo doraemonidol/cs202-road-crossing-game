@@ -1,4 +1,4 @@
-
+﻿
 #include "main.h" 
 
 // CONSTRUCTORS / DESTRUCTORS
@@ -488,17 +488,16 @@ void GAME::saveGame() {
         std::cout << "Unable to open save game!" << std::endl;
         return;
     }
-    file.write((char*)window, sizeof(GAME));
-    file.write((char*)&view, sizeof(sf::View));
+    file.write((char*)&view, sizeof(sf::View)); // Nếu có lỗi thì xem lại dòng này
     file.write((char*)&isPause, sizeof(bool));
     file.write((char*)&isDead, sizeof(bool));
     file.write((char*)&level, sizeof(unsigned));
     file.write((char*)&scene, sizeof(unsigned));
     file.write((char*)&deltaTime, sizeof(float));
     file.write((char*)&totalTime, sizeof(float));
-    file.write((char*)&clock, sizeof(sf::Clock));
+    file.write((char*)&clock, sizeof(sf::Clock)); // Nếu có lỗi thì xem lại dòng này
     sf::Vector2f pos = this->player->getPos();
-    file.write((char*)&pos, sizeof(sf::Vector2f));
+    file.write((char*)&pos, sizeof(sf::Vector2f)); // Nếu có lỗi thì xem lại dòng này
     /*file.write((char*)gui, sizeof(GUI));*/
     file.close();
     int size = bullets.size();

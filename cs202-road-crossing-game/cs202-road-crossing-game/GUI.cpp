@@ -378,10 +378,10 @@ void GUI::setWorldBackground(sf::Texture* bg)
 }
 
 void GUI::saveGame(std::string fileName) {
-    std::ofstream file;
+    /*std::ofstream file;
     file.open(fileName, std::ios::app);
     file.write((char*)&pauseMenuDisplacement, sizeof(float));
     file.write((char*)&winLoseDisplacement, sizeof(float));
     file.write((char*)&ingameGUIDisplacement, sizeof(float));
-    file.close();
+    file.close();*/
 }

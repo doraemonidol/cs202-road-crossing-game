@@ -183,7 +183,7 @@ void SCENE_MANAGER::renderFinalScene(sf::RenderTarget& target)
 }
 
 void SCENE_MANAGER::saveGame(std::string fileName) {
-    std::ofstream file;
+    /*std::ofstream file;
     file.open(fileName, std::ios::app);
     if (!file) {
         std::cout << "Unable to open save game!" << std::endl;
@@ -204,6 +204,6 @@ void SCENE_MANAGER::saveGame(std::string fileName) {
     sideviewAnim.saveGame(fileName);
     portalAnim.saveGame(fileName);
     landingAnim.saveGame(fileName);
-    finalAnim.saveGame(fileName);
+    finalAnim.saveGame(fileName);*/
 
 }
