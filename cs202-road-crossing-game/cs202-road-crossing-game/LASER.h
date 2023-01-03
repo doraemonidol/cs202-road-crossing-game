@@ -46,4 +46,5 @@ public:
     const sf::Vector2f& getPos() const;
 
     bool isUFO();
+    void saveGame(std::string fileName);
 };

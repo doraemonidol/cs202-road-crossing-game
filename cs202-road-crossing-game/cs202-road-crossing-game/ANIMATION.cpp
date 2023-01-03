@@ -72,3 +72,13 @@ void ANIMATION::setCurImg(sf::Vector2u newImg)
     uvRect.left = curImg.x * uvRect.width;
     uvRect.width = abs(uvRect.width);
 }
+
+void ANIMATION::saveGame(std::string fileName) {
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    file.write((char*)&imgCnt, sizeof(imgCnt));
+    file.write((char*)&curImg, sizeof(curImg));
+    file.write((char*)&totalTime, sizeof(float));
+    file.write((char*)&switchTime, sizeof(float));
+    file.close();
+}

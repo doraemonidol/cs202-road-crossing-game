@@ -31,4 +31,5 @@ public:
     int getHp();
     int getRowID();
     sf::Vector2f getPos();
+    virtual void saveGame(std::string fileName);
 };

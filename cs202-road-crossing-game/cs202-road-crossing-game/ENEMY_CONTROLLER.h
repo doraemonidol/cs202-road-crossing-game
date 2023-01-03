@@ -47,4 +47,6 @@ public:
     void initSpawn();
     void clearAll();
     void deallocate();
+
+    void saveGame(std::string fileName);
 };

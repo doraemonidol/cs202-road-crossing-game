@@ -23,4 +23,5 @@ public:
     void setSpeed(float speed); // set speed to
 
     virtual bool isUFO() = 0;
+    virtual void saveGame(std::string fileName);
 };

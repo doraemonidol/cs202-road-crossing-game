@@ -92,3 +92,16 @@ int BULLET::getMoveLength() {
 bool BULLET::PlayerBullet() {
 	return isPlayerBullet;
 }
+
+void BULLET::saveGame(std::string fileName) {
+	std::ofstream file;
+	file.open(fileName, std::ios::app);
+	file.write((char*)&sprite.getPosition().x, sizeof(sprite.getPosition().x));
+	file.write((char*)&sprite.getPosition().y, sizeof(sprite.getPosition().y));
+	file.write((char*)&texture, sizeof(texture));
+	file.write((char*)&speed, sizeof(int));
+	file.write((char*)damage, sizeof(int));
+	file.write((char*)moveLength, sizeof(int));
+	file.write((char*)isPlayerBullet, sizeof(bool));
+	file.close();
+}

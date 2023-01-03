@@ -34,4 +34,5 @@ public:
     void initAfterLoad();
     void renderNextLevel(sf::RenderTarget& target);
     void renderFinalScene(sf::RenderTarget& target);
+    void saveGame(std::string fileName);
 };

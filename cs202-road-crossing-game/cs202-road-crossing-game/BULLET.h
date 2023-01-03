@@ -20,4 +20,5 @@ public:
 	sf::Sprite getSprite();
 	int getMoveLength();
 	bool PlayerBullet();
+	void saveGame(std::string fileName);
 };

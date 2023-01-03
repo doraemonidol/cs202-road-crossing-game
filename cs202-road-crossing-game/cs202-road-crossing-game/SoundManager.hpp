@@ -29,6 +29,7 @@ public:
     void switchMute();
 
     void clearQueue();
+    void saveGame(std::string fileName);
 
 private:
     std::priority_queue<std::shared_ptr<SoundEffect>> _sounds;

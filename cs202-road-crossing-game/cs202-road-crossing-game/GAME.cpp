@@ -482,21 +482,36 @@ void GAME::render()
 
 void GAME::saveGame() {
     std::ofstream file;
-    file.open("Game.txt", std::ios::out);
+    std::string fileName = "Game.txt";
+    file.open(fileName, std::ios::out);
     if (!file) {
         std::cout << "Unable to open save game!" << std::endl;
         return;
     }
-    /*file.write((char*)window, sizeof(GAME));*/
+    file.write((char*)window, sizeof(GAME));
     file.write((char*)&view, sizeof(sf::View));
     file.write((char*)&isPause, sizeof(bool));
+    file.write((char*)&isDead, sizeof(bool));
     file.write((char*)&level, sizeof(unsigned));
-    file.write((char*)&scene, sizeof(scene));
+    file.write((char*)&scene, sizeof(unsigned));
+    file.write((char*)&deltaTime, sizeof(float));
+    file.write((char*)&totalTime, sizeof(float));
     file.write((char*)&clock, sizeof(sf::Clock));
     sf::Vector2f pos = this->player->getPos();
     file.write((char*)&pos, sizeof(sf::Vector2f));
     /*file.write((char*)gui, sizeof(GUI));*/
     file.close();
+    int size = bullets.size();
+    file.write((char*)&size, sizeof(int));
+    for (int i = 0; i < size; i++) {
+        bullets[i]->saveGame(fileName);
+    }
+    file.write((char*)&bulletLoadTime, sizeof(float));
+    file.write((char*)remainBullets, sizeof(int));
+    sceneManager.saveGame(fileName);
+    enemyController.saveGame(fileName);
+    levelManager.saveGame(fileName);
+    gui->saveGame(fileName);
 }
 
 void GAME::loadGame() {

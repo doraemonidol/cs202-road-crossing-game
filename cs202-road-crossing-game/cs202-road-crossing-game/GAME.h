@@ -43,7 +43,7 @@ private:
 
     //Scene
     MENU menu;
-
+    
     //Sound
     SoundManager* soundController;
     std::map<std::string, std::string> music = { { "TITLE", "Sound/Title Theme.wav" },

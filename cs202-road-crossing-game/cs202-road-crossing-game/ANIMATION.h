@@ -12,6 +12,7 @@ public:
     void setSwitchTime(float switchTime);
     void setCurImg(sf::Vector2u newImg);
     sf::IntRect uvRect;
+    void saveGame(std::string fileName);
 
 private:
     sf::Vector2u imgCnt;

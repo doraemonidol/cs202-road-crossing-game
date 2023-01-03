@@ -25,6 +25,7 @@ public:
     void transferBackgroundTexture(sf::Texture*& newbgTexture);
     void transferSpawnTimer(float& newSpawnTimer);
     void transferMaxEnemyOnLine(std::vector<int> &newMaxEnemyonLine);
+    void saveGame(std::string fileName);
 };
 
 class LEVEL_MANAGER {
@@ -34,4 +35,5 @@ public:
     LEVEL_MANAGER();
     ~LEVEL_MANAGER();
     LEVEL* getLevel(int lv);
+    void saveGame(std::string fileSave);
 };

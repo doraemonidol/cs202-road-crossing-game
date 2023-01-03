@@ -26,4 +26,5 @@ public:
 	void setSpeed(float speed); //set speed to
 
 	void recievedDmg(int dmg);
+    virtual void saveGame(std::string fileName);
 };

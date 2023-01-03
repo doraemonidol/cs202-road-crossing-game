@@ -52,3 +52,15 @@ bool TRAFFICLIGHT::isRedLight(){
 int TRAFFICLIGHT::getHeight(){
 	return height;
 }
+
+void TRAFFICLIGHT::saveGame(std::string fileName) {
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    file.write((char*)&sprite.getPosition().x, sizeof(float));
+    file.write((char*)&sprite.getPosition().y, sizeof(float));
+    file.write((char*)&height, sizeof(height));
+    file.write((char*)&isRed, sizeof(bool));
+    file.write((char*)isBeginning, sizeof(bool));
+    file.close();
+    anim.saveGame(fileName);
+}

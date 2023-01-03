@@ -84,4 +84,6 @@ public:
     void renderIngameGUI();
 
     void setWorldBackground(sf::Texture* bg);
-};
+
+    void saveGame(std::string fileName);
+} 

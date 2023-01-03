@@ -385,3 +385,41 @@ void ENEMY_CONTROLLER::deallocate() {
         if (laserQueue[i])
             delete laserQueue[i];
 }
+
+void ENEMY_CONTROLLER::saveGame(std::string fileName) {
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    int size = redLightOn.size();
+    file.write((char*)&size, sizeof(size));
+    for (int i = 0; i < size; i++) {
+        file.write((char*)&redLightOn[i], sizeof(bool));
+    }
+    size = canSpawn.size();
+    file.write((char*)&size, sizeof(size));
+    for (int i = 0; i < size; i++) {
+        file.write((char*)&canSpawn[i], sizeof(bool));
+    }
+    size = spawnLine.size();
+    file.write((char*)&spawnLine, sizeof(int));
+    for (int i = 0; i < size; i++) {
+        file.write((char*)&spawnLine[i], sizeof(bool));
+    }
+    size = maxEnemyonLine.size();
+    file.write((char*)&spawnLine, sizeof(int));
+    for (int i = 0; i < size; i++) {
+        file.write((char*)&maxEnemyonLine[i], sizeof(bool));
+    }
+    file.close();
+    for (int i = 0; i < monsters.size(); i++) {
+        monsters[i]->saveGame(fileName);
+    }
+    for (int i = 0; i < obstacles.size(); i++) {
+        obstacles[i]->saveGame(fileName);
+    }
+    for (int i = 0; i < lights.size(); i++) {
+        lights[i]->saveGame(fileName);
+    }
+    for (int i = 0; i < laserQueue.size(); i++) {
+        laserQueue[i]->saveGame(fileName);
+    }
+}

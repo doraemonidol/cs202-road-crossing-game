@@ -181,3 +181,29 @@ void SCENE_MANAGER::renderFinalScene(sf::RenderTarget& target)
     //std::cout << "renderring final sprite \n";
     target.draw(this->finalSprite);
 }
+
+void SCENE_MANAGER::saveGame(std::string fileName) {
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    if (!file) {
+        std::cout << "Unable to open save game!" << std::endl;
+        return;
+    }
+    file.write((char*)&sideview.getPosition().x, sizeof(float));
+    file.write((char*)&sideview.getPosition().y, sizeof(float));
+    file.write((char*)&portal.getPosition().x, sizeof(float));
+    file.write((char*)&portal.getPosition().y, sizeof(float)); 
+    file.write((char*)&finalSprite.getPosition().x, sizeof(float));
+    file.write((char*)&finalSprite.getPosition().y, sizeof(float));
+    file.write((char*)view, sizeof(sf::View));
+    file.write((char*)&atPortal, sizeof(bool));
+    file.write((char*)&passedPortal, sizeof(bool));
+    file.write((char*)doneLanding, sizeof(bool));
+    file.write((char*)playCnt, sizeof(int));
+    file.close();
+    sideviewAnim.saveGame(fileName);
+    portalAnim.saveGame(fileName);
+    landingAnim.saveGame(fileName);
+    finalAnim.saveGame(fileName);
+
+}

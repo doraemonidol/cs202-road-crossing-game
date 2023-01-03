@@ -15,5 +15,6 @@ public:
 	sf::Sprite getSprite();
 	bool isRedLight();
 	int getHeight();
+	void saveGame(std::string fileName);
 };
 

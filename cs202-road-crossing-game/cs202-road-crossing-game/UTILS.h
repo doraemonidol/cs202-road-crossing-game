@@ -29,7 +29,7 @@ public:
     int getIndex();
     void changeText(std::string newText);
     std::string getText();
-
+    void saveGame(std::string fileName);
 private:
     sf::RectangleShape button;
     ANIMATION switchAnim;

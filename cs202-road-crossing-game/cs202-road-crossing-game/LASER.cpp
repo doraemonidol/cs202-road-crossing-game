@@ -214,3 +214,20 @@ bool LASER::isUFO()
 {
     return false;
 }
+
+void LASER::saveGame(std::string fileName) {
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    file.write((char*)&droneLeft, sizeof(droneLeft));
+    file.write((char*)&droneRight, sizeof(droneRight));
+    file.write((char*)&laser, sizeof(laser));
+    file.write((char*)&laserLeft, sizeof(laserLeft));
+    file.write((char*)&laserRight, sizeof(laserRight));
+    file.write((char*)&prevFrame, sizeof(int));
+    file.write((char*)&isStarting, sizeof(bool));
+    file.write((char*)&toDelete, sizeof(bool));
+    file.close();
+    laserAnim.saveGame(fileName);
+    droneLeftAnim.saveGame(fileName);
+    droneRightAnim.saveGame(fileName);
+}
