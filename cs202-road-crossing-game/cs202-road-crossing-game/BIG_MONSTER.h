@@ -7,4 +7,5 @@ public:
     ~BIG_MONSTER() {};
 	void render(sf::RenderTarget &target);
     void update();
+    void saveGame(std::string fileName);
 };

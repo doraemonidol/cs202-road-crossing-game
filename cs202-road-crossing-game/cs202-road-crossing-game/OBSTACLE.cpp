@@ -41,11 +41,8 @@ void OBSTACLE::setSpeed(float speed)
 }
 
 void OBSTACLE::saveGame(std::string fileName) {
-    this->ENEMY_BASE::saveGame(fileName);
     std::ofstream file;
     file.open(fileName, std::ios::app);
-    file.write((char*)&sprite.getPosition().x, sizeof(sprite.getPosition().x));
-    file.write((char*)&sprite.getPosition().y, sizeof(sprite.getPosition().y));
-    file.write((char*)&dir, sizeof(dir));
+    file << sprite.getPosition().x << " " << dir << " " << rowID << " ";
     file.close();
 }

@@ -13,4 +13,5 @@ public:
     bool isOutOfBound(sf::Vector2u windowSize);
 
     bool isUFO();
+    void saveGame(std::string fileName);
 };

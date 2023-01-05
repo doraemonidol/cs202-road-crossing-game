@@ -11,7 +11,6 @@ private:
 public:
 	BULLET();
 	BULLET(sf::Vector2f pos);
-        BULLET(sf::Vector2f pos, int enemy);
 	BULLET(sf::Vector2f pos, bool enemy);
 	sf::Vector2f getPosition();
 	void update();

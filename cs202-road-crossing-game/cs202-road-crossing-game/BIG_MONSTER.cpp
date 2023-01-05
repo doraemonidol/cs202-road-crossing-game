@@ -26,3 +26,12 @@ void BIG_MONSTER::render(sf::RenderTarget &target){
 void BIG_MONSTER::update(){
 	this->sprite.move(speed * dir, 0);
 }
+
+void BIG_MONSTER::saveGame(std::string fileName)
+{
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    file << "\n" << BIGMONSTER << " ";
+    file.close();
+    MONSTER::saveGame(fileName);
+}

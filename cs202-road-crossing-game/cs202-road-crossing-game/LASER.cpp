@@ -9,6 +9,25 @@ LASER::LASER(ENEMY_BASE* base)
     toDelete = false;
 }
 
+LASER::LASER(float y, float droneLeftPosX, float droneRightPosX, float laserLeftSizeX, int prevFrame, bool isStarting, bool toDelete, ENEMY_BASE* base, int curImgX[3], int curImgY[3], float totalTime[3])
+    : OBSTACLE(0, base)
+{
+    this->initTexture();
+    this->isStarting = isStarting;
+    this->toDelete = toDelete;
+    //droneLeft.setPosition(droneLeftPosX, y);
+    //droneRight.setPosition(droneRightPosX, y);
+
+    laserAnim.setCurImg(sf::Vector2u(curImgX[0], curImgY[0]));
+    laserAnim.setTotalTime(totalTime[0]);
+    droneLeftAnim.setCurImg(sf::Vector2u(curImgX[1], curImgY[1]));
+    droneLeftAnim.setTotalTime(totalTime[1]);
+    droneRightAnim.setCurImg(sf::Vector2u(curImgX[2], curImgY[2]));
+    droneRightAnim.setTotalTime(totalTime[2]);
+    this->droneRight.setTextureRect(droneRightAnim.uvRect);
+    this->droneLeft.setTextureRect(droneLeftAnim.uvRect);
+}
+
 LASER::~LASER()
 {
 }
@@ -215,17 +234,16 @@ bool LASER::isUFO()
     return false;
 }
 
-void LASER::saveGame(std::string fileName) {
+void LASER::saveGame(std::string fileName)
+{
     std::ofstream file;
     file.open(fileName, std::ios::app);
-    file.write((char*)&droneLeft, sizeof(droneLeft));
-    file.write((char*)&droneRight, sizeof(droneRight));
-    file.write((char*)&laser, sizeof(laser));
-    file.write((char*)&laserLeft, sizeof(laserLeft));
-    file.write((char*)&laserRight, sizeof(laserRight));
-    file.write((char*)&prevFrame, sizeof(int));
-    file.write((char*)&isStarting, sizeof(bool));
-    file.write((char*)&toDelete, sizeof(bool));
+    file << "\n" << LASERENEMY << " ";
+    file.close();
+    OBSTACLE::saveGame(fileName);
+
+    file.open(fileName, std::ios::app);
+    file << this->pos.y << " " << droneLeft.getPosition().x << " " << droneRight.getPosition().x << " " << this->laserLeft.getSize().x << " " << prevFrame << " " << isStarting << " " << toDelete << " ";
     file.close();
     laserAnim.saveGame(fileName);
     droneLeftAnim.saveGame(fileName);

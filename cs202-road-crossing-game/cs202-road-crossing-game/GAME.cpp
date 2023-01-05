@@ -122,8 +122,10 @@ void GAME::run()
         deltaTime += totalTime;
         if (deltaTime > 1.0 / FPS) {
             deltaTime = std::min(0.25, (double)deltaTime);
-            if (!this->isPause)
+            if (!this->isPause) {
                 this->totalTime += deltaTime;
+                //std::cout << "doing";
+            }
             //std::cout << deltaTime << " " << 1.0 / FPS << "\n";
             this->updatePollEvents();
             if (this->player->getHp() > 0)
@@ -160,9 +162,12 @@ void GAME::updatePollEvents()
                 break;
             case LOADGAME:
                 playMusic(music["INGAME"]);
-                totalTime = 0;
+                //totalTime = 0;
                 loadGame();
                 scene = INGAME;
+                update();
+                gui->initPauseMenu();
+                scene = PAUSEGAME;
                 break;
             case TOGGLESOUND:
                 soundController->switchMute();
@@ -217,7 +222,7 @@ void GAME::updatePollEvents()
             break;
         case PAUSEGAME: {
             int option = this->gui->updatePauseMenu(e, this);
-            if (option != -1)
+            if (option != -1 && option != SAVEGAME)
                 this->gui->closePauseMenu();
             switch (option) {
             case BACKTOGAME:
@@ -240,6 +245,7 @@ void GAME::updatePollEvents()
                 break;
             case SAVEGAME:
                 saveGame();
+                std::cout << "Game Saved!\n";
                 break;
             }
             break;
@@ -488,52 +494,61 @@ void GAME::saveGame() {
         std::cout << "Unable to open save game!" << std::endl;
         return;
     }
-    file.write((char*)&view, sizeof(sf::View)); // Nếu có lỗi thì xem lại dòng này
-    file.write((char*)&isPause, sizeof(bool));
-    file.write((char*)&isDead, sizeof(bool));
-    file.write((char*)&level, sizeof(unsigned));
-    file.write((char*)&scene, sizeof(unsigned));
-    file.write((char*)&deltaTime, sizeof(float));
-    file.write((char*)&totalTime, sizeof(float));
-    file.write((char*)&clock, sizeof(sf::Clock)); // Nếu có lỗi thì xem lại dòng này
+    file << view.getCenter().y << " " << isDead << " " << level << " " << deltaTime << " " << totalTime << "\n";
     sf::Vector2f pos = this->player->getPos();
-    file.write((char*)&pos, sizeof(sf::Vector2f)); // Nếu có lỗi thì xem lại dòng này
-    /*file.write((char*)gui, sizeof(GUI));*/
-    file.close();
+    file << pos.x << " " << pos.y << "\n";
+    file << bulletLoadTime << " " << remainBullets << "\n";
     int size = bullets.size();
-    file.write((char*)&size, sizeof(int));
+    file << size << "\n";
+    file.close();
     for (int i = 0; i < size; i++) {
         bullets[i]->saveGame(fileName);
     }
-    file.write((char*)&bulletLoadTime, sizeof(float));
-    file.write((char*)remainBullets, sizeof(int));
-    sceneManager.saveGame(fileName);
+    //sceneManager.saveGame(fileName);
     enemyController.saveGame(fileName);
-    levelManager.saveGame(fileName);
-    gui->saveGame(fileName);
+    //levelManager.saveGame(fileName);
+    //gui->saveGame(fileName);
 }
 
 void GAME::loadGame() {
-    std::ifstream file2;
-    file2.open("Game.txt", std::ios::in);
-    if (!file2) {
+    std::cout << "Loading...\n";
+    std::ifstream file;
+    file.open("Game.txt", std::ios::in);
+    if (!file) {
         std::cout << "Unable to open save game!" << std::endl;
         return;
     }
-    std::cout << "Open save game successfuly!" << std::endl;
-    if (file2.peek() == std::ifstream::traits_type::eof()) {
+    if (file.peek() == std::ifstream::traits_type::eof()) {
         std::cout << "Game file is empty, let's play new game!!" << std::endl;
         return;
     }
-    file2.read((char*)&this->view, sizeof(sf::View));
-    file2.read((char*)&this->isPause, sizeof(bool));
-    file2.read((char*)&this->level, sizeof(unsigned));
-    file2.read((char*)&this->scene, sizeof(unsigned));
-    file2.read((char*)&this->clock, sizeof(sf::Clock));
-    sf::Vector2f pos;
-    file2.read((char*)&pos, sizeof(sf::Vector2f));
-    this->player->setPosition(pos);
-    file2.close();
+
+    float y, x;
+    int tmp1, tmp2, size;
+    file >> y >> tmp1 >> level >> deltaTime >> totalTime >> x >> y;
+    gui->setWorldBackground(levelManager.getLevel(level)->getBackgroundTexture());
+    isDead = (tmp1 == 1);
+    isPause = true;
+    view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, y));
+    this->window->setView(view);
+
+    player->setPosition(sf::Vector2f(x, y));
+
+    file >> bulletLoadTime >> remainBullets;
+    file >> size;
+    bullets.resize(size);
+    for (int i = 0; i < size; i++) {
+        file >> tmp1 >> x >> y;
+        //std::cout << "\nbullets" << tmp1 << " " << x << " " << y;
+        bullets[i] = new BULLET(sf::Vector2f(x, y), tmp1 == 1);
+    }
+   /* std::cout << bulletLoadTime << " " << remainBullets << " "
+              << "bullets done\n";*/
+    // sceneManager.saveGame(fileName);
+    enemyController.loadGame(file, levelManager.getLevel(level));
+    //std::cout << "enemies done\n";
+    file.close();
+    std::cout << "Open save game successfuly!" << std::endl;
 }
 
 void GAME::updateIngameGUI()
@@ -663,6 +678,7 @@ void GAME::removeBullet()
 {
     for (int i = 0; i < bullets.size(); i++) {
         if (bullets[i]->getMoveLength() == 0) {
+            delete bullets[i];
             bullets.erase(bullets.begin() + i);
             i--;
         }

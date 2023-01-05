@@ -1,5 +1,4 @@
 
-
 #include "main.h"
 
 
@@ -78,12 +77,5 @@ sf::Vector2f ENEMY_BASE::getPos()
 }
 
 void ENEMY_BASE::saveGame(std::string fileName) {
-    std::ofstream file;
-    file.open(fileName, std::ios::app);
-    file.write((char*)&speed, sizeof(speed));
-    file.write((char*)&rate, sizeof(rate));
-    file.write((char*)hp, sizeof(hp));
-    file.write((char*)rowID, sizeof(rowID));
-    file.write((char*)&pos, sizeof(pos));
-    file.close();
+    
 }

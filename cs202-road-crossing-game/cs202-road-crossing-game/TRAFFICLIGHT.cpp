@@ -16,6 +16,24 @@ TRAFFICLIGHT::TRAFFICLIGHT(int height){
     isBeginning = true;
 }
 
+TRAFFICLIGHT::TRAFFICLIGHT(float posX, float posY, bool isRed, bool isBeginning, int curImgX, int curImgY, float totalTime)
+{
+    if (!texture.loadFromFile("Textures/freeze-laser.png")) {
+                std::cout << "ERROR::TRAFFICLIGHT::INITTEXTURE::Could not load texture file.\n";
+    }
+    this->sprite.setTexture(texture);
+
+    anim.initAnim(&texture, sf::Vector2u(24, 2), 0.1f);
+    anim.setCurImg(sf::Vector2u(curImgX, curImgY));
+    anim.setTotalTime(totalTime);
+    this->sprite.setTextureRect(anim.uvRect);
+    this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().height / 2);
+    this->sprite.setPosition(posX, posY);
+    this->sprite.scale(2.f, 1.f);
+    this->isRed = isRed;
+    this->isBeginning = isBeginning;
+}
+
 void TRAFFICLIGHT::render(sf::RenderTarget &target){
     if (isRed)
 		target.draw(this->sprite);
@@ -56,11 +74,8 @@ int TRAFFICLIGHT::getHeight(){
 void TRAFFICLIGHT::saveGame(std::string fileName) {
     std::ofstream file;
     file.open(fileName, std::ios::app);
-    file.write((char*)&sprite.getPosition().x, sizeof(float));
-    file.write((char*)&sprite.getPosition().y, sizeof(float));
-    file.write((char*)&height, sizeof(height));
-    file.write((char*)&isRed, sizeof(bool));
-    file.write((char*)isBeginning, sizeof(bool));
+    file << "\n"
+         << sprite.getPosition().x << " " << sprite.getPosition().y << " " << isRed << " " << isBeginning << " ";
     file.close();
     anim.saveGame(fileName);
 }

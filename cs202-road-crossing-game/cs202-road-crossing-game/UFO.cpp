@@ -36,3 +36,12 @@ bool UFO::isUFO()
 {
     return true;
 }
+
+void UFO::saveGame(std::string fileName)
+{
+    std::ofstream file;
+    file.open(fileName, std::ios::app);
+    file << "\n" << UFOENEMY << " ";
+    file.close();
+    OBSTACLE::saveGame(fileName);
+}

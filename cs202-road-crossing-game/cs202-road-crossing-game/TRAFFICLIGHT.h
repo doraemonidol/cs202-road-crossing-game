@@ -9,6 +9,8 @@ private:
 	bool isRed, isBeginning;
 public:
 	TRAFFICLIGHT(int height);
+    TRAFFICLIGHT(float posX, float posY,
+        bool isRed, bool isBeginning, int curImgX, int curImgY, float totalTime);
 	void render(sf::RenderTarget &target);
 	void update();
     void updateAnim(float deltaTime);

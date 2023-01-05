@@ -198,24 +198,8 @@ void LEVEL::transferMaxEnemyOnLine(std::vector<int>& newMaxEnemyonLine)
 }
 
 void LEVEL_MANAGER::saveGame(std::string fileName) {
-    for (int i = 0; i < MAX_LEVEL;i++) {
-        level[i]->saveGame(fileName);
-    }
+    
 }
 
 void LEVEL::saveGame(std::string fileName) {
-    /*std::ofstream file;
-    file.open(fileName, std::ios::app);
-    file.write((char*)&spawnTimer, sizeof(spawnTimer));
-    int size = spawnLine.size();
-    file.write((char*)&size, sizeof(size));
-    for (int i = 0; i < size; i++) {
-        file.write((char*)&spawnLine[i], sizeof(int));
-    }
-    
-    
-    file.close();
-    for (int i = 0; i < MAX_ENEMY_TYPE; i++) {
-        enemies[i]->saveGame(fileName);
-    }*/
 }

@@ -253,9 +253,9 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
         return;
     //std::cout << "Spawning " << spawnLine.size() << "\n ";
     for (int l = 0; l < spawnLine.size(); l++) {
+        ///std::cout << "Line: " << l << "\n";
         if (!canSpawn[l] || maxEnemyonLine[l] <= 0)
             continue;
-        //std::cout << "Line: " << l << "\n";
         for (int i = 0; i < MAX_ENEMY_TYPE; i++) {
             //std::cout << i << " \n";
             int isSpawn = rand() % 100;
@@ -265,7 +265,7 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
             int type = rand() % 100 + 1,
                 dir = (rand() % 2 == 1) ? 1 : -1,
                 s = 0;
-
+           // std::cout << type << "\n";
             if (type >= base[i]->getRate())
                 continue;
             maxEnemyonLine[l]--;
@@ -298,7 +298,7 @@ void ENEMY_CONTROLLER::spawn(float deltaTime)
         //std::cout << i << ": ";
         if (!isLineEmpty(i) || laserQueue[i] == nullptr)
             continue;
-        //std::cout << "laser out\n";
+        //std::cout << "laser out\n";;
         obstacles.push_back(laserQueue[i]);
         laserQueue[i] = nullptr;
     }
@@ -389,26 +389,30 @@ void ENEMY_CONTROLLER::deallocate() {
 void ENEMY_CONTROLLER::saveGame(std::string fileName) {
     std::ofstream file;
     file.open(fileName, std::ios::app);
+    file << finalBoss << "\n";
     int size = redLightOn.size();
-    file.write((char*)&size, sizeof(size));
+    file << size << " ";
     for (int i = 0; i < size; i++) {
-        file.write((char*)&redLightOn[i], sizeof(bool));
+        file << redLightOn[i] << " ";
     }
     size = canSpawn.size();
-    file.write((char*)&size, sizeof(size));
+    file << "\n"
+         << size << " ";
     for (int i = 0; i < size; i++) {
-        file.write((char*)&canSpawn[i], sizeof(bool));
+       file << canSpawn[i] << " ";
     }
-    size = spawnLine.size();
-    file.write((char*)&spawnLine, sizeof(int));
-    for (int i = 0; i < size; i++) {
-        file.write((char*)&spawnLine[i], sizeof(bool));
-    }
-    size = maxEnemyonLine.size();
-    file.write((char*)&spawnLine, sizeof(int));
-    for (int i = 0; i < size; i++) {
-        file.write((char*)&maxEnemyonLine[i], sizeof(bool));
-    }
+    size = monsters.size();
+    file << "\n"
+         << size << " ";
+    size = obstacles.size();
+    file << "\n"
+         << size << " ";
+    size = lights.size();
+    file << "\n"
+         << size << " ";
+    size = laserQueue.size();
+    file << "\n"
+         << size << " ";
     file.close();
     for (int i = 0; i < monsters.size(); i++) {
         monsters[i]->saveGame(fileName);
@@ -420,6 +424,129 @@ void ENEMY_CONTROLLER::saveGame(std::string fileName) {
         lights[i]->saveGame(fileName);
     }
     for (int i = 0; i < laserQueue.size(); i++) {
-        laserQueue[i]->saveGame(fileName);
+        if (laserQueue[i])
+            laserQueue[i]->saveGame(fileName);
+        else {
+            file.open(fileName, std::ios::app);
+            file << "\n-1";
+            file.close();
+        }
     }
+}
+
+void ENEMY_CONTROLLER::loadGame(std::ifstream& file, LEVEL* newLevel)
+{
+    file >> finalBoss;
+    //std::cout << "final boss: " << finalBoss << "\n";
+    int size, tmp, size2, size3, size1;
+    file >> size;
+    for (int i = 0; i < size; i++) {
+        file >> tmp;
+        redLightOn.push_back(tmp == 1);
+    }
+
+    this->clearAll();
+    // std::cout << "2";
+
+    newLevel->transferEnemyBase(base);
+    //std::cout << "trasfer base done\n";
+    // std::cout << "2";
+    newLevel->transferSpawnLine(spawnLine);
+    //std::cout << "trasfer spawn line done\n";
+    // std::cout << "2";
+    newLevel->transferSpawnTimer(spawnTimer);
+    //std::cout << "transfer spawntimer done\n";
+    // std::cout << "2";
+    newLevel->transferMaxEnemyOnLine(maxEnemyonLine);
+    //std::cout << "transfer done\n";
+
+    file >> size;
+    for (int i = 0; i < size; i++) {
+        file >> tmp;
+        canSpawn.push_back(tmp == 1);
+    }
+    file >> size >> size1 >> size2 >> size3;
+    int type = 0, rowID = 0, dir = 0;
+    float pos;
+
+    for (int i = 0; i < size; i++) {
+        file >> type >> pos >> dir >> rowID;
+       // std::cout << type << " " << pos << " " << dir << " " << rowID << "--\n";
+        ENEMY_BASE* newEnemy = new ENEMY_BASE(base[type]->getSpeed(), base[type]->getRate(),
+            base[type]->getTexture(), base[type]->getHp(), rowID, sf::Vector2f(pos, spawnLine[rowID]));
+        if (type == BIGMONSTER) {
+            monsters.push_back(new BIG_MONSTER(dir, newEnemy));
+        } else {
+            monsters.push_back(new SMALL_MONSTER(dir, newEnemy));
+        }
+    }
+    //std::cout << "enemies done\n";
+    for (int i = 0; i < size1; i++) {
+        file >> type >> pos >> dir >> rowID;
+        ENEMY_BASE* newEnemy = new ENEMY_BASE(base[type]->getSpeed(), base[type]->getRate(),
+            base[type]->getTexture(), base[type]->getHp(), rowID, sf::Vector2f(pos, spawnLine[rowID]));
+       // std::cout << type << " " << pos << " " << dir << " " << rowID
+               //   << " new Enemy done\n";
+        if (type == UFOENEMY) {
+           // std::cout << "new UFO done\n";
+            obstacles.push_back(new UFO(dir, newEnemy));
+        } else {
+            float y, droneLeftPosX, droneRightPosX, laserLeftSizeX;
+            int prevFrame;
+            bool isStarting, toDelete;
+            int curImgX[3], curImgY[3];
+            float totalTime[3];
+            file >> y >> droneLeftPosX >> droneRightPosX >> laserLeftSizeX >> prevFrame >> tmp;
+            isStarting = (tmp == 1);
+            file >> tmp;
+            toDelete = (tmp == 1);
+            file >> curImgX[0] >> curImgY[0] >> totalTime[0] >> curImgX[1] >> curImgY[1] >> totalTime[1] >> curImgX[2] >> curImgY[2] >> totalTime[2];  
+            obstacles.push_back(new LASER(y, droneLeftPosX, droneRightPosX, laserLeftSizeX, prevFrame, isStarting, toDelete, newEnemy, curImgX, curImgY, totalTime));
+           // std::cout << "new Laser done\n";
+        }
+    }
+    //std::cout << "obstacles done\n";
+
+    for (int i = 0; i < size2; i++) {
+        float posX, posY, totalTime;
+        bool isRed, isBeginning;
+        int curImgX, curImgY;
+        file >> posX >> posY >> tmp;
+        isRed = (tmp == 1);
+        file >> tmp;
+        isBeginning = (tmp == 1);
+        file >> curImgX >> curImgY >> totalTime;
+        lights.push_back(new TRAFFICLIGHT(posX, posY, isRed, isBeginning, curImgX, curImgY, totalTime));
+    }
+   // std::cout << "lights done\n";
+    laserQueue.resize(size3);
+    for (int i = 0; i < size3; i++) {
+        file >> type;
+        if (type == -1) {
+            laserQueue[i] = nullptr;
+            continue;
+        }
+        file >> pos >> dir >> rowID;
+       // std::cout << i << " " << type << "laser 1 done\n";
+        ENEMY_BASE* newEnemy = new ENEMY_BASE(base[type]->getSpeed(), base[type]->getRate(),
+            base[type]->getTexture(), base[type]->getHp(), rowID, sf::Vector2f(pos, spawnLine[rowID]));
+                                   std::cout << "laser 2 done\n";
+        float droneLeftPosX, droneRightPosX, laserLeftSizeX, y;
+        int prevFrame;
+        bool isStarting, toDelete;
+        int curImgX[3], curImgY[3];
+       // std::cout << "laser 3 done\n";
+        float totalTime[3];
+        file >> y >> droneLeftPosX >> droneRightPosX >> laserLeftSizeX >> prevFrame >> tmp;
+        isStarting = (tmp == 1);
+        file >> tmp;
+        toDelete = (tmp == 1);
+       // std::cout << "laser 4 done\n";
+        file >> curImgX[0] >> curImgY[0] >> totalTime[0] >> curImgX[1] >> curImgY[1] >> totalTime[1] >> curImgX[2] >> curImgY[2] >> totalTime[2];
+       // std::cout << "laser 5 done\n";
+        laserQueue[i] = new LASER(y, droneLeftPosX, droneRightPosX, laserLeftSizeX, prevFrame, isStarting, toDelete, newEnemy, curImgX, curImgY, totalTime);
+        //std::cout << "laser 6 done\n";
+    }
+    //std::cout << "laser q done\n";
+    canSpawn.assign(canSpawn.size(), true);
 }

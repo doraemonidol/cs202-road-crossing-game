@@ -33,6 +33,7 @@ class LASER : public OBSTACLE {
 
 public:
     LASER(ENEMY_BASE* base);
+    LASER(float y, float droneLeftPosX, float droneRightPosX, float laserLeftSizeX, int prevFrame, bool isStarting, bool toDelete, ENEMY_BASE* base, int curImgX[3], int curImgY[3], float totalTime[3]);
     ~LASER();
     void initTexture();
 

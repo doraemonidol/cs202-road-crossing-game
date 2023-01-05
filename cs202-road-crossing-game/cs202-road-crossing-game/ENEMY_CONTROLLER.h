@@ -49,4 +49,5 @@ public:
     void deallocate();
 
     void saveGame(std::string fileName);
+    void loadGame(std::ifstream& file, LEVEL* newLevel);
 };
