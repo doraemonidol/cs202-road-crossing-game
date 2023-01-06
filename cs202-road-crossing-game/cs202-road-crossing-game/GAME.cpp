@@ -4,13 +4,14 @@
 // CONSTRUCTORS / DESTRUCTORS
 
 GAME::GAME()
-    : sceneManager()
+    : sceneManager(), font(sf::Font())
 {
     soundController = new SoundManager(music["TITLE"]);
     this->isPause = false;
     this->isDead = false;
     this->initWindow();
-
+    font.loadFromFile("Fonts/PressStart2P-Regular.ttf");
+    textbox = new Textbox(*this->window, font);
     this->initPlayer();
     this->initView();
     this->initTextures();
@@ -39,6 +40,7 @@ GAME::GAME(const int a)
 
 GAME::~GAME()
 {
+    delete this->textbox;
     delete this->window;
     delete this->player;
     delete this->gui;
@@ -147,6 +149,12 @@ void GAME::updatePollEvents()
     while (this->window->pollEvent(e)) {
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
+        if (scene == 99) {
+            bool didHitReturn = textbox->pollEvent(e);
+            if (didHitReturn) {
+                // do stuff here using textbox.getString()
+            }
+        }
         switch (scene) {
         case MENUSCENE: {
             int option = menu.update(this->window, e, this);
@@ -160,15 +168,13 @@ void GAME::updatePollEvents()
             case EXIT:
                 exit(0);
                 break;
-            case LOADGAME:
+            case LOADGAME: {
                 playMusic(music["INGAME"]);
                 //totalTime = 0;
-                loadGame();
-                scene = INGAME;
+                scene = 99;
                 update();
-                gui->initPauseMenu();
-                scene = PAUSEGAME;
                 break;
+            }  
             case TOGGLESOUND:
                 soundController->switchMute();
                 menu.ToggleSound();
@@ -342,6 +348,11 @@ void GAME::updateEnemies()
 void GAME::update()
 {
     switch (scene) {
+    case 99: {
+        textbox->setDimensons(100, 100, 400, 50);
+        textbox->setFocus(true);
+        this->textbox->draw();
+    }
     case INGAME:
         //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
@@ -419,7 +430,6 @@ void GAME::render()
     case INGAME:
         // Draw world
         this->renderWorld();
-
         // Render bullet, enemies, lights
         this->renderBullets();
         this->renderEnemies();
