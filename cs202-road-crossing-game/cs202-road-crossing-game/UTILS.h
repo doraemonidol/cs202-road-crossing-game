@@ -59,17 +59,20 @@ public:
     bool pollEvent(sf::Event event);
     void setFocus(bool newFocus);
     void setReturnEvent(void (*newFunctionToCall)());
+    void setWarning(bool warning);
 private:
     bool isFocused = true;
     double x;
     double y;
     double width;
     double height;
+    bool isWarning = false;
     std::string string = "";
     sf::Font& font;
     sf::RenderWindow& window;
     sf::RectangleShape background;
     sf::Text text;
     sf::Text title;
+    sf::Text warning;
     bool enterText(sf::Uint32 unicode);
 };

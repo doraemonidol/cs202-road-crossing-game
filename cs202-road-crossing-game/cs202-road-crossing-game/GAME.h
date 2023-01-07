@@ -92,7 +92,7 @@ public:
     void renderEnemies();
     void render();
 
-    void saveGame();
+    void saveGame(std::string fileName);
     void loadGame(std::string fileName);
     void resetGame();
 

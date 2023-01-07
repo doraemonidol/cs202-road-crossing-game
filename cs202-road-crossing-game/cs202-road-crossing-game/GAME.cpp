@@ -149,13 +149,15 @@ void GAME::updatePollEvents()
     while (this->window->pollEvent(e)) {
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
-        if (scene == 99) {
+        switch (scene) {
+        case 99: {
             bool didHitReturn = textbox->pollEvent(e);
-            /*if (didHitReturn) {
+            if (didHitReturn) {
                 std::string fileName = textbox->getString();
                 std::ifstream infile(fileName);
                 if (!infile.good()) {
                     std::cout << "Can not find game file!!" << std::endl;
+                    textbox->setWarning(true);
                 }
                 else {
                     this->loadGame(fileName);
@@ -163,11 +165,33 @@ void GAME::updatePollEvents()
                     update();
                     gui->initPauseMenu();
                     scene = PAUSEGAME;
+                    textbox->setWarning(false);
                 }
                 textbox->setString("");
-            }*/
+            }
+            break;
         }
-        switch (scene) {
+        case 100: {
+            bool didHitReturn = textbox->pollEvent(e);
+            if (didHitReturn) {
+                std::string fileName = textbox->getString();
+                std::ifstream infile(fileName);
+                if (!infile.good()) {
+                    std::cout << "Can not find game file!!" << std::endl;
+                    textbox->setWarning(true);
+                }
+                else {
+                    this->saveGame(fileName);
+                    scene = INGAME;
+                    update();
+                    gui->initPauseMenu();
+                    scene = PAUSEGAME;
+                    textbox->setWarning(false);
+                }
+                textbox->setString("");
+            }
+                break;
+        }
         case MENUSCENE: {
             int option = menu.update(this->window, e, this);
             switch (option) {
@@ -262,8 +286,7 @@ void GAME::updatePollEvents()
             case LEADERBOARD:
                 break;
             case SAVEGAME:
-                saveGame();
-                std::cout << "Game Saved!\n";
+                scene = 100;
                 break;
             }
             break;
@@ -436,6 +459,11 @@ void GAME::render()
         textbox->draw();
         break;
     }
+    case 100: {
+        this->renderWorld();
+        textbox->draw();
+        break;
+    }
     case MENUSCENE:
         this->menu.draw(this->window);
         break;
@@ -508,9 +536,8 @@ void GAME::render()
 
 // LOAD & SAVE GAME
 
-void GAME::saveGame() {
+void GAME::saveGame(std::string fileName) {
     std::ofstream file;
-    std::string fileName = "Game.txt";
     file.open(fileName, std::ios::out);
     if (!file) {
         std::cout << "Unable to open save game!" << std::endl;

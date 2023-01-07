@@ -360,16 +360,27 @@ Textbox::Textbox(sf::RenderWindow& windowToUse, sf::Font& fontToUse) : window(wi
     text.setCharacterSize(25);
     background.setPosition(x, y);
     background.setSize(sf::Vector2f(400, 50));
+
+    //title
     title = sf::Text("Please input your file", font);
     title.setCharacterSize(30);
     title.setPosition(x - 123, y - 50);
     title.setColor(sf::Color::White);
+
+    //warning
+    warning = sf::Text("We can not find your input file\n\nPlease double check your file name!!", font);
+    warning.setCharacterSize(10);
+    warning.setPosition(x , y + 60);
+    warning.setColor(sf::Color::Red);
 }
 
 void Textbox::draw() {
     window.draw(background);
     window.draw(title);
     window.draw(text);
+    if (isWarning) {
+        window.draw(warning);
+    }
 }
 
 
@@ -408,6 +419,10 @@ bool Textbox::enterText(sf::Uint32 unicode) {
         string = string.substr(1, string.length());
     }
     text.setString(string);
-    std::cout << "Set string" << std::endl;
+    text.setPosition(window.getSize().x/2 - (text.getCharacterSize() * string.length()) / 2, text.getPosition().y);
     return false;
+}
+
+void Textbox::setWarning(bool warning) {
+    this->isWarning = warning;
 }
