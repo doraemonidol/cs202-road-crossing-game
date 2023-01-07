@@ -151,9 +151,21 @@ void GAME::updatePollEvents()
             this->window->close();
         if (scene == 99) {
             bool didHitReturn = textbox->pollEvent(e);
-            if (didHitReturn) {
-                // do stuff here using textbox.getString()
-            }
+            /*if (didHitReturn) {
+                std::string fileName = textbox->getString();
+                std::ifstream infile(fileName);
+                if (!infile.good()) {
+                    std::cout << "Can not find game file!!" << std::endl;
+                }
+                else {
+                    this->loadGame(fileName);
+                    scene = INGAME;
+                    update();
+                    gui->initPauseMenu();
+                    scene = PAUSEGAME;
+                }
+                textbox->setString("");
+            }*/
         }
         switch (scene) {
         case MENUSCENE: {
@@ -348,11 +360,6 @@ void GAME::updateEnemies()
 void GAME::update()
 {
     switch (scene) {
-    case 99: {
-        textbox->setDimensons(100, 100, 400, 50);
-        textbox->setFocus(true);
-        this->textbox->draw();
-    }
     case INGAME:
         //std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << "\n";
         // this->updateInput();
@@ -424,6 +431,11 @@ void GAME::render()
 {
     this->window->clear();
     switch (scene) {
+    case 99: {
+        this->renderWorld();
+        textbox->draw();
+        break;
+    }
     case MENUSCENE:
         this->menu.draw(this->window);
         break;
@@ -520,10 +532,10 @@ void GAME::saveGame() {
     //gui->saveGame(fileName);
 }
 
-void GAME::loadGame() {
+void GAME::loadGame(std::string fileName) {
     std::cout << "Loading...\n";
     std::ifstream file;
-    file.open("Game.txt", std::ios::in);
+    file.open(fileName, std::ios::in);
     if (!file) {
         std::cout << "Unable to open save game!" << std::endl;
         return;

@@ -60,7 +60,7 @@ public:
     void setFocus(bool newFocus);
     void setReturnEvent(void (*newFunctionToCall)());
 private:
-    bool isFocused;
+    bool isFocused = true;
     double x;
     double y;
     double width;
@@ -70,6 +70,6 @@ private:
     sf::RenderWindow& window;
     sf::RectangleShape background;
     sf::Text text;
-
+    sf::Text title;
     bool enterText(sf::Uint32 unicode);
 };

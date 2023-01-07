@@ -93,7 +93,7 @@ public:
     void render();
 
     void saveGame();
-    void loadGame();
+    void loadGame(std::string fileName);
     void resetGame();
 
     void checkCollision();

@@ -349,24 +349,29 @@ void BUTTON::saveGame(std::string fileName) {
 Textbox::Textbox(sf::RenderWindow& windowToUse, sf::Font& fontToUse) : window(windowToUse), font(fontToUse) {
     text = sf::Text("", font);
     background.setFillColor(sf::Color::White);
-    text.setColor(sf::Color::Red);
+    background.setOutlineColor(sf::Color::Black);
+    background.setOutlineThickness(2);
+    text.setColor(sf::Color::Black);
+    x = window.getSize().x;
+    y = window.getSize().y;
+    x = x / 2 - 400 / 2;
+    y = y / 2 - 50 / 2;
+    text.setPosition(x + 10, y + 13);
+    text.setCharacterSize(25);
+    background.setPosition(x, y);
+    background.setSize(sf::Vector2f(400, 50));
+    title = sf::Text("Please input your file", font);
+    title.setCharacterSize(30);
+    title.setPosition(x - 123, y - 50);
+    title.setColor(sf::Color::White);
 }
 
 void Textbox::draw() {
     window.draw(background);
+    window.draw(title);
     window.draw(text);
 }
 
-void Textbox::setDimensons(double newX, double newY, double newWidth, double newHeight) {
-    x = newX;
-    y = newY;
-    width = newWidth;
-    height = newHeight;
-    text.setPosition(x, y - height / 5);
-    text.setCharacterSize(height);
-    background.setPosition(x, y);
-    background.setSize(sf::Vector2f(width, height));
-}
 
 void Textbox::setString(std::string newString) {
     string = newString;
@@ -378,10 +383,11 @@ std::string Textbox::getString() {
 }
 
 bool Textbox::pollEvent(sf::Event event) {
-    if (isFocused) {
-        if (event.type == sf::Event::TextEntered)
-            return enterText(event.text.unicode);
+
+    if (event.type == sf::Event::TextEntered) {
+        return enterText(event.text.unicode);
     }
+           
     return false;
 }
 
@@ -389,17 +395,19 @@ void Textbox::setFocus(bool newFocus) {
     isFocused = newFocus;
 }
 
-/********** --------------- **********/
-/********** Private Methods **********/
-/********** --------------- **********/
-
 bool Textbox::enterText(sf::Uint32 unicode) {
     if (unicode == 8)
         string = string.substr(0, string.length() - 1); // delete key
-    else if (unicode == 10)
+    else if (unicode == 13) {
         return true; // return key
-    else
+    }  
+    else {
         string += (char)unicode;
+    }
+    if (string.length() > 15) {
+        string = string.substr(1, string.length());
+    }
     text.setString(string);
+    std::cout << "Set string" << std::endl;
     return false;
 }
