@@ -124,6 +124,26 @@ void GUI::initGUI()
     bulletBar.setTexture(bulletBarTexture);
     bulletBar.setTextureRect(bulletBarControl.uvRect);
     this->updateBulletBar(5);
+
+    instructionText.setFont(font2);
+    instructionText.setCharacterSize(15);
+    instructionText.setString("Your task is to cross the universe while \navoiding space monster, UFOs and lasers.\n\nControl:\n  [W], [A], [S], [D] or [Arrow keys] to \n    move \n  [Spacebar] to shoot (a bullet will be \n    reloaded after 5 second, you can \n    save up tp 5 bullets)\n\nEnemies: 3 types: \n  1.Monsters: moving left and right, can \n    be freezed by the freezing beam.\n  2.UFOs: also moving left and right, \n    can NOT be freezed by the freezing \n    beam, can SHOOT BULLETS.\n  3.Laser: you should wait until the laser \n    is shot or just past before it shoots.");
+    instructionText.setOrigin(instructionText.getGlobalBounds().width / 2, instructionText.getGlobalBounds().height / 2);
+    instructionText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
+
+    instructionSubText.setFont(font2);
+    instructionSubText.setCharacterSize(15);
+    instructionSubText.setFillColor(sf::Color(255, 110, 49, 255));
+    instructionSubText.setString("Press any key to continue.");
+    instructionSubText.setOrigin(instructionSubText.getGlobalBounds().width / 2, 0);
+    instructionSubText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + instructionText.getGlobalBounds().height / 2 + 50);
+
+    instructionBackground.setOutlineColor(sf::Color(137, 196, 225, 225));
+    instructionBackground.setOutlineThickness(2);
+    instructionBackground.setSize(sf::Vector2f(instructionText.getGlobalBounds().width + 30, instructionText.getGlobalBounds().height + 30));
+    instructionBackground.setFillColor(sf::Color(0, 0, 0, 150));
+    instructionBackground.setOrigin(instructionBackground.getGlobalBounds().width / 2, instructionBackground.getGlobalBounds().height / 2);
+    instructionBackground.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 }
 
 //Con/Des
@@ -398,6 +418,18 @@ void GUI::setTextBoxWarning(bool state)
 void GUI::setTextBoxString(std::string s)
 {
     textBox.setString(s);
+}
+
+void GUI::renderInstruction(sf::RenderTarget& target)
+{
+    //std::cout << "Rendering Instruction\n";
+    float y = this->getDisplacement();
+    instructionBackground.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + y);
+    instructionText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + y);
+    instructionSubText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + instructionText.getGlobalBounds().height / 2 + 50 + y);
+    target.draw(instructionBackground);
+    target.draw(instructionText);
+    target.draw(instructionSubText);
 }
 
 void GUI::setWorldBackground(sf::Texture* bg)

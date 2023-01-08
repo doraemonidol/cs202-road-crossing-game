@@ -318,6 +318,12 @@ void GAME::updatePollEvents()
             }
             break;
         }
+        case INSTRUCTIONSCENE:
+            if (e.type == sf::Event::KeyPressed) {
+                this->isPause = false;
+                scene = INGAME;
+            }
+            break;
         }
     }
 }
@@ -525,7 +531,18 @@ void GAME::render()
         //view.setCenter(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2));
         sceneManager.renderFinalScene(*this->window);
         break;
+    case INSTRUCTIONSCENE:
+        // Draw world
+        this->renderWorld();
+        // Render bullet, enemies, lights
+        this->renderBullets();
+        this->renderEnemies();
 
+        // Draw all the stuffs
+        this->player->render(*this->window);
+        this->gui->render();
+        this->gui->renderInstruction(*this->window);
+        break;
     default:
         this->gui->renderBG();
         this->sceneManager.render(*this->window, scene);
@@ -610,6 +627,8 @@ void GAME::updateIngameGUI()
         break;
     case 1:
         std::cout << "Instructions Scene\n";
+        this->isPause = true;
+        scene = INSTRUCTIONSCENE;
         break;
     case 2:
         if (this->isPause == false) {

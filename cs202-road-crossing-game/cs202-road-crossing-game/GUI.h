@@ -33,6 +33,10 @@ private:
 
     Textbox textBox;
 
+    // Instruction
+    sf::Text instructionText, instructionSubText;
+    sf::RectangleShape instructionBackground;
+
     // Private functions
     void initTextures();
     void initGUI();
@@ -92,6 +96,9 @@ public:
     void renderTextBox(sf::RenderTarget& target);
     void setTextBoxWarning(bool state);
     void setTextBoxString(std::string s);
+
+    // Instruction
+    void renderInstruction(sf::RenderTarget& target);
 
     void setWorldBackground(sf::Texture* bg);
 
