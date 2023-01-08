@@ -176,18 +176,12 @@ void GAME::updatePollEvents()
             if (didHitReturn) {
                 std::string fileName = textbox->getString();
                 std::ifstream infile(fileName);
-                if (!infile.good()) {
-                    std::cout << "Can not find game file!!" << std::endl;
-                    textbox->setWarning(true);
-                }
-                else {
-                    this->saveGame(fileName);
-                    scene = INGAME;
-                    update();
-                    gui->initPauseMenu();
-                    scene = PAUSEGAME;
-                    textbox->setWarning(false);
-                }
+                this->saveGame(fileName);
+                scene = INGAME;
+                update();
+                gui->initPauseMenu();
+                scene = PAUSEGAME;
+                textbox->setWarning(false);
                 textbox->setString("");
             }
                 break;
