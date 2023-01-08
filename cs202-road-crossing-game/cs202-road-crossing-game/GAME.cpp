@@ -111,6 +111,9 @@ void GAME::initMenu() {
 //Functions
 void GAME::run()
 {
+    sf::Image icon;
+    icon.loadFromFile("Textures/logo.png"); // File/Image/Pixel
+    window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     float totalTime = 0, prevTime = 0, curTime = 0;
     while (this->window->isOpen()) {
         //std::cout << "Game Update \n";
