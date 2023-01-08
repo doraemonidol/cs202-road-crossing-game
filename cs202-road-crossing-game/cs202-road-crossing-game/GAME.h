@@ -43,8 +43,6 @@ private:
 
     //Scene
     MENU menu;
-    Textbox *textbox;
-    sf::Font font;
     
     //Sound
     SoundManager* soundController;

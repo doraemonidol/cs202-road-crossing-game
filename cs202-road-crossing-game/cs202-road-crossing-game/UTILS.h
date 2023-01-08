@@ -51,25 +51,26 @@ class UTILS {
 
 class Textbox {
 public:
-    Textbox(sf::RenderWindow& windowToUse, sf::Font& fontToUse);
+    Textbox();
     void setDimensons(double newX, double newY, double newWidth, double newHeight);
-    void draw();
+    void draw(sf::RenderTarget &target);
     void setString(std::string newString);
     std::string getString();
     bool pollEvent(sf::Event event);
     void setFocus(bool newFocus);
     void setReturnEvent(void (*newFunctionToCall)());
     void setWarning(bool warning);
+    void setPosition(sf::Vector2f pos);
+    void movePosition(sf::Vector2f pos);
+
 private:
     bool isFocused = true;
-    double x;
-    double y;
+    sf::Vector2f pos;
     double width;
     double height;
     bool isWarning = false;
     std::string string = "";
-    sf::Font& font;
-    sf::RenderWindow& window;
+    sf::Font font;
     sf::RectangleShape background;
     sf::Text text;
     sf::Text title;

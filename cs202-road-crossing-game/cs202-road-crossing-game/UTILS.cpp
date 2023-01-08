@@ -336,50 +336,45 @@ std::string BUTTON::getText()
 }
 
 void BUTTON::saveGame(std::string fileName) {
-    std::ofstream file;
-    file.open(fileName, std::ios::app);
-    file.write((char*)&type, sizeof(int));
-    file.write((char*)&index, sizeof(int));
-    file.write((char*)state, sizeof(state));
-    file.write((char*)&isPlayingAnim, sizeof(bool));
-    file.write((char*)&toReturn, sizeof(int));
-    file.close();
 }
 
-Textbox::Textbox(sf::RenderWindow& windowToUse, sf::Font& fontToUse) : window(windowToUse), font(fontToUse) {
+Textbox::Textbox()  {
+    font.loadFromFile("Fonts/PressStart2P-Regular.ttf");
     text = sf::Text("", font);
     background.setFillColor(sf::Color::White);
     background.setOutlineColor(sf::Color::Black);
     background.setOutlineThickness(2);
     text.setColor(sf::Color::Black);
-    x = window.getSize().x;
-    y = window.getSize().y;
-    x = x / 2 - 400 / 2;
-    y = y / 2 - 50 / 2;
-    text.setPosition(x + 10, y + 13);
+    pos.x = SCREEN_WIDTH / 2;
+    pos.y = SCREEN_HEIGHT / 2 - 50 / 2;
+    text.setPosition(pos.x + 10, pos.y);
     text.setCharacterSize(25);
-    background.setPosition(x, y);
     background.setSize(sf::Vector2f(400, 50));
+    background.setOrigin(background.getGlobalBounds().width / 2, background.getGlobalBounds().height / 2);
+    background.setPosition(pos.x, pos.y);
 
     //title
     title = sf::Text("Please input your file", font);
-    title.setCharacterSize(30);
-    title.setPosition(x - 123, y - 50);
+    title.setCharacterSize(15);
+    title.setOrigin(title.getGlobalBounds().width / 2, title.getGlobalBounds().height / 2);
+    title.setPosition(pos.x, pos.y - 50);
     title.setColor(sf::Color::White);
 
     //warning
     warning = sf::Text("We can not find your input file\n\nPlease double check your file name!!", font);
     warning.setCharacterSize(10);
-    warning.setPosition(x , y + 60);
+    warning.setOrigin(warning.getGlobalBounds().width / 2, warning.getGlobalBounds().height / 2);
+    warning.setPosition(pos.x , pos.y + 60);
     warning.setColor(sf::Color::Red);
+    pos = sf::Vector2f(0, 0);
 }
 
-void Textbox::draw() {
-    window.draw(background);
-    window.draw(title);
-    window.draw(text);
+void Textbox::draw(sf::RenderTarget &target) {
+    target.draw(background);
+    target.draw(title);
+    target.draw(text);
     if (isWarning) {
-        window.draw(warning);
+        target.draw(warning);
     }
 }
 
@@ -419,10 +414,27 @@ bool Textbox::enterText(sf::Uint32 unicode) {
         string = string.substr(1, string.length());
     }
     text.setString(string);
-    text.setPosition(window.getSize().x/2 - (text.getCharacterSize() * string.length()) / 2, text.getPosition().y);
+    text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+    text.setPosition(SCREEN_WIDTH / 2, text.getPosition().y);
     return false;
 }
 
 void Textbox::setWarning(bool warning) {
     this->isWarning = warning;
+}
+
+void Textbox::setPosition(sf::Vector2f pos)
+{
+    text.setPosition(pos.x, pos.y);
+    background.setPosition(pos.x, pos.y);
+    title.setPosition(pos.x, pos.y - 50);
+    warning.setPosition(pos.x, pos.y + 60);
+}
+
+void Textbox::movePosition(sf::Vector2f pos) {
+    text.setPosition(text.getPosition().x + pos.x - this->pos.x, text.getPosition().y + pos.y - this->pos.y);
+    background.setPosition(background.getPosition().x + pos.x - this->pos.x, background.getPosition().y + pos.y - this->pos.y);
+    title.setPosition(title.getPosition().x + pos.x - this->pos.x, title.getPosition().y + pos.y - this->pos.y);
+    warning.setPosition(warning.getPosition().x + pos.x - this->pos.x, warning.getPosition().y + pos.y - this->pos.y);
+    this->pos = pos;
 }

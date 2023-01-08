@@ -66,6 +66,12 @@ void MENU::draw(sf::RenderWindow* window)
     curState->draw(window);
 }
 
+void MENU::drawTitle(sf::RenderWindow* window)
+{
+    window->draw(this->worldBackground);
+    window->draw(this->title);
+}
+
 int MENU::update(sf::RenderWindow* window, sf::Event e, GAME* gm)
 {
     int pressed = curState->update(window, e, gm);

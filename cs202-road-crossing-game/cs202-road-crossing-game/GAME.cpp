@@ -4,14 +4,12 @@
 // CONSTRUCTORS / DESTRUCTORS
 
 GAME::GAME()
-    : sceneManager(), font(sf::Font())
+    : sceneManager()
 {
     soundController = new SoundManager(music["TITLE"]);
     this->isPause = false;
     this->isDead = false;
     this->initWindow();
-    font.loadFromFile("Fonts/PressStart2P-Regular.ttf");
-    textbox = new Textbox(*this->window, font);
     this->initPlayer();
     this->initView();
     this->initTextures();
@@ -40,7 +38,6 @@ GAME::GAME(const int a)
 
 GAME::~GAME()
 {
-    delete this->textbox;
     delete this->window;
     delete this->player;
     delete this->gui;
@@ -150,39 +147,38 @@ void GAME::updatePollEvents()
         if (e.Event::type == sf::Event::Closed)
             this->window->close();
         switch (scene) {
-        case 99: {
-            bool didHitReturn = textbox->pollEvent(e);
+        case LOADGAMESCENE: {
+            bool didHitReturn = gui->updateTextBox(e);
             if (didHitReturn) {
-                std::string fileName = textbox->getString();
+                std::string fileName = gui->getSaveLoadText();
                 std::ifstream infile(fileName);
                 if (!infile.good()) {
                     std::cout << "Can not find game file!!" << std::endl;
-                    textbox->setWarning(true);
-                }
-                else {
+                    gui->setTextBoxWarning(true);
+                } else {
+                    playMusic(music["INGAME"]);
                     this->loadGame(fileName);
                     scene = INGAME;
                     update();
                     gui->initPauseMenu();
                     scene = PAUSEGAME;
-                    textbox->setWarning(false);
+                    gui->setTextBoxWarning(false);
                 }
-                textbox->setString("");
+                gui->setTextBoxString("");
             }
             break;
         }
-        case 100: {
-            bool didHitReturn = textbox->pollEvent(e);
+        case SAVEGAMESCENE: {
+            bool didHitReturn = gui->updateTextBox(e);
             if (didHitReturn) {
-                std::string fileName = textbox->getString();
+                std::string fileName = gui->getSaveLoadText();
                 std::ifstream infile(fileName);
                 this->saveGame(fileName);
-                scene = INGAME;
-                update();
-                gui->initPauseMenu();
+                //scene = INGAME;
+                //update();
                 scene = PAUSEGAME;
-                textbox->setWarning(false);
-                textbox->setString("");
+                gui->setTextBoxWarning(false);
+                gui->setTextBoxString("");
             }
                 break;
         }
@@ -199,9 +195,10 @@ void GAME::updatePollEvents()
                 exit(0);
                 break;
             case LOADGAME: {
-                playMusic(music["INGAME"]);
+                // playMusic(music["INGAME"]);
                 //totalTime = 0;
-                scene = 99;
+                gui->initSaveLoadGame(true);
+                scene = LOADGAMESCENE;
                 update();
                 break;
             }  
@@ -280,7 +277,7 @@ void GAME::updatePollEvents()
             case LEADERBOARD:
                 break;
             case SAVEGAME:
-                scene = 100;
+                scene = SAVEGAMESCENE;
                 break;
             }
             break;
@@ -448,14 +445,23 @@ void GAME::render()
 {
     this->window->clear();
     switch (scene) {
-    case 99: {
+    case SAVEGAMESCENE: {
         this->renderWorld();
-        textbox->draw();
+
+        // Render bullet, enemies
+        this->renderBullets();
+        this->renderEnemies();
+
+        // Draw all the stuffs
+        this->player->render(*this->window);
+        this->gui->render();
+        this->gui->renderTextBox(*this->window);
         break;
     }
-    case 100: {
-        this->renderWorld();
-        textbox->draw();
+    case LOADGAMESCENE: {
+        this->menu.drawTitle(this->window);
+        this->gui->renderTextBox(*this->window);
+
         break;
     }
     case MENUSCENE:

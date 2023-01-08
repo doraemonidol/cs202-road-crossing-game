@@ -264,6 +264,7 @@ void GUI::renderGamePause()
 void GUI::initPauseMenu()
 {
     pauseMenuDisplacement = this->getDisplacement();
+    this->textBox.movePosition(sf::Vector2f(0, pauseMenuDisplacement));
     this->pauseMenu->movePos(sf::Vector2f(0, pauseMenuDisplacement));
     this->pauseMenu->unpdateButtonDisplacement(sf::Vector2f(0, pauseMenuDisplacement));
     this->pauseMenu->init();
@@ -367,6 +368,36 @@ void GUI::renderIngameGUI()
     float y = this->getDisplacement();
     this->ingameGUI->movePos2(sf::Vector2f(0, y));
     ingameGUI->draw(window);
+}
+
+void GUI::initSaveLoadGame(bool saveGame)
+{
+    this->textBox.setPosition(sf::Vector2f(SCREEN_WIDTH / 2, SCREEN_HEIGHT /  2));
+}
+
+std::string GUI::getSaveLoadText()
+{
+    return textBox.getString();
+}
+
+bool GUI::updateTextBox(sf::Event event)
+{
+    return textBox.pollEvent(event);
+}
+
+void GUI::renderTextBox(sf::RenderTarget& target)
+{
+    textBox.draw(target);
+}
+
+void GUI::setTextBoxWarning(bool state) 
+{
+    textBox.setWarning(state);
+}
+
+void GUI::setTextBoxString(std::string s)
+{
+    textBox.setString(s);
 }
 
 void GUI::setWorldBackground(sf::Texture* bg)

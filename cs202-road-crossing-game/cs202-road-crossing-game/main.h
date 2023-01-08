@@ -54,6 +54,8 @@ enum Scene {
     WINSCENE,
     LOSESCENE,
     ENDGAME,
+    SAVEGAMESCENE,
+    LOADGAMESCENE,
     sceneCnt
 };
 

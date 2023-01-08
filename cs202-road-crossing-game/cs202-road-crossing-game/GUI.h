@@ -31,6 +31,8 @@ private:
     sf::Sprite loseTitle, winTitle;
     float pauseMenuDisplacement, winLoseDisplacement, ingameGUIDisplacement;
 
+    Textbox textBox;
+
     // Private functions
     void initTextures();
     void initGUI();
@@ -82,6 +84,14 @@ public:
     int updateIngameGUI(sf::Event e, GAME* gm);
     int updateIngameGUIAnim(GAME* gm);
     void renderIngameGUI();
+
+    // SaveLoad Game
+    void initSaveLoadGame(bool saveGame);
+    std::string getSaveLoadText();
+    bool updateTextBox(sf::Event event);
+    void renderTextBox(sf::RenderTarget& target);
+    void setTextBoxWarning(bool state);
+    void setTextBoxString(std::string s);
 
     void setWorldBackground(sf::Texture* bg);
 
