@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ANIMATION">
+    <Position X="3.25" Y="16.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQAIAQAgAAACEAAAAAAgAQABEAAAAAASAAAAAAI=</HashCode>
+      <FileName>ANIMATION.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BIG_MONSTER">
+    <Position X="18" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAEAAAAAAAAAAAAAIAAAUAAA=</HashCode>
+      <FileName>BIG_MONSTER.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BOSS">
+    <Position X="28.75" Y="20" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ASEIAACkkIAAAQCUECqAoIBACBJQAwAFEQFBAFKUAAA=</HashCode>
+      <FileName>BOSS.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BULLET">
+    <Position X="3.25" Y="21" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAKAEAAQAAgAAAEBAAAAAAABAAAwAAAAAAAABUEAA=</HashCode>
+      <FileName>BULLET.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ENEMY_BASE">
+    <Position X="22.25" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEEAAAQBAAgAAEAAAAIAAAAAIAwAFEADAAAAAAAA=</HashCode>
+      <FileName>ENEMY_BASE.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ENEMY_CONTROLLER" Collapsed="true">
+    <Position X="22" Y="16.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>MCBhAQAIUEAAKZBBEoAQAUBBAAIIAAIUgAEAAAIUAMA=</HashCode>
+      <FileName>ENEMY_CONTROLLER.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GAME" Collapsed="true">
+    <Position X="22" Y="14" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>GGgAAwDBgsmBABACMQCJAYgBAZVsAIAJgRByBAIcBAA=</HashCode>
+      <FileName>GAME.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI">
+    <Position X="36.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ALIiAQJAAkhNFEAOU5FIAgBCLBAwIaA5BRQAgId1IIA=</HashCode>
+      <FileName>GUI.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LASER">
+    <Position X="26.5" Y="21.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAEIQAAAAMAAAAAUAAAAAAAABHKAQEAAMAADAgUAQA=</HashCode>
+      <FileName>LASER.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LEVEL">
+    <Position X="8" Y="19" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAUDAAAAAADCEAAAAAAAgAAAABIBAAEAAQAAAAQ=</HashCode>
+      <FileName>LEVEL_MANAGER.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LEVEL_MANAGER">
+    <Position X="8" Y="16.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAEAAAAAAAEAIAAAAAAAABAAAAA=</HashCode>
+      <FileName>LEVEL_MANAGER.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MENU">
+    <Position X="34.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAQAAIAAgAAAIAAAAQAEDAEAIAAAAAAAQEAAQ=</HashCode>
+      <FileName>MENU.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MONSTER">
+    <Position X="20.25" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASAAIAAAASAAAAAAEAAAAAAAABgYAAEBABAAAAAUAYA=</HashCode>
+      <FileName>MONSTER.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OBSTACLE">
+    <Position X="24.25" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASAAAAAAASAAAAAAEAAAAAAAABiaAAEBAAAACAAUAQA=</HashCode>
+      <FileName>OBSTACLE.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OPTIONS">
+    <Position X="32.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMAAADAAACBAAAAYAIAAMAQBAAAAEIQwAAIAQIEAAQ=</HashCode>
+      <FileName>OPTIONS.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SCENE_MANAGER">
+    <Position X="10.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEQAUABgEACCKAAFCAAAAggAAAQCAACAQEgAAAUUAA=</HashCode>
+      <FileName>SCREEN_MANAGER.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SMALL_MONSTER">
+    <Position X="20.25" Y="25.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAEIAAAAAAAAAAAAAAAAAAAAAUAAA=</HashCode>
+      <FileName>SMALL_MONSTER.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoundEffect">
+    <Position X="6" Y="22" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAggAAgAAAAAAAABAAAAAAAAAAAAgAgAgAAAAg=</HashCode>
+      <FileName>SoundEffect.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoundManager">
+    <Position X="6" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAIAAAAAIAAUAAARAAAACBIAAAAAFAgAAAkAAA=</HashCode>
+      <FileName>SoundManager.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SPACESHIP">
+    <Position X="13.5" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACQAoAEQAQACQADQAQAAmABIYIwAEAQBYgAAUAAA=</HashCode>
+      <FileName>SPACESHIP.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TRAFFICLIGHT">
+    <Position X="15.75" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAQAAQAEBAAgAAAABAIQgAAAQAAAQAUAAA=</HashCode>
+      <FileName>TRAFFICLIGHT.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UFO">
+    <Position X="24.25" Y="25.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAABAAAAAAAAAAEAAAgAAAAACAAAEAAAAAAAAUAQA=</HashCode>
+      <FileName>UFO.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Textbox">
+    <Position X="34.5" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIAAAAAQABIAAUAwQIAAKBCQAQYAAAIAAAACACAIAA=</HashCode>
+      <FileName>UTILS.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BUTTON">
+    <Position X="32.5" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIYEgABAAIAIEAAAEAAEGIADAAABgoAsAAAICQEFAAA=</HashCode>
+      <FileName>UTILS.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

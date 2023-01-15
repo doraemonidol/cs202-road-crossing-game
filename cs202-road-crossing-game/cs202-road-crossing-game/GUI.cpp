@@ -127,7 +127,7 @@ void GUI::initGUI()
 
     instructionText.setFont(font2);
     instructionText.setCharacterSize(15);
-    instructionText.setString("Your task is to cross the universe while \navoiding space monster, UFOs and lasers.\n\nControl:\n  [W], [A], [S], [D] or [Arrow keys] to \n    move \n  [Spacebar] to shoot (a bullet will be \n    reloaded after 5 second, you can \n    save up tp 5 bullets)\n\nEnemies: 3 types: \n  1.Monsters: moving left and right, can \n    be freezed by the freezing beam.\n  2.UFOs: also moving left and right, \n    can NOT be freezed by the freezing \n    beam, can SHOOT BULLETS.\n  3.Laser: you should wait until the laser \n    is shot or just past before it shoots.");
+    instructionText.setString("Your task is to cross the universe while \navoiding space monster, UFOs and lasers.\n\nControl:\n  [W], [A], [S], [D] or [Arrow keys] to \n    move \n  [Spacebar] to shoot (a bullet will be \n    reloaded after 5 second, you can \n    save up to 5 bullets)\n\nEnemies: 3 types: \n  1.Monsters: moving left and right, can \n    be freezed by the freezing beam.\n  2.UFOs: also moving left and right, \n    can NOT be freezed by the freezing \n    beam, can SHOOT BULLETS.\n  3.Laser: you should wait until the laser \n    is shot or just past before it shoots.");
     instructionText.setOrigin(instructionText.getGlobalBounds().width / 2, instructionText.getGlobalBounds().height / 2);
     instructionText.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 
