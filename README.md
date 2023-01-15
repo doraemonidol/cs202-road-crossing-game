@@ -1,6 +1,7 @@
 # CS202 - Final Project - Road Crossing Game - OOP / SFML
 
 This is our Road Crossing Game clone for the CS202 Final Assignment using **OOP concept** and **SFML library**.
+[Demo Video](https://www.youtube.com/watch?v=jGcPg3ttBjM)
 
 ![menu-bg-sample](https://user-images.githubusercontent.com/87884396/212503163-e0406cb4-5454-45da-b903-c6c3f58b32bb.png)
 
@@ -50,95 +51,59 @@ $ bin/Release/crossing-the-universe.exe
 Pixel art style with 8-bit retro music.
 Game textures are based on some design on
 - [Freepik](https://www.freepik.com/)
-- [Dribble](https://dribbble.com/) and
-- Craftpix](https://craftpix.net/).
+- [Dribble](https://dribbble.com/)
+- [Craftpix](https://craftpix.net/)
 
 Music are from 
 - [xDeviruchi](https://www.youtube.com/watch?v=5bn3Jmvep1k)
 - [Jeremy Blake](https://www.youtube.com/watch?v=l7SwiFWOQqM)
-- 
-- [Final Fantasy IV](https://www.youtube.com/watch?v=ID3qmuAiadA) and
+- [Bulby](https://www.youtube.com/watch?v=oMgQJEcVToY)
+- [Final Fantasy IV](https://www.youtube.com/watch?v=ID3qmuAiadA)
 - [8 Bit Universe](https://www.youtube.com/watch?v=9NcPvmk4vfo)
 
-#### Backstory
+#### Storyline
 
-We intended to renovate it using some graphics libraries. However, since this version is working flawlessly and we are also in love with its minimalistic look, we've come to the decision that this will be our final version :smile:.
+In this project, we have made a theme for the game. Follow this theme, we change the cars and animals into aliens, lasers and ufos  :smile: We also turn the player into a spaceship that can shoot aliens. We hope to give the game much more interesting mechanic like an obstacle level, however, we didn't have enough time to make that :cry: 
 
 ### Basic Features
 
-- Drawing the board (including cells, mines and flags).
-- Changing a cell's state when it is selected.
-- A timer.
-- Game levels.
-- Generating random mines positions.
-- Receiving the new position of the pointer (to select a cell) from the console.
-- Saving the current state of the playing board.
-- Loading the previously saved board.
-- A leaderboard.
-- Message boxes to prompt the user.
-
-#### There are 3 game levels:
-
-- **Beginner:** 9x9 cells, 10 mines.
-- **Intermediate:** 16x16 cells, 40 mines.
-- **Expert:** 30x16 cells, 99 mines.
+- Traffic lights in Freezing beam form to stop the aliens.
+- Menu to navigate user.
+- Spaceship blow-up animation.
 
 ### Remarkable Features
 
-- Changing the game's resolution corresponding to the current level to improve user experience.
-- Guaranteeing that the first clicked cell is not a mine.
-- Making our own library for manipulating the console based on the "windows.h" library.
+- Pixel art with texture, cut scenes and 8-bit music.
+- Ability to shoot aliens and fight boss.
+- Much more interesting obstacles and enemies.
+- Good UI/UX
 
 ---
 
 ## How to Play
 
-- `W`, `A`, `S`, `D`: Move cursor.
-- `J`, `Enter`: Select options | Reveal current cell.
-- `K`: Reveal all adjacent cells of the current cell.
-- `L`: Flag current cell.
-- `O`: Save current board.
-- `R`: Restart current game.
-- `Esc`: Exit current game | Go back to menu.
+- `W`, `A`, `S`, `D`: Move spaceship.
+- `Space`: Shoot bullets.
+- `Esc`: Pause the game.
 
 ---
 
 ## Screenshots
 
-![image](https://user-images.githubusercontent.com/47299149/147375758-7fe57c0b-d3b6-4f88-b93d-2b21aa20122b.png)
-![image](https://user-images.githubusercontent.com/47299149/147375766-3c3ac961-ff60-49f6-b62b-f81c267dc730.png)
-![image](https://user-images.githubusercontent.com/47299149/147375809-d24436fe-e176-4f62-b4b3-7fbc90dd6372.png)
-![image](https://user-images.githubusercontent.com/47299149/147375815-c62fef09-3902-43ae-83e4-00e1d629707e.png)
-
----
-
-## Additional Information
-
-### Project Requirements
-
-#### Basic Features
-
-- Game rules: [Minesweeper Online](https://minesweeper.online/)
-- Drawing the board (including cells, mines and flags).
-- Changing a cell's state when it is selected.
-- A timer.
-- Functions: New game, change board dimensions, select a function from console screen.
-- Randomizing the positions of the mines.
-- Receiving the new position of the pointer (to select a cell) from the console.
-- Saving the current state of the playing board.
-- Loading the previously saved board.
-- A leaderboard.
-
-#### Other Features
-
-- Using the keyboard (arrow keys) to select a cell.
-- Rendering images.
-- Using structs.
+![image](https://user-images.githubusercontent.com/87884396/212504043-7ef63bde-1385-464c-8034-2f9c243f108b.png)
+![image](https://user-images.githubusercontent.com/87884396/212504137-994089c1-454a-4fa2-8e82-f009a33b45cb.png)
+![image](https://user-images.githubusercontent.com/87884396/212504216-e48040e9-3693-45f3-8dc6-1b14e8c8171c.png)
+![image](https://user-images.githubusercontent.com/87884396/212504083-f9246810-c84f-4389-b179-a19ad5e346ac.png)
+![image](https://user-images.githubusercontent.com/87884396/212504119-c54505ba-410b-4e61-8a56-82bfb1da1c23.png)
+![image](https://user-images.githubusercontent.com/87884396/212504120-c00fdb84-0b9e-4e92-87f1-cbc57f716e86.png)
+![image](https://user-images.githubusercontent.com/87884396/212504128-5580c18f-a9fa-472c-ace4-dfc203ba33f0.png)
+![image](https://user-images.githubusercontent.com/87884396/212504132-f2fb254b-f894-4802-be25-c4c24298be99.png)
+![image](https://user-images.githubusercontent.com/87884396/212504142-867cf350-1077-4b2c-8bba-973dec54c4ea.png)
 
 ---
 
 ## License
 
-> You can check out the full license [here](https://github.com/sangpham2710/CS161-Project/blob/main/LICENSE)
+> You can check out the full license [here](https://github.com/doraemonidol/cs202-road-crossing-game/blob/519f873e0ab164bbfbfe2cc17a51079d35263633/LICENSE)
 
 This project is licensed under the terms of the **MIT** license.
